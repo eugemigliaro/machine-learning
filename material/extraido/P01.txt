@@ -1,0 +1,144 @@
+FUENTE: P01
+TITULO: TP1: Regresión e introducción a la evaluación de modelos
+ORIGINAL: material/catedra/practica/TP1. Regresión e Introducción a la evaluación de modelos.pdf
+PAGINAS: 3
+
+===== PAGINA 1 =====
+
+Aprendizaje Automático. 2026 Q2.
+
+
+Trabajo Práctico 1: Regresión e Introducción a la evaluación de modelos
+Materia: 72.75 Aprendizaje Automático (Machine Learning)
+Fecha de defensa: 26/08/26
+
+
+
+En este trabajo práctico se implementarán modelos de regresión para predecir una variable
+numérica a partir de un conjunto de datos. El objetivo principal es aprender a entrenar y
+evaluar modelos utilizando validación cruzada.
+
+Introducción teórica
+Esta información deberá estar contenida en la presentación (brevemente):
+
+1.1 Separación train-validación-test: qué es y porque es necesario
+
+La presentación durará 10 minutos + 8 minutos de preguntas.
+*mandar la presentación y el código 24 horas antes de la clase en la que se presentará el TP
+
+0. Elección del Dataset.​
+Para este trabajo práctico deberán elegir uno de los siguientes datasets y trabajar con él
+durante todo el TP. Todos permiten resolver el mismo problema: predecir una variable numérica
+a partir de otras variables del dataset utilizando los modelos de regresión vistos en clase.
+
+
+0.1. Bike Sharing​
+Este dataset corresponde a un sistema de alquiler de bicicletas. Contiene variables
+relacionadas con el clima y el calendario (temperatura, humedad, estación del año, día laboral,
+etc.), y el objetivo es predecir la cantidad de bicicletas alquiladas en un momento determinado.
+El dataset, así como más información sobre el mismo, está disponible en el UCI Machine
+Learning Repository: https://archive.ics.uci.edu/ml/datasets/bike+sharing+datase
+
+0.2. Insurance Charges
+Este dataset contiene información de personas (edad, BMI, número de hijos, hábito de fumar,
+región, etc.) y el objetivo es predecir el costo anual de gastos médicos (charges). Es un
+problema de regresión muy común en ejemplos de machine learning aplicado a datos de salud
+y seguros. El dataset, así como más información sobre el mismo, está disponible en Kaggle:
+https://www.kaggle.com/datasets/mirichoi0218/insurance
+
+0.3. Wine Quality​
+Este dataset contiene propiedades físico-químicas del vino (acidez, pH, densidad, alcohol,
+sulfatos, entre otras). El objetivo es predecir la calidad del vino a partir de estas características.
+El dataset, así como más información sobre el mismo, está disponible en el UCI Machine
+Learning Repository: https://archive.ics.uci.edu/ml/datasets/wine+quality
+
+
+
+
+1. Limpieza de datos
+
+                                                  1
+
+===== PAGINA 2 =====
+
+Aprendizaje Automático. 2026 Q2.
+
+
+Antes de entrenar los modelos es necesario analizar y preparar el dataset.
+
+1.1 Variables categóricas​
+ Identificar si el dataset contiene variables categóricas. En caso afirmativo, aplicar una
+estrategia adecuada para poder utilizarlas en los modelos (por ejemplo: codificación one-hot).
+Justificar la elección.
+
+1.2 Valores faltantes​
+  Analizar si existen valores faltantes en el dataset. En caso de encontrarlos, indicar qué
+estrategia se utilizará para tratarlos (por ejemplo: eliminación de filas, imputación, etc.) y
+justificar la decisión.
+
+1.3 Outliers​
+ Analizar la posible presencia de valores atípicos en las variables numéricas. Indicar qué criterio
+se utiliza para detectarlos y justificar si se eliminan o se mantienen.
+
+1.4 Características
+Decidir qué características del dataset se incluyen (pueden ser todas) y aplicar el escalado si
+procede (justificar ambas decisiones).
+
+
+2. Regresión lineal
+
+2.1 Separación de datos. Separar el dataset en un conjunto de entrenamiento (train) y un
+conjunto de test. Explicar cómo se han separado y porque.
+
+2.2 Validación cruzada. Implementar un esquema de k-fold cross-validation utilizando
+únicamente el conjunto de entrenamiento.
+
+2.3 Entrenamiento del modelo. Entrenar un modelo de regresión lineal dentro de la
+validación cruzada y calcular el error de train y de validación utilizando el RMS.
+
+​
+3. Regresión polinómica
+
+3.1 Transformación polinómica. Aplicar una transformación polinómica (de el/los grados que
+consideren oportuno) a las variables de entrada.
+
+3.2 Entrenamiento del modelo. Entrenar el modelo de regresión lineal sobre las variables
+transformadas.
+
+3.3 Regularización (opcional). Evaluar un par de valores del parámetro de regularización
+utilizando (lambda) para L1 en los modelos de regresión que usen variables polinómicas
+(puedes hacerlo también para el lineal si quieres).
+
+4. Evaluación. Calcular los errores de validación/Dev y reportar el RMSE obtenido para los
+grados del polinomio evaluados (Indicar claramente qué grado del polinomio y valor de
+lambda se utilizó en cada uno)
+
+
+
+
+5. Comparación de modelos. Comparar los resultados obtenidos con los modelos y responder
+brevemente:
+
+
+
+                                                2
+
+===== PAGINA 3 =====
+
+Aprendizaje Automático. 2026 Q2.
+
+
+   1.​ ¿Qué modelo obtuvo menor error?​
+
+   2.​ Si tuvieran que implementar uno de los modelos en una aplicación real, ¿cuál
+       elegirían? Justificar.​
+
+   3.​ Si tuvieran que vendernos o publicar esa aplicación, ¿que RMSE me dirían que
+       esperan que tenga cuando se utilice? (i.e., Cómo esperan que el modelo elegido
+       funcione en datos nuevos)
+
+
+
+
+                                             3
+

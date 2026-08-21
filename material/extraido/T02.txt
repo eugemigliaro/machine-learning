@@ -1,0 +1,2429 @@
+FUENTE: T02
+TITULO: Datos, variables, overfitting y métricas
+ORIGINAL: material/catedra/teoria/Clase 2 Datos, variables, overfitting y métricas.pptx.pdf
+PAGINAS: 97
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Alexa Sessarego Aurich
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+                                                    … en la sesión anterior
+Plan de la sesión de hoy
+                                                    -   Presentación
+-    Tipos de variables y qué hacer con ellos
+-    Limpieza de datos                              -   Qué es ML y por qué es importante
+-    Primer ejemplo de supervisado: Regresión       -   Tipos de aprendizaje
+-    Data Splits                                    -   Contenido y objetivos de la asignatura
+-    Métricas
+                                                    -   Estructura de un proyecto ML y principales desafíos
+
+===== PAGINA 2 =====
+
+… en la clase anterior
+
+
+Aprendizaje automático: “Campo de estudio que confiere a los ordenadores
+la capacidad de aprender sin ser programados explícitamente” Arthur Samuel
+(1959)
+
+
+
+
+       en sesión anterior…
+       - Presentación
+       - Qué es ML y por qué es importante
+       - Tipos de aprendizaje
+       - Contenido y objetivos de la asignatura
+       - Estructura de un proyecto ML y principales desafíos
+
+  Aprendizaje Automático – ©Carlos Bibián, 2025                              2
+
+===== PAGINA 3 =====
+
+ Ventajas del Aprendizaje Automático
+Ejemplo Clasificador Spam: “tradicional”vs Aprendizaje Automático
+Programación“tradicional”                                 Aprendizaje Automático
+1-Observar decenas/cientos correos spam
+2-Identificar patrones como el uso de ciertas palabras:
+     por ej.: "gratis", "promoción“, uso de mayúsculas
+3-Programar reglas específicas para estas palabras
+4-Evaluar la eficiencia del programa
+5-Volver al punto 2 para mejorar resultado
+
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                 3
+
+===== PAGINA 4 =====
+
+Tipos de Aprendizaje Automático
+                                                                              4x
+
+ Identificar perro -> Supervisado
+
+
+
+
+                           Agrupar juguetes por colores ->No supervisado
+
+
+
+
+                                         Aprender a caminar -> Por refuerzo
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                     4
+
+===== PAGINA 5 =====
+
+Aprendizaje supervisado                                                                           1
+
+
+
+
+                                                                                Orejas de perro
+
+                                                                                                  0
+                                                                                                      0                   1
+                                                                                                          Cola de perro
+
+
+
+
+                                                                                                                              4x
+
+
+
+  ¿Qué queremos?
+  • Una buena estrategia para de etiquetar (clasiﬁcar) nuevos datos
+                        módulo 1, y más en profundidad en módulo 2 y módulo 3
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                     5
+
+===== PAGINA 6 =====
+
+Aprendizaje no supervisado
+ Agrupar juguetes por colores ->No supervisado
+                                                                                módulo 4
+ ¿Cómo funciona este tipo de aprendizaje?
+ Algoritmos diseñados para buscar patrones en los datos
+
+
+
+
+  ¿Qué queremos?
+  • Encontrar patrones en los datos que los agrupen de la mejor forma posible
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                             6
+
+===== PAGINA 7 =====
+
+Preparación de los datos
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 8 =====
+
+¿Cómo es un dataset*?
+
+
+
+
+¿Cómo son/pueden ser esas variables (x)?
+
+
+                                                 *para clasiﬁcación supervisada
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                8
+
+===== PAGINA 9 =====
+
+Tipos de variables
+Ejemplo de dataset
+Una empresa hotelera nos contrata para hacer un
+modelo que predice si una reserva de hotel va a ser
+cancelada o no.
+
+
+
+                                       Días de        Cancelacio    Precio por   Importe   Descuento   Días última             Tipo de      Canal de   Tipo de   Categorí   Nivel
+Cliente   Noches    Adultos   Niños    anticipación   nes previas   noche        total     (%)         reserva       País      habitación   reserva    cliente   a hotel    ﬁdelidad   Canceló
+
+   C1        3         2        0          45              0         120.5        361.5       10         180.5       España     Doble        Web       Nuevo       4★       Bronze       No
+
+   C2        5         2        2          90              1           95         475          5           60        Francia   Familia      Agenci     Recurre     3★        Silver      No
+                                                                                                                                 r            a          nte
+
+   C3        1         1        0           3              2           150         150         0        400.2        Aleman    Individ       Web       Recurre     5★        Gold        Sí
+                                                                                                                        ia       ual                     nte
+
+   C4        7         2         1         120             0         80.75       565.25       15         30.5         Italia     Suite      Agenci     Recurre     4★        Gold        No
+                                                                                                                                              a          nte
+
+   C5        2         1        0          10              3           110        220          0          250        Reino      Doble       Teléfon    Nuevo       3★       Bronze       Sí
+                                                                                                                     Unido                     o
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                                              9
+
+===== PAGINA 10 =====
+
+Tipos de variables
+Numéricas
+Representan cantidades
+Son las más comunes y pueden utilizarse directamente en la mayoría de los modelos.
+
+
+                                        Días de        Cancelacio    Precio por   Importe   Descuento   Días última             Tipo de      Canal de   Tipo de   Categorí   Nivel
+ Cliente   Noches    Adultos   Niños    anticipación   nes previas   noche        total     (%)         reserva       País      habitación   reserva    cliente   a hotel    ﬁdelidad   Canceló
+
+    C1        3         2         0         45              0         120.5        361.5       10         180.5       España     Doble        Web       Nuevo       4★       Bronze       No
+
+    C2        5         2         2         90              1           95         475          5           60        Francia   Familia      Agenci     Recurre     3★        Silver      No
+                                                                                                                                  r            a          nte
+
+    C3        1         1         0          3              2           150         150         0        400.2        Aleman    Individ       Web       Recurre     5★        Gold        Sí
+                                                                                                                         ia       ual                     nte
+
+    C4        7         2         1         120             0         80.75       565.25       15         30.5         Italia     Suite      Agenci     Recurre     4★        Gold        No
+                                                                                                                                               a          nte
+
+    C5        2         1         0         10              3           110        220          0          250        Reino      Doble       Teléfon    Nuevo       3★       Bronze       Sí
+                                                                                                                      Unido                     o
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                                          10
+
+===== PAGINA 11 =====
+
+Tipos de variables
+Numéricas discretas
+Caso especial: Únicamente toman valores especíﬁcos (a diferencia de las variables
+continuas pueden tomar cualquier valor en un rango)
+
+
+                                        Días de        Cancelacio    Precio por   Importe   Descuento   Días última             Tipo de      Canal de   Tipo de   Categorí   Nivel
+ Cliente   Noches    Adultos   Niños    anticipación   nes previas   noche        total     (%)         reserva       País      habitación   reserva    cliente   a hotel    ﬁdelidad   Canceló
+
+    C1        3         2         0         45              0         120.5        361.5       10         180.5       España     Doble        Web       Nuevo       4★       Bronze       No
+
+    C2        5         2         2         90              1           95         475          5           60        Francia   Familia      Agenci     Recurre     3★        Silver      No
+                                                                                                                                  r            a          nte
+
+    C3        1         1         0          3              2           150         150         0        400.2        Aleman    Individ       Web       Recurre     5★        Gold        Sí
+                                                                                                                         ia       ual                     nte
+
+    C4        7         2         1         120             0         80.75       565.25       15         30.5         Italia     Suite      Agenci     Recurre     4★        Gold        No
+                                                                                                                                               a          nte
+
+    C5        2         1         0         10              3           110        220          0          250        Reino      Doble       Teléfon    Nuevo       3★       Bronze       Sí
+                                                                                                                      Unido                     o
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                                          11
+
+===== PAGINA 12 =====
+
+Tipos de variables
+Numéricas discretas
+Las variables discretas (p. ej., número de habitaciones) pueden usarse directamente como
+variables numéricas, porque representan cantidades reales.
+
+Sin embargo, sólo toman valores enteros, por lo que no existe continuidad entre ellos.
+
+Esto puede generar relaciones no lineales o efectos umbral que algunos modelos no capturan bien.
+
+Además, suelen tener rangos pequeños y distribuciones muy concentradas, lo que puede limitar la
+información que aportan.
+
+Por eso, en presencia de estas variables se suele recomendar probar con modelos no lineales o
+incluso pasarlas a categóricas o a binarias (ej, >3 habitaciones)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   12
+
+===== PAGINA 13 =====
+
+Tipos de variables
+Categóricas
+Las variables categóricas representan categorías o etiquetas
+
+La mayoría de algoritmos usan entradas numéricas, por lo que debemos transformarlas.
+
+                                        Días de        Cancelacio    Precio por   Importe   Descuento   Días última             Tipo de      Canal de   Tipo de    Categorí   Nivel
+ Cliente   Noches    Adultos   Niños    anticipación   nes previas   noche        total     (%)         reserva       País      habitación   reserva    cliente    a hotel    ﬁdelidad   Canceló
+
+    C1        3         2         0         45              0         120.5        361.5       10         180.5       España     Doble         Web       Nuevo       4★       Bronze       No
+
+    C2        5         2         2         90              1           95         475          5           60        Francia   Familiar     Agencia    Recurren     3★        Silver      No
+                                                                                                                                                           te
+
+    C3        1         1         0          3              2           150         150         0        400.2        Aleman    Individu       Web      Recurren     5★        Gold        Sí
+                                                                                                                         ia        al                      te
+
+
+    C4        7         2         1         120             0         80.75       565.25       15         30.5         Italia     Suite      Agencia    Recurren     4★        Gold        No
+                                                                                                                                                           te
+
+    C5        2         1         0         10              3           110        220          0          250        Reino      Doble       Teléfono    Nuevo       3★       Bronze       Sí
+                                                                                                                      Unido
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                                           13
+
+===== PAGINA 14 =====
+
+Tipos de variables
+Categóricas - Transformaciones
+Primera aproximación: asignar un valor numérico a cada categoría
+
+Esto se llama encoding ordinal, y sólo es útil cuando hay esa relación jerárquica
+entre categorías
+
+
+                           Canal de         Canal de reserva   Canal_Web       Canal_Agencia       Canal_Teléfono
+         Cliente            reserva           (numérica)
+
+            C1               Web                   1                       1                   0                0
+
+           C2              Agencia                 2                       0                   1                0
+
+           C3                Web                   1                       1                   0                0
+
+           C4              Agencia                 2                       0                   1                0
+
+           C5              Teléfono                3                       0                   0                1
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                     14
+
+===== PAGINA 15 =====
+
+Tipos de variables
+Categóricas ordinales
+Categóricas pero en las cual existe una relación jerárquica/de orden entre categorías
+
+
+Transformación -> encoding ordinal, visto antes
+                                        Días de        Cancelacio    Precio por   Importe   Descuento   Días última             Tipo de      Canal de   Tipo de    Categorí   Nivel
+ Cliente   Noches    Adultos   Niños    anticipación   nes previas   noche        total     (%)         reserva       País      habitación   reserva    cliente    a hotel    ﬁdelidad   Canceló
+
+    C1        3         2         0         45              0         120.5        361.5       10         180.5       España     Doble         Web       Nuevo       4★       Bronze       No
+
+    C2        5         2         2         90              1           95         475          5           60        Francia   Familiar     Agencia    Recurren     3★        Silver      No
+                                                                                                                                                           te
+
+    C3        1         1         0          3              2           150         150         0        400.2        Aleman    Individu       Web      Recurren     5★        Gold        Sí
+                                                                                                                         ia        al                      te
+
+
+    C4        7         2         1         120             0         80.75       565.25       15         30.5         Italia     Suite      Agencia    Recurren     4★        Gold        No
+                                                                                                                                                           te
+
+    C5        2         1         0         10              3           110        220          0          250        Reino      Doble       Teléfono    Nuevo       3★       Bronze       Sí
+                                                                                                                      Unido
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                                           15
+
+===== PAGINA 16 =====
+
+Tipos de variables
+Categóricas ordinales
+Categóricas pero en las cual existe una relación jerárquica/de orden entre categorías
+
+
+Transformación -> encoding ordinal, visto antes
+                                        Días de        Cancelacio    Precio por   Importe   Descuento   Días última             Tipo de      Canal de   Tipo de    Categorí   Nivel
+ Cliente   Noches    Adultos   Niños    anticipación   nes previas   noche        total     (%)         reserva       País      habitación   reserva    cliente    a hotel    ﬁdelidad   Canceló
+
+    C1        3         2         0         45              0         120.5        361.5       10         180.5       España     Doble         Web       Nuevo        4          1         No
+
+    C2        5         2         2         90              1           95         475          5           60        Francia   Familiar     Agencia    Recurren      3          2         No
+                                                                                                                                                           te
+
+    C3        1         1         0          3              2           150         150         0        400.2        Aleman    Individu       Web      Recurren      5          3         Sí
+                                                                                                                         ia        al                      te
+
+
+    C4        7         2         1         120             0         80.75       565.25       15         30.5         Italia     Suite      Agencia    Recurren      4          3         No
+                                                                                                                                                           te
+
+    C5        2         1         0         10              3           110        220          0          250        Reino      Doble       Teléfono    Nuevo        3          1         Sí
+                                                                                                                      Unido
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                                           16
+
+===== PAGINA 17 =====
+
+Tipos de variables
+Categóricas ordinales
+Categóricas pero en las cual existe una relación jerárquica/de orden entre categorías
+
+
+Transformación -> encoding ordinal, visto antes
+                                        Días de        Cancelacio    Precio por   Importe   Descuento   Días última             Tipo de      Canal de   Tipo de    Categorí   Nivel
+ Cliente   Noches    Adultos   Niños    anticipación   nes previas   noche        total     (%)         reserva       País      habitación   reserva    cliente    a hotel    ﬁdelidad   Canceló
+
+    C1        3         2         0         45              0         120.5        361.5       10         180.5       España     Doble         Web       Nuevo        4          1         No
+
+    C2        5         2         2         90              1           95         475          5           60        Francia   Familiar     Agencia    Recurren      3          2         No
+                                                                                                                                                           te
+
+    C3        1         1      Pero…
+                                0    ¿y
+                                     3  si no
+                                            2 existe
+                                                 150             400.2jerárquica?
+                                                      150 relación
+                                                     esa     0           Aleman
+                                                                            ia
+                                                                                Individu
+                                                                                   al
+                                                                                                                                               Web      Recurren
+                                                                                                                                                           te
+                                                                                                                                                                      5          3         Sí
+
+
+    C4        7         2         1         120             0         80.75       565.25       15         30.5         Italia     Suite      Agencia    Recurren      4          3         No
+                                                                                                                                                           te
+
+    C5        2         1         0         10              3           110        220          0          250        Reino      Doble       Teléfono    Nuevo        3          1         Sí
+                                                                                                                      Unido
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                                           17
+
+===== PAGINA 18 =====
+
+Tipos de variables
+Categóricas - One-hot encoding
+One-hot encoding: crea una variable nueva para cada categoría
+
+
+Muy utilizado pero aumenta la dimensionalidad mucho. Está bien si no hay muchas
+variables categóricas o muchas categorías
+
+
+                           Canal de
+         Cliente            reserva               Canal_Web   Canal_Agencia   Canal_Teléfono
+
+            C1               Web                      1            0                0
+
+           C2              Agencia                   0              1               0
+
+           C3                Web                      1            0                0
+
+           C4              Agencia                   0              1               0
+
+           C5              Teléfono                  0             0                1
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                18
+
+===== PAGINA 19 =====
+
+Tipos de variables
+Categóricas - Frequency encoding
+Frequency encoding: cada categoría toma el valor de la frecuencia de aparición de esa
+categoría.
+
+
+
+
+                           Canal de               Canal de
+         Cliente            reserva                reserva
+
+            C1               Web                   0.62
+
+           C2              Agencia                  0.11
+
+           C3                Web                   0.62
+
+           C4              Agencia                  0.11
+
+           C5              Teléfono                 0.17
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         19
+
+===== PAGINA 20 =====
+
+Tipos de variables
+Categóricas - Frequency encoding
+Frequency encoding: cada categoría toma el valor de la frecuencia de aparición de esa
+categoría.
+
+La idea detrás es que puede ser útil para el algoritmo saber que un dato pertenece a una
+categoría muy rara ya que las categorías raras suelen comportarse de forma distinta.
+
+                                                             ***Métodos como los basados en árboles usan
+                                                             muy bien la información de estas variables ya
+                           Canal de               Canal de   que “dividen” el dataset mirando variables
+         Cliente            reserva                reserva   individuales (lo veremos)
+            C1               Web                   0.62
+
+           C2              Agencia                  0.11
+
+           C3                Web                   0.62
+
+           C4              Agencia                  0.11
+
+           C5              Teléfono                 0.17
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              20
+
+===== PAGINA 21 =====
+
+Tipos de variables
+Categóricas - Target encoding
+Target encoding: cada categoría toma el valor del promedio de Y para los datos de esa
+categoría.
+
+
+
+
+                           Canal de               Canal de
+         Cliente            reserva                reserva
+
+            C1               Web                   0.62
+
+           C2              Agencia                  0.11
+
+           C3                Web                   0.62
+
+           C4              Agencia                  0.11
+
+           C5              Teléfono                 0.17
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         21
+
+===== PAGINA 22 =====
+
+Tipos de variables
+Categóricas - Target encoding
+Target encoding: cada categoría toma el valor del promedio de Y para los datos de esa
+categoría.
+
+Es algo así como: cómo se comportan los datos de esa categoría en promedio
+Peligros: si hay pocos datos de esa categoría, o incluso solo uno, el promedio puede no ser
+directamente la y a estimar/predecir…
+
+
+                           Canal de               Canal de
+         Cliente            reserva                reserva
+
+            C1               Web                   0.62
+
+           C2              Agencia                  0.11
+
+           C3                Web                   0.62
+
+           C4              Agencia                  0.11
+
+           C5              Teléfono                 0.17
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               22
+
+===== PAGINA 23 =====
+
+Tipos de variables
+Categóricas - Regularized Target encoding
+Regularized Target encoding: cada categoría toma el valor del promedio de Y para los datos
+de esa categoría, ponderado con la frecuencia de aparición.
+
+Si la categoría está poco presente, tomará el valor promedio del target, y si está muy presente
+tomará el valor promedio de esa categoría.
+
+
+                                                             TargetEncoder(smooth="auto")
+                           Canal de               Canal de
+         Cliente            reserva                reserva
+
+            C1               Web                   0.62
+
+           C2              Agencia                  0.11
+
+           C3                Web                   0.62
+                                                                                       lambda: parámetro regularizador
+           C4              Agencia                  0.11                               “añado lambda observaciones virtuales
+           C5              Teléfono                 0.17                               que tienen de media la media global”
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                       23
+
+===== PAGINA 24 =====
+
+Tipos de variables
+Categóricas - Modelos que “soportan” este tipo de variables
+Hay modelos explícitamente diseñados para utilizar este tipo de variables.
+
+
+Métodos como CatBoost, LightGBM o XGBoost…
+
+
+
+                           Canal de
+         Cliente            reserva               Canal_Web   Canal_Agencia   Canal_Teléfono
+
+            C1               Web                      1            0                0
+
+           C2              Agencia                   0              1               0
+
+           C3                Web                      1            0                0
+
+           C4              Agencia                   0              1               0
+
+           C5              Teléfono                  0             0                1
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                24
+
+===== PAGINA 25 =====
+
+Limpieza de datos
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 26 =====
+
+Limpieza de datos
+
+Antes de entrenar un modelo es necesario revisar y limpiar los datos para evitar
+errores o resultados engañosos.
+
+
+¿qué problemas nos podemos encontrar?
+
+
+- Valores faltantes/erróneos
+- Outliers
+- Datos duplicados
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                    26
+
+===== PAGINA 27 =====
+
+ Limpieza de datos
+ Valores faltantes/erróneos
+                                            Días          Precio noche                   Tipo        Canal
+Cliente         Noches       Adultos    anticipación           (€)          País       habitación   reserva    Canceló
+                                                                                                                         - Valores faltantes
+  C1              3            2            45               120.5         España        Doble       Web         No
+
+  C2              5            2            90                95           Francia      Familiar    Agencia      No
+                                                                                                                         - Valores imposibles
+  C3              1             1            3                150         Alemania     Individual    Web         Sí
+
+  C4              7            2            120               80.7          Italia       Suite      Agencia      No
+                                                                                                                         Ej: noches o adultos<=0
+  C5              2             1            10               110        Reino Unido     Doble      Teléfono     Sí
+
+  C6              4            2            NA                105          España        Doble       online      No
+
+  C7              0             1           30                98           Francia     Individual    Web         No      - Categorías erróneas
+  C8              6            NA           60                85            Italia      Familiar    Agencia      No      Ej:: Wb, Online…
+  C9              3            2            20                -50          España        Suite       Web         Sí      df["canal"].unique()
+ C10              5            2             75               NA          Alemania       Doble      Agencia      No
+
+ C11              2             1            15               102            NA        Individual    Web         No
+                                                                                                                         - Valores atípicos (outliers)
+ C12              10           2            200               70            Brasil      Familiar     Web         No
+                                                                                                                         boxplots, IQR
+
+          Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                             27
+
+===== PAGINA 28 =====
+
+ Limpieza de datos
+ Valores faltantes/erróneos
+                                            Días          Precio noche                   Tipo        Canal
+Cliente         Noches       Adultos    anticipación           (€)          País       habitación   reserva    Canceló
+                                                                                                                         - Valores faltantes
+  C1              3            2            45               120.5         España        Doble       Web         No
+
+  C2              5            2            90                95           Francia      Familiar    Agencia      No
+                                                                                                                         - Valores imposibles
+  C3              1             1            3                150         Alemania     Individual    Web         Sí
+
+  C4              7            2            120               80.7          Italia       Suite      Agencia      No
+                                                                                                                         Ej: noches o adultos<=0
+  C5              2             1            10               110        Reino Unido     Doble      Teléfono     Sí
+
+  C6              4            2            NA                105          España        Doble       online      No
+
+  C7              0             1           30                98           Francia     Individual    Web         No      - Categorías erróneas
+  C8              6            NA           60                85            Italia      Familiar    Agencia      No      Ej:: Wb, Online…
+  C9              3            2            20                -50          España        Suite       Web         Sí      df["canal"].unique()
+ C10              5            2             75               NA          Alemania       Doble      Agencia      No
+
+ C11              2             1            15               102            NA        Individual    Web         No
+                                                                                                                         - Valores atípicos (outliers)
+ C12              10           2            200               70            Brasil      Familiar     Web         No
+                                                                                                                         boxplots, IQR
+
+          Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                             28
+
+===== PAGINA 29 =====
+
+ Limpieza de datos
+ Valores faltantes/erróneos
+                                            Días          Precio noche                   Tipo        Canal
+Cliente         Noches       Adultos    anticipación           (€)          País       habitación   reserva    Canceló
+                                                                                                                         - Valores faltantes
+  C1              3            2            45               120.5         España        Doble       Web         No
+
+  C2              5            2            90                95           Francia      Familiar    Agencia      No
+                                                                                                                         - Valores imposibles
+  C3              1             1            3                150         Alemania     Individual    Web         Sí
+
+  C4              7            2            120               80.7          Italia       Suite      Agencia      No
+                                                                                                                         Ej: noches o adultos<=0
+  C5              2             1            10               110        Reino Unido     Doble      Teléfono     Sí
+
+  C6              4            2            NA                105          España        Doble       online      No
+
+  C7              0             1           30                98           Francia     Individual    Web         No      - Categorías erróneas
+  C8              6            NA           60                85            Italia      Familiar    Agencia      No      Ej:: Wb, Online…
+  C9              3            2            20                -50          España        Suite       Web         Sí      df["canal"].unique()
+ C10              5            2             75               NA          Alemania       Doble      Agencia      No
+
+ C11              2             1            15               102            NA        Individual    Web         No
+                                                                                                                         - Valores atípicos (outliers)
+ C12              10           2            200               70            Brasil      Familiar     Web         No
+                                                                                                                         boxplots, IQR
+
+          Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                             29
+
+===== PAGINA 30 =====
+
+ Limpieza de datos
+ Valores faltantes/erróneos
+                                            Días          Precio noche                   Tipo        Canal
+Cliente         Noches       Adultos    anticipación           (€)          País       habitación   reserva    Canceló
+                                                                                                                         - Valores faltantes
+  C1              3            2            45               120.5         España        Doble       Web         No
+
+  C2              5            2            90                95           Francia      Familiar    Agencia      No
+                                                                                                                         - Valores imposibles
+  C3              1             1            3                150         Alemania     Individual    Web         Sí
+
+  C4              7            2            120               80.7          Italia       Suite      Agencia      No
+                                                                                                                         Ej: noches o adultos<=0
+  C5              2             1            10               110        Reino Unido     Doble      Teléfono     Sí
+
+  C6              4            2            NA                105          España        Doble       online      No
+
+  C7              0             1           30                98           Francia     Individual    Web         No      - Categorías erróneas
+  C8              6            NA           60                85            Italia      Familiar    Agencia      No      Ej:: Wb, Online…
+  C9              3            2            20                -50          España        Suite       Web         Sí      df["canal"].unique()
+ C10              5            2             75               NA          Alemania       Doble      Agencia      No
+
+ C11              2             1            15               102            NA        Individual    Web         No
+                                                                                                                         - Valores atípicos (outliers)
+ C12              10           2            200               70            Brasil      Familiar     Web         No
+                                                                                                                         boxplots, IQR
+
+          Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                             30
+
+===== PAGINA 31 =====
+
+Limpieza de datos
+Valores faltantes/erróneos
+                                                                                   Días       Precio noche    Tipo de
+                                                  Cliente   Noches   Adultos   anticipación        (€)       habitación
+¿Qué hacer con ellos?                               C1        3        2           45            120.5         Doble
+
+                                                    C2        5        2           90             95          Familiar
+
+
+- Quitar todo el dato: Si tenemos un                C3        1         1           3             150          Suite
+
+
+dataset no muy grande, mejor evitarlo               C4        7         1          120            80.7       Individual
+
+                                                    C5        2        2           10             110         Familiar
+
+                                                    C6        4        2           NA             105          Doble
+
+- Quitar la variable                                C7        0        2           30             98           Doble
+si % de datos faltantes en una
+columna (x) es alto (20%)                           C8        6        1           60             85         Individual
+
+                                                    C9        3        2           20             -50          Suite
+
+                                                   C10        5        2           75             NA         Individual
+
+- Imputar un valor                                 C11        2         1          15             102           NA
+
+                                                   C12        10        1          200            70         Individual
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           31
+
+===== PAGINA 32 =====
+
+Limpieza de datos
+Valores faltantes/erróneos
+                                                                                   Días       Precio noche    Tipo de
+                                                  Cliente   Noches   Adultos   anticipación        (€)       habitación
+¿Qué hacer con ellos?                               C1        3        2           45            120.5         Doble
+
+                                                    C2        5        2           90             95          Familiar
+
+
+- Quitar todo el dato: Si tenemos un                C3        1         1           3             150          Suite
+
+
+dataset no muy grande, mejor evitarlo               C4        7         1          120            80.7       Individual
+
+                                                    C5        2        2           10             110         Familiar
+
+                                                    C6        4        2           NA             105          Doble
+
+- Quitar la variable                                C7        0        2           30             98           Doble
+si % de datos faltantes en una
+columna (x) es alto (20%)                           C8        6        1           60             85         Individual
+
+                                                    C9        3        2           20             -50          Suite
+
+                                                   C10        5        2           75             NA         Individual
+
+- Imputar un valor                                 C11        2         1          15             102           NA
+
+                                                   C12        10        1          200            70         Individual
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           32
+
+===== PAGINA 33 =====
+
+Limpieza de datos
+Valores faltantes/erróneos
+                                                                                   Días       Precio noche    Tipo de
+                                                  Cliente   Noches   Adultos   anticipación        (€)       habitación
+¿Qué hacer con ellos?                               C1        3        2           45            120.5         Doble
+
+                                                    C2        5        2           90             95          Familiar
+
+
+- Quitar todo el dato: Si tenemos un                C3        1         1           3             150          Suite
+
+
+dataset no muy grande, mejor evitarlo               C4        7         1          120            80.7       Individual
+
+                                                    C5        2        2           10             110         Familiar
+
+                                                    C6        4        2           NA             105          Doble
+
+- Quitar la variable                                C7        0        2           30             98           Doble
+si % de datos faltantes en una
+columna (x) es alto (20%)                           C8        6        1           60             85         Individual
+
+                                                    C9        3        2           20             -50          Suite
+
+                                                   C10        5        2           75             NA         Individual
+
+- Imputar un valor                                 C11        2         1          15             102           NA
+
+                                                   C12        10        1          200            70         Individual
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           33
+
+===== PAGINA 34 =====
+
+Limpieza de datos
+Imputación de valores
+                                                                                  Días       Precio noche    Tipo de
+
+Imputación en base a:
+                                                 Cliente   Noches   Adultos   anticipación        (€)       habitación
+
+                                                   C1        3        2           45            120.5         Doble
+
+                                                   C2        5        2           90             95          Familiar
+
+   Estadísticos globales                           C3        1         1           3             150          Suite
+
+                                                   C4        7         1          120            80.7       Individual
+
+   Estadísticos por grupo                          C5        2        2           10             110         Familiar
+
+                                                   C6        4        2           NA             105          Doble
+
+
+   Valor constante                                 C7        0        2           30             98           Doble
+
+                                                   C8        6        NA          60             85         Individual
+
+
+
+   Basado en modelos
+                                                   C9        3        2           20             -50          Suite
+
+                                                  C10        5        2           75             NA         Individual
+
+                                                  C11        2         1          15             102           NA
+
+                                                  C12        10        1          200            70         Individual
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           34
+
+===== PAGINA 35 =====
+
+Limpieza de datos
+Imputación de valores
+                                                                                  Días       Precio noche    Tipo de
+
+Imputación en base a:
+                                                 Cliente   Noches   Adultos   anticipación        (€)       habitación
+
+                                                   C1        3        2           45            120.5         Doble
+
+                                                   C2        5        2           90             95          Familiar
+
+   Estadísticos globales                           C3        1         1           3             150          Suite
+
+           media, mediana, moda…                   C4        7         1          120            80.7       Individual
+
+                                                   C5        2        2           10             110         Familiar
+
+   Estadísticos por grupo                          C6        4        2          60.7            105          Doble
+
+                                                   C7        0        2           30             98           Doble
+
+
+   Valor constante                                 C8        6        1           60             85         Individual
+
+                                                   C9        3        2           20            96.6          Suite
+
+                                                  C10        5        2           75            96.6        Individual
+   Basado en modelos
+                                                  C11        2         1          15             102        Individual
+
+                                                  C12        10        1          200            70         Individual
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           35
+
+===== PAGINA 36 =====
+
+Limpieza de datos
+Imputación de valores
+                                                                                  Días       Precio noche    Tipo de
+
+Imputación en base a:
+                                                 Cliente   Noches   Adultos   anticipación        (€)       habitación
+
+                                                   C1        3        2           45            120.5         Doble
+
+                                                   C2        5        2           90             95          Familiar
+
+   Estadísticos globales                           C3        1         1           3             150          Suite
+
+                                                   C4        7         1          120            80.7       Individual
+
+   Estadísticos por grupo                          C5        2        2           10             110         Familiar
+
+   Ej: precio medio del grupo tipo de              C6        4        2           30             105          Doble
+   habitación.
+                                                   C7        0        2           30             98           Doble
+   Mejor que el estadístico global, pero debe
+   haber relación entre dos                        C8        6        1           60             85         Individual
+
+   variables/categorías                            C9        3        2           20             150          Suite
+
+                                                  C10        5        2           75            78.3        Individual
+
+                                                  C11        2         1          15             102         Doble
+
+                                                  C12        10        1          200            70         Individual
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           36
+
+===== PAGINA 37 =====
+
+Limpieza de datos
+Imputación de valores
+                                                                                  Días       Precio noche    Tipo de
+
+Imputación en base a:
+                                                 Cliente   Noches   Adultos   anticipación        (€)       habitación
+
+                                                   C1        3        2           45            120.5         Doble
+
+                                                   C2        5        2           90             95          Familiar
+
+   Estadísticos globales                           C3        1         1           3             150          Suite
+
+                                                   C4        7         1          120            80.7       Individual
+
+   Estadísticos por grupo                          C5        2        2           10             110         Familiar
+
+                                                   C6        4        2            0             105          Doble
+
+
+   Valor constante                                 C7        0        2           30             98           Doble
+
+
+   Útil cuando el hecho de que falte es            C8        6        0           60             85         Individual
+
+   relevante para el modelo                        C9        3        2           20              0           Suite
+
+                                                  C10        5        2           75              0         Individual
+
+                                                  C11        2         1          15             102            0
+
+                                                  C12        10        1          200            70         Individual
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           37
+
+===== PAGINA 38 =====
+
+Limpieza de datos
+Imputación de valores
+                                                                                  Días       Precio noche    Tipo de
+
+Imputación en base a:
+                                                 Cliente   Noches   Adultos   anticipación        (€)       habitación
+
+                                                   C1        3        2           45            120.5         Doble
+
+                                                   C2        5        2           90             95          Familiar
+
+   Estadísticos globales                           C3        1         1           3             150          Suite
+
+                                                   C4        7         1          120            80.7       Individual
+
+   Estadísticos por grupo                          C5        2        2           10             110         Familiar
+
+                                                   C6        4        2           55             105          Doble
+
+
+   Valor constante                                 C7        0        2           30             98           Doble
+
+                                                   C8        6        1           60             85         Individual
+
+
+
+   Basado en modelos
+                                                   C9        3        2           20             136          Suite
+
+                                                  C10        5        2           75             81         Individual
+   busca modelar el valor más probable en los
+   valores de todo el dataset. ej: KNN            C11        2         1          15             102         Doble
+
+   costoso computacionalmente, pero el            C12        10        1          200            70         Individual
+   método más preciso. Posible data leakage!
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           38
+
+===== PAGINA 39 =====
+
+Limpieza de datos
+Outliers - Impacto
+Pueden afectar gravemente al modelo:
+
+
+- Distorsionan estadísticas (media, desviación estándar…)
+
+- Sesgan el entrenamiento: algunos modelos intentan ajustarse a esos valores
+extremos.
+
+- Algunos algoritmos son especialmente sensibles
+
+
+*No tienen por que ser erróneos, pero sí pueden ser ejemplos no representativos en
+el dataset y por tanto poco útiles para el modelo y quizás confusos
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                      39
+
+===== PAGINA 40 =====
+
+Limpieza de datos
+Outliers - Detección
+Métodos visuales (Generalmente necesitan de un estadístico para justiﬁcar la
+eliminación del outlier en un paper o un trabajo importante)
+
+
+
+
+       Boxplot                                    Histogramas   Scatter plot
+       hace estadística basada en
+       IQR para marcar outlier
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                40
+
+===== PAGINA 41 =====
+
+Limpieza de datos
+Outliers - Detección
+Métodos estadísticos
+
+
+- Basado en IQR:
+Es outlier si:                                    *IQR = diferencia entre
+                                                  percentil 75 y 25
+
+
+
+
+- Basado en Z-score:
+                                                   x = valor observado
+Es outlier si:             ∣z∣>3                   μ = media
+                                                   σ = desviación estándar
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                              41
+
+===== PAGINA 42 =====
+
+Limpieza de datos
+Outliers - qué hacer con ellos
+- Eliminar el dato: si no son errores sino que representan un dato raro
+    ej: un atleta olímpico en un dataset de app para salud
+
+
+- Algunas transformaciones estadísticas pueden reducir su efecto
+
+
+- Utilizar modelos más robustos a outliers, que se vean menos afectados
+
+
+*Si son outliers y se detectan de forma robusta, lo más seguro es eliminar el dato
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                      42
+
+===== PAGINA 43 =====
+
+ Limpieza de datos
+ Checklist
+Paso                        Qué revisar                           Qué hacer                                                Relación con el ejemplo (hotel)
+
+Tipos de variables          Veriﬁcar que cada columna tenga el    Convertir tipos si es necesario (numérico, categórico,   precio debe ser numérico, país categórico
+                            tipo correcto                         etc.)
+
+Duplicados                  Detectar registros repetidos          Eliminar duplicados                                      misma reserva registrada dos veces
+
+
+Valores faltantes           Detectar columnas con valores NA      Imputar valores o eliminar registros                     precio, país, adultos pueden tener NA
+
+
+Rangos válidos              Detectar valores imposibles           Corregir o eliminar registros erróneos                   precio < 0, noches = 0
+
+Outliers                    Detectar valores extremos             eliminar, corregir o transformar                         reserva con 200 días de anticipación
+
+
+Porcentaje de missing       Evaluar gravedad del problema         Si el porcentaje es alto, considerar eliminar la         Si precio falta en muchas ﬁlas
+                                                                  variable.
+
+Categorías existentes       Veriﬁcar categorías válidas           Uniﬁcar o limpiar etiquetas                              "web" vs "Web"
+
+
+Frecuencias                 Analizar distribución de categorías   Detectar clases muy raras o errores                      ver cuántas reservas vienen de cada canal
+categóricas
+
+
+
+
+       Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                   43
+
+===== PAGINA 44 =====
+
+ Limpieza de datos
+ Checklist
+Paso                        Qué revisar                           Qué hacer                                                Relación con el ejemplo (hotel)
+
+Tipos de variables          Veriﬁcar que cada columna tenga el    Convertir tipos si es necesario (numérico, categórico,   precio debe ser numérico, país categórico
+                            tipo correcto                         etc.)
+                                Antes de imputar o eliminar aquí, mirar si la
+Duplicados                  Detectar registros repetidos
+                                                     Eliminar duplicados                                                   misma reserva registrada dos veces
+                                variable tiene alto porcentaje       de missing
+Valores faltantes           Detectar columnas con valores NA      Imputar valores o eliminar registros                     precio, país, adultos pueden tener NA
+
+
+Rangos válidos              Detectar valores imposibles           Corregir o eliminar registros erróneos                   precio < 0, noches = 0
+
+Outliers                    Detectar valores extremos             eliminar, corregir o transformar                         reserva con 200 días de anticipación
+
+
+Porcentaje de missing       Evaluar gravedad del problema         Si el porcentaje es alto, considerar eliminar la         Si precio falta en muchas ﬁlas
+                                                                  variable.
+
+Categorías existentes       Veriﬁcar categorías válidas           Uniﬁcar o limpiar etiquetas                              "web" vs "Web"
+
+
+Frecuencias                 Analizar distribución de categorías   Detectar clases muy raras o errores                      ver cuántas reservas vienen de cada canal
+categóricas
+
+
+
+
+       Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                                   44
+
+===== PAGINA 45 =====
+
+Primer ejemplo de aprendizaje supervisado:
+Regresión
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 46 =====
+
+Aprendizaje supervisado
+Resumen
+En el aprendizaje supervisado el modelo aprende una relación entre variables de
+entrada (features) y una variable objetivo conocida (target).
+
+
+Si la variable objetivo es
+
+
+    discreta/categórica - Clasiﬁcación!
+
+
+    continua - Regresión
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                   46
+
+===== PAGINA 47 =====
+
+Regresión
+
+En un problema de regresión el objetivo es predecir una variable numérica continua.
+
+
+Una cadena hotelera quiere mejorar su sistema de precios. Nos contacta para
+construir un modelo que estime el precio total de una reserva en función del número
+de noches -> output continua -> regresión
+
+
+
+
+                      x2
+
+
+
+
+                                           x1
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                       47
+
+===== PAGINA 48 =====
+
+Regresión
+Idea básica
+Un modelo de regresión intenta aprender una función que relacione las
+variables de entrada con la variable objetivo.
+
+
+
+
+                                                 y = f(x)
+     y
+
+                                                 precio=f(noches)
+
+
+                          x
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                          48
+
+===== PAGINA 49 =====
+
+Regresión
+Regresión lineal
+
+La regresión lineal asume que la relación entre las variables puede
+aproximarse mediante una combinación lineal de las features.
+Modelo (regresión lineal)
+
+
+
+donde:
+
+y: valor que queremos predecir (precio)
+                                                      y
+x: variable de entrada (noches)
+
+β0: intercepto
+
+β1: pendiente (cuánto sube el precio cuando
+suben las noches)                                              x
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                      49
+
+===== PAGINA 50 =====
+
+Regresión
+Regresión lineal - Ajuste del modelo
+Durante el entrenamiento el modelo ajusta sus parámetros (β0,β1) para minimizar el
+error entre las predicciones y los valores reales.
+                                                                                         Predicción
+Modelo (regresión lineal)                          Ajuste del modelo
+
+                                                   Error generalmente a través del MSE
+
+donde:
+
+y: valor que queremos predecir (precio)
+                                                                          residuos       y
+x: variable de entrada (noches)
+
+β0: intercepto
+
+β1: pendiente (cuánto sube el precio cuando
+suben las noches)                                                                                     x
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                          50
+
+===== PAGINA 51 =====
+
+Regresión
+Regresión lineal - Predicción
+Durante el entrenamiento el modelo ajusta sus parámetros (β0,β1) para minimizar el
+error entre las predicciones y los valores reales.
+                                                                                         Predicción
+Modelo (regresión lineal)                          Ajuste del modelo
+
+                                                   Error generalmente a través del MSE
+
+donde:
+                                                                                         y1
+y: valor que queremos predecir (precio)
+                                                                          residuos       y
+x: variable de entrada (noches)
+
+β0: intercepto
+                                                                                                          x1
+β1: pendiente (cuánto sube el precio cuando
+suben las noches)                                                                                     x
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                               51
+
+===== PAGINA 52 =====
+
+Regresión
+Regresión polinómica
+En algunos casos (muchos) la relación entre variables no es lineal y puede
+aproximarse utilizando transformaciones como términos polinómicos.
+
+La regresión polinómica extiende la regresión lineal añadiendo términos de mayor
+grado para capturar relaciones más complejas.
+
+Aumentar el grado del polinomio incrementa la complejidad del modelo y su
+capacidad para ajustarse a los datos.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                    52
+
+===== PAGINA 53 =====
+
+Regresión
+Underﬁtting y overﬁtting
+Un modelo demasiado simple puede no capturar la relación real (underﬁtting) mientras
+que uno demasiado complejo puede ajustarse demasiado a los datos de entrenamiento
+(overﬁtting).
+
+
+
+
+  x2                                              x2                       x2
+
+
+
+
+                      x1                                     x1                             x1
+                 w1 x + b                              w1 x + w2 x 2 + b        w1 x + w2 x + w3 x 3+ w4 x4… + b
+                                                                                          2
+
+
+
+
+ underﬁtting / alto sesgo                              buen ajuste              overﬁtting / alta varianza
+                        high bias
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                    53
+
+===== PAGINA 54 =====
+
+Regresión
+Underﬁtting y overﬁtting
+Un modelo demasiado simple puede no capturar la relación real (underﬁtting) mientras
+que uno demasiado complejo puede ajustarse demasiado a los datos de entrenamiento
+(overﬁtting).
+
+
+
+
+  x2                                              x2                       x2
+
+
+
+
+                      x1                                     x1                             x1
+                 w1 x + b                              w1 x + w2 x 2 + b        w1 x + w2 x + w3 x 3+ w4 x4… + b
+                                                                                          2
+
+
+
+
+ underﬁtting / alto sesgo                              buen ajuste              overﬁtting / alta varianza
+                        high bias                                                                 high variance
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                    54
+
+===== PAGINA 55 =====
+
+Regresión
+Underﬁtting y overﬁtting
+Un modelo demasiado simple puede no capturar la relación real (underﬁtting) mientras
+que uno demasiado complejo puede ajustarse demasiado a los datos de entrenamiento
+(overﬁtting).
+
+
+
+
+  x2                                              x2                       x2
+
+
+
+
+                      x1                                     x1                             x1
+                 w1 x + b                              w1 x + w2 x 2 + b        w1 x + w2 x + w3 x 3+ w4 x4… + b
+                                                                                          2
+
+
+
+
+ underﬁtting / alto sesgo                              buen ajuste              overﬁtting / alta varianza
+                        high bias                                                                 high variance
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                    55
+
+===== PAGINA 56 =====
+
+Regresión
+Underﬁtting y overﬁtting
+Ejemplo en clasiﬁcación
+
+
+
+
+  x2                                              x2                 x2
+
+
+
+
+                      x1                                   x                      x
+                                                                                             4
+                                                                                         4
+
+
+
+ underﬁtting / alto sesgo                              buen ajuste        overﬁtting / alta varianza
+                        high bias                                                     high variance
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                       56
+
+===== PAGINA 57 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         57
+
+===== PAGINA 58 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         58
+
+===== PAGINA 59 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         59
+
+===== PAGINA 60 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         60
+
+===== PAGINA 61 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         61
+
+===== PAGINA 62 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         62
+
+===== PAGINA 63 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         63
+
+===== PAGINA 64 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)                                 Clase siguiente
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits   Hoy
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                      64
+
+===== PAGINA 65 =====
+
+¿Dudas?
+
+
+
+
+x2                                           x2                          x2
+
+
+
+
+                     x1                                    x1                             x1
+                w1 x + b                             w1 x + w2 x 2 + b        w1 x + w2 x + w3 x 3+ w4 x4… + b
+                                                                                        2
+
+
+
+
+underﬁtting / alto sesgo                             buen ajuste              overﬁtting / alta varianza
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                               65
+
+===== PAGINA 66 =====
+
+Data Splits y Learning Theory
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 67 =====
+
+Data Splits
+
+Overﬁtting es que nuestro modelo no generalice bien a nuevos datos
+
+
+¿Cómo podemos saber si generaliza bien o no?
+
+
+
+
+                               Entrenamiento (Train)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                      67
+
+===== PAGINA 68 =====
+
+Data Splits
+
+Overﬁtting es que nuestro modelo no generalice bien a nuevos datos
+
+
+¿Cómo podemos saber si generaliza bien o no? -> teniendo datos nuevos -> separar
+una parte de los datos para evaluar el modelo
+
+
+Entrenamos el algoritmo en una parte de los datos y dejamos el resto sin usar para
+evaluar cómo funciona el modelo en datos nuevos.
+
+
+                               Entrenamiento (Train)        Evaluación (Test)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                      68
+
+===== PAGINA 69 =====
+
+Train vs Test
+¿Cómo separarlos?
+
+• El conjunto de train debe:
+     • Ser lo suﬁcientemente grande para poder entrenar el modelo
+     • Representar el problema
+
+
+
+• El conjunto de test debe:
+     • Ser totalmente independiente
+     • Debe representar los datos reales en los que el modelo se usará (que deberían ser como los de
+       train)
+     • No hace falta que sea tan grande como el train, pero debe tener suﬁcientes datos para representar
+       la muestra
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                       69
+
+===== PAGINA 70 =====
+
+Train vs Test
+Error de predicción esperado
+Elegimos el menor error en Test -> evitamos overﬁtting al train set
+
+
+Sin embargo, el error en predicción en test del modelo elegido en test es optimista, ya
+que ha sido elegido por funcionar mejor en esos datos
+    Si modela mejor el ruido del test, no por eso funcionará mejor en datos nuevos
+
+
+Necesitamos otra partición en los datos para elegir modelo en unos datos nuevos y
+hacer una estimación del error en otros nuevos! -> Validation set (o Dev set)
+ - wait what?!
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                           70
+
+===== PAGINA 71 =====
+
+Learning Theory
+Introducción
+Queremos modelar la relación entre unas variables y un fenómeno concreto
+
+
+
+                                                  Al entrenar el modelo
+
+
+
+
+             variables reales que explican y
+             función real que relaciona x e y
+             ruido del dataset / todo lo demás
+             todo lo que no se puede modelar
+                                                                   El modelo aprende a minimizar el error E(h), pero también el
+                                                                   error en el ruido!
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                   71
+
+===== PAGINA 72 =====
+
+Learning Theory
+Tipos/fuentes de ruido
+Tres tipos/fuentes de ruido:
+1. Aleatoriedad del mundo real: errores de medición, eventos aleatorios… irreducible!
+
+
+1. Ruido de muestreo: al trabajar con subconjuntos de los datos, estos tienen pequeños
+    sesgos, varianzas, ruido producido al muestrear (sería 0 para inﬁnitos datos)
+
+
+
+1. Información relevante no incluida (variables): si el modelo no tiene toda la
+    información necesaria para modelar la relación entre x e y, verá parte de los cambios de y
+    como ruido ya que nunca podrá explicarlos
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                  72
+
+===== PAGINA 73 =====
+
+Learning Theory
+Tipos/fuentes de ruido
+Tres tipos/fuentes de ruido:
+1. Aleatoriedad del mundo real: errores de medición, eventos aleatorios… irreducible!
+
+
+1.     Ruido de muestreo: al trabajar con subconjuntos de los datos, estos tienen pequeños
+       sesgos, varianzas, ruido producido al muestrear (sería 0 para inﬁnitos datos)
+
+
+
+1. Información relevante no incluida (variables): si el modelo no tiene toda la
+       información necesaria para modelar la relación entre x e y, verá parte de los cambios de y
+       como ruido ya que nunca podrá explicarlos
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                  73
+
+===== PAGINA 74 =====
+
+Learning Theory
+Tipos/fuentes de ruido
+Tres tipos/fuentes de ruido:
+1. Aleatoriedad del mundo real: errores de medición, eventos aleatorios… irreducible!
+
+
+1. Ruido de muestreo: al trabajar con subconjuntos de los datos, estos tienen pequeños
+    sesgos, varianzas, ruido producido al muestrear (sería 0 para inﬁnitos datos)
+
+
+
+1. Información relevante no incluida (variables): si el modelo no tiene toda la
+    información necesaria para modelar la relación entre x e y, verá parte de los cambios de y
+    como ruido ya que nunca podrá explicarlos
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                  74
+
+===== PAGINA 75 =====
+
+Learning Theory
+Ejemplo de falta de información como ruido
+Queremos hacer un modelo para predecir
+y: Índice de masa corporal (IMC) en función a
+x: (marca de celular, dinosaurio favorito)
+¿qué ocurrirá?                                              1. Al minimizar el error en train, la
+                                                            única forma será minimizar el
+desde el punto de vista del modelo:                         error en epsilon, el modelo
+                                                            intentará explicar la varianza de y
+                                                            como ruido, sin usar las x…
+
+                                                            2. Pero cuando lleguen datos nuevos
+                                                            los patrones del ruido cambiarán, y
+   f(x) no tiene relación con y, será una constante casi…   el error volverá a ser alto…
+   imposible de minimizar
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     75
+
+===== PAGINA 76 =====
+
+Learning Theory y Overﬁtting
+
+Si entrenamos en unos datos y evaluamos en otros:
+si conseguimos que:
+
+
+
+
+generalization gap:
+                                                         El modelo ha reducido Etrain(h) principalmente reduciendo
+ *Si el modelo aprende ruido del train → el gap crece.   E(h), no aprovechando el ruido ϵ. Por eso generaliza bien.
+
+
+                                                         ya que el error en test y en train se deben a los epsilon y a lo
+                                                         que no hayan podido reducir de E(h)
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                     76
+
+===== PAGINA 77 =====
+
+Learning Theory y Overﬁtting
+
+Si entrenamos en unos datos y evaluamos en otros:
+si obtenemos que:
+
+
+
+
+generalization gap:
+                                                  El modelo ha reducido Etrain(h) principalmente reduciendo
+ *Si el modelo aprende/modela ruido del train     E(h), no aprovechando el ruido ϵ. Por eso generaliza bien.
+      → el gap crece.
+
+ *Si el gap es cero, el modelo generaliza bien    ya que el error en test y en train se deben a los epsilon y a lo
+                                                  que no hayan podido reducir de E(h)
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              77
+
+===== PAGINA 78 =====
+
+Train vs Dev
+Pipeline
+Por eso, para elegir el modelo de controlando el overﬁtting necesitamos dos
+conjuntos de datos separados.
+
+
+                                                                  Error Datos1   Error Datos2
+¿Qué modelo elegimos?
+                                                       Modelo 1      7.2 %          7.0 %
+
+                                                       Modelo 2      6.1 %          7.3 %
+
+                                                       Modelo 3      4.4 %          8.8 %
+
+                                                       Modelo 4      6.5 %          7.4 %
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         78
+
+===== PAGINA 79 =====
+
+Train vs Dev
+Pipeline
+Por eso, para elegir el modelo de controlando el overﬁtting necesitamos dos
+conjuntos de datos separados.
+
+
+                                                                  Error Datos1   Error Datos2
+¿Qué modelo elegimos?
+                                                       Modelo 1      7.2 %          7.0 %
+
+                                                       Modelo 2      6.1 %          7.3 %
+
+                                                       Modelo 3      4.4 %          8.8 %
+
+                                                       Modelo 4      6.5 %          7.4 %
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         79
+
+===== PAGINA 80 =====
+
+Train vs Dev
+Pipeline
+Por eso, para elegir el modelo de controlando el overﬁtting necesitamos dos
+conjuntos de datos separados.
+
+
+                                                                                  Error Datos1   Error Datos2
+¿Qué modelo elegimos?
+                                                                       Modelo 1      7.2 %          7.0 %
+¿Cómo funciona ese modelo en datos nuevos?
+                                                                       Modelo 2      6.1 %          7.3 %
+
+                 Entrenamiento (Train)            Model selec. (Dev)
+                                                                       Modelo 3      4.4 %          8.8 %
+
+                                                                       Modelo 4      6.5 %          7.4 %
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                         80
+
+===== PAGINA 81 =====
+
+Train vs Dev
+Pipeline
+Por eso, para elegir el modelo de controlando el overﬁtting necesitamos dos
+conjuntos de datos separados.
+
+
+                                                                                  Error Datos1   Error Datos2
+¿Qué modelo elegimos?
+                                                                       Modelo 1       7.2 %         7.0 %
+¿Cómo funciona ese modelo en datos nuevos?
+                                                                       Modelo 2       6.1 %         7.3 %
+
+                 Entrenamiento (Train)            Model selec. (Dev)       Hemos elegido
+                                                                       Modelo 3     4.4 %el modelo 8.8
+                                                                                                   que % mejor
+                                                                           iba en Datos2, por lo que ese
+                                                                       Modelo 4
+                                                                           estimador  6.5 %
+                                                                                      estaría        7.4 %
+                                                                                               optimistamente
+                                                                           sesgado! Datos2 ya no son “datos
+                                                                           nuevos” para eso
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                         81
+
+===== PAGINA 82 =====
+
+Train vs Dev vs Test
+Pipeline
+Por eso, para elegir el modelo de controlando el overﬁtting y poder además
+estimar de forma insesgada como va a funcionar ese modelo en datos
+nuevos…
+
+
+
+
+                 Entrenamiento (Train)            Model selec. (Dev)   Evaluación (Test)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                            82
+
+===== PAGINA 83 =====
+
+Train vs Dev vs Test
+¿Cómo separarlos?
+
+
+
+
+Generalmente, 60-20-20 es una buena                En datasets muy grandes (DL), de           Si el dataset es muy pequeño (100
+regla (en datasets pequeños-medianos               millones de ejemplos, se suele reducir a   datos) … 20 ejemplos para elegir el
+approx 200-500 datos)                              90-5-5 o incluso 98-1-1.                   modelo (dev) y para estimar perf (test)
+                                                   *Depende de la resolución que              puede ser insuﬁciente. (a veces incluso
+                                                   necesitemos en la performance de dev y     los 60 para train también).
+                                                   test, si necesitamos 0.05% de
+                                                   resolución, dev y test necesitarán un
+                                                   poco más de datos, 90-5-5 por ejemplo.
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        83
+
+===== PAGINA 84 =====
+
+Train vs Dev vs Test
+¿Cómo separarlos?
+
+
+
+
+Generalmente, 60-20-20 es una buena                En datasets muy grandes (DL), de           Si el dataset es muy pequeño (100
+regla (en datasets pequeños-medianos               millones de ejemplos, se suele reducir a   datos) … 20 ejemplos para elegir el
+approx 200-500 datos)                              90-5-5 o incluso 98-1-1.                   modelo (dev) y para estimar perf (test)
+                                                   *Depende de la resolución que              puede ser insuﬁciente. (a veces incluso
+                                                   necesitemos en la performance de dev y     los 60 para train también).
+En esta materia nos vamos a mover                  test, si necesitamos 0.05% de
+en este rango                                      resolución, dev y test necesitarán un
+                                                   poco más de datos, 90-5-5 por ejemplo.
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        84
+
+===== PAGINA 85 =====
+
+Train vs Dev vs Test
+Cross Validation
+Recomendable para datasets pequeños (por ejemplo salud)
+
+Computacionalmente más costoso, pero con datasets pequeños eso no debería ser un problema
+muy grande, y nos permite utilizar los datos de manera más eﬁciente
+
+k = 5 o 10 son las más usadas y son suﬁcientes
+
+                  Entrenamiento (Train)           Model selec. (Dev)   Evaluación (Test)
+                                                                7.8
+
+
+                                                                7.6
+
+
+                                                                8.2
+
+
+                                                                6.9
+
+
+                                                                7.5
+
+
+                                                                8.0
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                             85
+
+===== PAGINA 86 =====
+
+Train vs Dev vs Test
+Cross Validation
+Recomendable para datasets pequeños (por ejemplo salud)
+
+Computacionalmente más costoso, pero con datasets pequeños eso no debería ser un problema
+muy grande, y nos permite utilizar los datos de manera más eﬁciente
+
+k = 5 o 10 son las más usadas y son suﬁcientes
+
+                  Entrenamiento (Train)           Model selec. (Dev)   Evaluación (Test)
+                                                                7.8
+
+
+                                                                7.6
+
+
+                                                                8.2
+
+
+                                                                6.9
+
+
+                                                                7.5
+
+
+                                                                8.0
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                             86
+
+===== PAGINA 87 =====
+
+Train vs Dev vs Test
+Cross Validation (leave-one-out)
+
+Útil para datasets muy pequeños (menos de 80 ejemplos)
+¡Aún más costoso computacionalmente que el anterior!
+
+
+
+                 Entrenamiento (Train)               Model selec. (Dev)   Evaluación (Test)
+                                                                   7.8
+
+
+                                                                   7.6
+
+
+                                                                   8.2
+
+
+                                                 …                 …
+
+
+                                                                   7.5
+
+
+                                                                   8.0
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                87
+
+===== PAGINA 88 =====
+
+Train vs Dev vs Test
+Ejemplo
+ya tengo mi modelo elegido, ¿y ahora? ¿qué modelo entrego/implemento/publico?
+…
+
+
+
+
+Se elige y ese modelo se entrena con TODO el train+dev y ese modelo se
+entrega/implementa y se evalúa en test
+
+
+
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                               88
+
+===== PAGINA 89 =====
+
+Test set
+Sólamente se utiliza para estimar el error de predicción en datos nuevos, nunca para tomar decisiones.
+
+
+Lo más seguro es usarlo solo al ﬁnal del proyecto para reportar resultados a jefe/a, publicarlo en un paper etc.
+
+
+                              -----------------------------------------------------------------------------------------------
+
+
+Excepciones (avanzado):
+*si sólo necesitamos elegir el mejor modelo pero no necesitamos saber cómo de bien va a funcionar, podríamos hacer solo train-dev, y
+así usar todos los datos.
+     **Pero sabiendo que el error en dev del modelo ganador va a estar optimistamente sesgado!!**
+
+
+*se puede usar durante el proyecto si únicamente se reporta el valor a otra persona/jefe/parte del proyecto. Pero en ese caso, ser
+extra cuidadosos con no elegir un modelo por el resultado de test, o no dejar de probar modelos cuando el test sea
+suﬁcientemente bueno…
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                     89
+
+===== PAGINA 90 =====
+
+Overﬁtting
+Cómo evitarlo
+Si añadimos suﬁcientes feats (x), eventualmente seremos
+capaces de reducir el error al máximo ya que cada w se
+podría “usar” para modelar cada datapoint.
+
+¿Cómo podemos reducir el overﬁtting?
+                                                                ¿Cuantos datos?
+
+- Aumentar la cantidad de datos de entrenamiento          Caro y muchas veces imposible
+
+                                                          -> Regularización
+- Reducir la cantidad de características (x)                                 Clase siguiente
+                                                          -> Selección de características
+
+- Evaluar el modelo en datos nuevos -> medirá su          Data Splits   Visto!
+capacidad de generalización
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                      90
+
+===== PAGINA 91 =====
+
+ ¿Cuantos datos?
+ Algunas guías prácticas
+Regla práctica: La “regla del 10×” -> 10 veces más ejemplos que parámetros (degrees of
+freedom).
+● Ejemplo: 10 variables/features → se necesitan ~100 ejemplos.
+● Funciona como aproximación para modelos pequeños.
+● Limitación: en modelos grandes (deep learning) no basta con contar ﬁlas; también
+  importa el tamaño y complejidad de cada input.
+
+
+Para Deep learning, Goodfellow, Bengio et al., en su libro recomiendan 5000 ejemplos por
+clase en un DL supervisado
+
+
+Para visión por computador 1000 imágenes por clase puede ser un buen punto de partida
+
+
+Importante, buscar ejemplos similares de proyectos para ver cuántos datos usaron!
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                           91
+
+===== PAGINA 92 =====
+
+¿Serían útiles más datos?
+Curvas de aprendizaje
+
+Empezar con una cantidad razonable de datos, y evaluar el learning
+
+
+• Curvas de aprendizaje: evaluar performance para
+distintas cantidades de datos (ej: 50%,60%..100% de los
+datos que tenemos) y ver si añadir datos aumentaría el
+resultado
+
+
+
+
+¿Cual de esas sugiere que grabar datos sería útil?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                      92
+
+===== PAGINA 93 =====
+
+Train vs Dev vs Test
+Recap y ejemplo
+                                                  ¿Donde realizarían la separación train-test?
+Recolección de datos
+Limpieza de datos - quitar outliers, duplicados, imputar …
+Convertir a tipos de variables que sepamos usar (numéricas)
+Evaluar features y elegir las mejores (o todas)
+Elegir modelos que se van a evaluar
+Entrenar modelos
+Elegir el mejor modelo
+
+
+Implementar el mejor modelo y estimar su error estimado en datos nuevos
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                  93
+
+===== PAGINA 94 =====
+
+Train vs Dev vs Test
+Recap y ejemplo
+                                                  ¿Donde realizarían la separación train-test?
+Recolección de datos
+Limpieza de datos - quitar outliers, duplicados, imputar …
+Convertir a tipos de variables que sepamos usar (numéricas)
+Evaluar features y elegir las mejores (o todas)                      ¿Separar Test aquí?
+                                                                     Cuidado con el data leakage! Si
+Elegir modelos que se van a evaluar                                  quitamos outliers e imputamos valores
+Entrenar modelos                                                     usando TODO el dataset, información
+                                                                     que luego irá al test, estará siendo
+Elegir el mejor modelo                                               usada para train!
+
+
+
+
+Implementar el mejor modelo y estimar su error estimado en datos nuevos
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                    94
+
+===== PAGINA 95 =====
+
+Train vs Dev vs Test
+Recap y ejemplo
+Recolección de datos
+Limpieza de datos - quitar outliers, duplicados, imputar …                   Separar Test aquí
+                                                                             idealmente automatizar toda la limpieza,
+Convertir a tipos de variables que sepamos usar (numéricas)                  imputación… etc y conversión de tipos para
+                                                                             que en los datos de test se aplique el mismo
+Evaluar features y elegir las mejores (o todas)                              procesamiento (y también en dev!)
+Elegir modelos que se van a evaluar
+Entrenar modelos
+Elegir el mejor modelo                            ¿Donde se separa el dev?
+
+
+
+
+Implementar el mejor modelo y estimar su error estimado en datos nuevos
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  95
+
+===== PAGINA 96 =====
+
+Train vs Dev vs Test
+Recap y ejemplo
+Recolección de datos
+Limpieza de datos - quitar outliers, duplicados, imputar …           Separar Test aquí
+                                                                     idealmente automatizar toda la limpieza,
+Convertir a tipos de variables que sepamos usar (numéricas)          imputación… etc y conversión de tipos para
+                                                                     que en los datos de test se aplique el mismo
+Evaluar features y elegir las mejores (o todas)                      procesamiento (y también en dev!)
+Elegir modelos que se van a evaluar
+Entrenar modelos                                                     Separar Dev aquí
+                                                                     idealmente deberíamos separar el Dev a la
+Elegir el mejor modelo                                               vez que el test, pero en la práctica a veces se
+                                                                     separa justo antes de entrenar por
+                                                                     simplicidad
+                          Mirando error en Dev
+Implementar el mejor modelo y estimar su error estimado en datos nuevos
+                                                  Calculando error en Test
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           96
+
+===== PAGINA 97 =====
+
+¿dudas?
+
+
+
+
+                 Entrenamiento (Train)           Model selec. (Dev)   Evaluación (Test)
+                                                               7.8
+
+
+                                                               7.6
+
+
+                                                               8.2
+
+
+                                                               6.9
+
+
+                                                               7.5
+
+
+                                                               8.0
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                            97
+

@@ -1,0 +1,2322 @@
+FUENTE: T03
+TITULO: EDA, feature selection, regularización y métricas
+ORIGINAL: material/catedra/teoria/Clase 3. EDA, Feature selection, Regularización y Métricas.pdf
+PAGINAS: 102
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Alexa Sessarego Aurich
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+                                                    … en la sesión anterior
+
+Plan de la sesión de hoy                            -     Tipos de variables y qué hacer con ellos
+
+-   Problema-Datos-Features                         -     Limpieza de datos
+-   EDA                                             -     Primer ejemplo de supervisado: Regresión
+-   Feature selection                               -     Data Splits
+-   Regularización
+-   Métricas
+
+===== PAGINA 2 =====
+
+Referencias
+References
+
+Géron, A. Hands-On Machine Learning with Scikit-Learn, Keras & TensorFlow. O’Reilly, 2019.
+
+Zinkevich, M. Rules of Huyen, C. Designing Machine Learning Systems. O’Reilly, 2022.
+
+
+
+Machine Learning: Best Practices for ML Engineering. Google Developers.
+
+Google Cloud. MLOps: Continuous delivery and automation pipelines in machine learning.
+
+Sculley, D. et al. Hidden Technical Debt in Machine Learning Systems. NeurIPS, 2015.
+
+scikit-learn. Model evaluation: quantifying the quality of predictions.
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                             2
+
+===== PAGINA 3 =====
+
+ Terminología
+ Terminology
+
+Classiﬁer / Model: El componente que aprende la regla de decisión y produce la predicción. / The component that learns
+the decision rule and produces the prediction.     Ej.: Decision Tree, SVM, Logistic Regression, Random Forest.
+
+ML Pipeline: El sistema completo desde las features de entrada hasta la predicción. / The complete system from input
+features to prediction.
+
+                                   X→preprocessing→feature selection→classiﬁer→y
+
+Parameters: Valores aprendidos durante el entrenamiento. / Values learned during training.
+
+Hyperparameters: Decisiones que conﬁguran el aprendizaje o el pipeline. / Choices that conﬁgure the learning process or
+the pipeline.     Ej.: max_depth, C, k en feature selection.
+
+Feature set: Conjunto de variables que decidimos usar. / The set of features we decide to use.
+
+
+
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                                                                      3
+
+===== PAGINA 4 =====
+
+ ¿Qué estamos estimando en realidad?
+ What are we actually estimating?
+
+                           Performance_validation = Performance_real + validation noise
+
+
+Ese ruido proviene de varias fuentes, la principal es que los datos de validación son un subconjunto ﬁnito de los datos (también
+las características son sólo una parte de toda la información disponible para resolver el problema)
+That noise comes from several factors: the main one being our dataset is a subset of the data (also our features are only a part
+of the information available to model our problem)
+
+                                                                                                      M1     M2      M3     M4     M5
+
+ Model selection (Development/Validation set)                                                         0.66   0.72    0.72   0.75   0.76
+
+
+   M1     M2       M3      M4       M5
+                                                 En otro dataset de validación podríamos obtener...                 o…
+   0.67   0.72     0.69    0.77     0.74
+                                                                                                      M1     M2      M3     M4     M5
+
+                                                                                                      0.65   0.70    0.76   0.74   0.73
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        4
+
+===== PAGINA 5 =====
+
+ ¿Qué estamos estimando en realidad?
+ What are we actually estimating?
+
+                           Performance_validation = Performance_real + validation noise
+
+
+Ese ruido proviene de varias fuentes, la principal es que los datos de validación son un subconjunto ﬁnito de los datos (también
+las características son sólo una parte de toda la información disponible para resolver el problema)
+That noise comes from several factors: the main one being our dataset is a subset of the data (also our features are only a part
+of the information available to model our problem)
+
+                                                                                                      M1     M2      M3     M4     M5
+
+ Model selection (Development/Validation set)                                                         0.66   0.72    0.72   0.75   0.76
+
+
+   M1     M2       M3      M4       M5
+                                                 En otro dataset de validación podríamos obtener...                 o…
+   0.67   0.72     0.69    0.77     0.74
+                                                                                                      M1     M2      M3     M4     M5
+
+                                                                                                      0.65   0.70    0.76   0.74   0.73
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        5
+
+===== PAGINA 6 =====
+
+ ¿Qué estamos estimando en realidad?
+ What are we actually estimating?
+
+                           Performance_validation = Performance_real + validation noise
+
+
+Ese ruido proviene de varias fuentes, la principal es que los datos de validación son un subconjunto ﬁnito de los datos (también
+las características son sólo una parte de toda la información disponible para resolver el problema)
+That noise comes from several factors: the main one being our dataset is a subset of the data (also our features are only a part
+of the information available to model our problem)
+
+                                                                                                      M1     M2      M3     M4     M5
+
+ Model selection (Development/Validation set)                                                         0.66   0.72    0.72   0.75   0.76
+
+
+   M1     M2       M3      M4       M5
+                                                 En otro dataset de validación podríamos obtener...                 o…
+   0.67   0.72     0.69    0.77     0.74
+                                                                                                      M1     M2      M3     M4     M5
+
+                                                                                                      0.65   0.70    0.76   0.74   0.73
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        6
+
+===== PAGINA 7 =====
+
+ ¿Por qué lo hacemos?
+ Why bother?
+
+
+                          Performance_validation = Performance_real + validation noise
+
+
+
+
+Al elegir el modelo usando los datos de validación, evitamos seleccionar simplemente el modelo que mejor
+se ajustó a las particularidades —y al ruido— del conjunto de entrenamiento.
+By selecting the model using validation data, we avoid simply choosing the model that best ﬁts the particularities —and
+noise— of the training set.
+
+
+
+La validación nos permite pasar de mejor ajuste a los datos de entrenamiento a mejor generalización
+Validation helps us move from ﬁt-to-train to estimate-of-generalization.
+
+
+
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                                                                         7
+
+===== PAGINA 8 =====
+
+ Entonces… ¿Por qué lo hacemos?
+ So… Why bother again?
+
+La performance en validación también es una estimación ruidosa de la performance real.
+Validation performance is also a noisy estimate of the true performance.
+
+
+
+Si probamos muchos modelos y elegimos el que obtiene el mejor resultado en validación, tenderemos a seleccionar
+no solo un modelo bueno, sino también uno que tuvo una estimación favorable por azar.
+If we try many models and select the one with the best validation score, we tend to select not only a good model, but also
+one that beneﬁted from favorable random variation.
+
+
+
+
+Solución: Tener un conjunto nuevo (test) para realizar una estimación nueva de cómo funciona el modelo elegido
+Solution: Having a subset of new data (test) to make a new estimation of how the chosen model works
+
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                                                                       8
+
+===== PAGINA 9 =====
+
+ Resumen
+ Recap
+
+
+
+
+Train set                                            Validation set                                      Test set
+
+para aprender los parámetros el modelo               para hacer la elección de todo el pipeline          para estimar la generalización del
+to learn the model parameters                        to make decisions on the whole pipeline.            pipeline ﬁnal
+                                                                                                         to estimate ﬁnal generalization.
+                                                     Elegimos modelos, hiperparámetros… evitando
+                                                     elegir los que mejor ajusten las particularidades   Nos permite calcular un estimador
+El modelo ajusta a los patrones de esos
+                                                     de los datos de train                               insesgado de la performance en datos
+datos
+                                                     We use it to compare models and tune                nuevos
+The model ﬁts the patterns in these
+                                                     hyperparameters without the one that best ﬁts       It provides an independent estimate
+data.
+                                                     the particularities of training data.               of performance on unseen data.
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                       9
+
+===== PAGINA 10 =====
+
+ Resumen
+ Recap
+
+
+
+
+Train set                                            Validation set                                      Test set
+
+para aprender los parámetros el modelo               para hacer la elección de todo el pipeline          para estimar la generalización del
+to learn the model parameters                        to make decisions on the whole pipeline.            pipeline ﬁnal
+                                                                                                         to estimate ﬁnal generalization.
+                                                     Elegimos modelos, hiperparámetros… evitando
+                                                     elegir los que mejor ajusten las particularidades   Nos permite calcular un estimador
+El modelo ajusta a los patrones de esos
+                                                     de los datos de train                               insesgado de la performance en datos
+datos
+                                                     We use it to compare models and tune                nuevos
+The model ﬁts the patterns in these
+                                                     hyperparameters without the one that best ﬁts       It provides an independent estimate
+data.
+                                                     the particularities of training data.               of performance on unseen data.
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                      10
+
+===== PAGINA 11 =====
+
+ Resumen
+ Recap
+
+
+
+
+Train set                                            Validation set                                      Test set
+
+para aprender los parámetros el modelo               para hacer la elección de todo el pipeline          para estimar la generalización del
+to learn the model parameters                        to make decisions on the whole pipeline.            pipeline ﬁnal
+                                                                                                         to estimate the generalization of the
+                                                     Elegimos modelos, hiperparámetros… evitando         ﬁnal pipeline.
+                                                     elegir los que mejor ajusten las particularidades
+El modelo ajusta a los patrones de esos
+                                                     de los datos de train                               Nos permite calcular un estimador
+datos
+                                                     We use it to compare models and tune                insesgado de la performance en datos
+The model ﬁts the patterns in these
+                                                     hyperparameters without the one that best ﬁts       nuevos
+data.
+                                                     the particularities of training data.               It provides an independent estimate
+                                                                                                         of performance on unseen data.
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                      11
+
+===== PAGINA 12 =====
+
+ k-fold Cross-Validation
+ Recap
+
+Nos permite utilizar los datos de manera más eﬁciente -> utilizamos TODOS los datos de train para
+validación una vez (sin que se usen para entrenar esa vez)
+
+k = 5 o 10 son las más usadas y son suﬁcientes
+
+
+
+                  Entrenamiento (Train)            Model selec. (Dev)           Evaluación (Test)
+                                                                   7.8
+
+
+                                                                   7.6
+
+
+                                                                   8.2
+
+
+                                                                   6.9
+
+
+                                                                   7.5
+
+
+                                                                   8.0
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                    12
+
+===== PAGINA 13 =====
+
+ k-fold Cross-Validation
+ Recap
+
+Nos permite utilizar los datos de manera más eﬁciente -> cada dato de train se utiliza para validación
+una vez (sin que se usen para entrenar esa vez)
+
+k = 5 o 10 son las más usadas y son suﬁcientes
+
+
+
+                   Entrenamiento (Train)            Model selec. (Dev)            Evaluación (Test)
+                                                                     7.8
+
+
+                                                                     7.6
+
+
+                                                                     8.2
+
+
+                                                                     6.9
+
+
+                                                                     7.5
+
+
+                                                                     8.0
+
+
+
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                                                        13
+
+===== PAGINA 14 =====
+
+ k-fold Cross-Validation
+ Recap
+
+Nos permite utilizar los datos de manera más eﬁciente -> utilizamos TODOS los datos de train para
+validación una vez (sin que se usen para entrenar esa vez)
+
+k = 5 o 10 son las más usadas y son suﬁcientes
+
+
+
+                  Entrenamiento (Train)            Model selec. (Dev)           Evaluación (Test)
+                                                                   7.8
+
+
+                                                                   7.6
+
+
+                                                                   8.2
+
+
+                                                                   6.9
+
+
+                                                                   7.5
+
+
+                                                                   8.0
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                    14
+
+===== PAGINA 15 =====
+
+ k-fold Cross-Validation
+ Recap
+
+Utilizamos los datos de forma más eﬁciente: Cada observación se utiliza una vez para validación y el resto de
+las veces para entrenamiento.
+We use the available data more efﬁciently: each observation is used once for validation and in the remaining folds for
+training.
+
+Obtenemos una estimación más estable del rendimiento: En lugar de depender de una única partición,
+evaluamos el modelo en varios splits y promediamos los resultados.
+More robust estimation of performance: since we evaluate it across several splits and averaging the results.
+
+
+
+Reducimos nuestra dependencia de un único validation split, que puede ser afortunado (o desafortunado!)
+We reduce our dependence on a single validation split that may be lucky — or unlucky.
+
+
+
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                                                                        15
+
+===== PAGINA 16 =====
+
+    Proyecto de ML
+    Pipeline clásico de un proyecto
+                                                                                                                5. EDA (Exploratory
+1. Deﬁnición del          2. Recolección de                                                                     Data Analysis)
+                                                                                    4. Limpieza de datos
+problema                  datos                                                                                   - Distribuciones
+                                                                                      - Missing values
+                                                                                      - Outliers                  - Correlaciones
+                                                                                      - Inconsistencias           - Insights iniciales
+
+                                                    3. Data Splitting
+                                                                                                                                         6. Feature
+                                                      - Train / Validation
+                                                                                                                                         Engineering /
+                                                    / Test
+                                                                                                                                         Selection
+                                                                                                                                           - Transformaciones
+                                                                                                                                           - Selección de
+                                                                                                                                         variables
+
+
+
+                                            10. Iteración / Mejora
+
+ 11. Selección del modelo                                                    9. Evaluación (en Dev)        8. Regularización             7. Modelado
+ y Evaluación ﬁnal en                                     no                   - Métricas (accuracy,         - Control de overﬁtting
+ Test                                          si                            precision, recall, etc.)
+   - Métricas (accuracy,
+ precision, recall, etc.)
+                                                    ¿Resultado ok?
+
+        Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                  16
+
+===== PAGINA 17 =====
+
+    Proyecto de ML
+    Pipeline clásico de un proyecto
+                                                                                                                5. EDA (Exploratory
+1. Deﬁnición del          2. Recolección de                                                                     Data Analysis)
+                                                                                    4. Limpieza de datos
+problema                  datos                                                                                   - Distribuciones
+                                                                                      - Missing values
+                                                                                      - Outliers                  - Correlaciones
+                                                                                      - Inconsistencias           - Insights iniciales
+
+                                                    3. Data Splitting
+ Clase anterior                                                                                                                          6. Feature
+                                                      - Train / Validation
+                                                                                                                                         Engineering /
+                                                    / Test
+ Hoy                                                                                                                                     Selection
+                                                                                                                                           - Transformaciones
+                                                                                                                                           - Selección de
+                                                                                                                                         variables
+
+
+
+                                            10. Iteración / Mejora
+
+ 11. Selección del modelo                                                    9. Evaluación (en Dev)        8. Regularización             7. Modelado
+ y Evaluación ﬁnal en                                     no                   - Métricas (accuracy,         - Control de overﬁtting
+ Test                                          si                            precision, recall, etc.)
+   - Métricas (accuracy,
+ precision, recall, etc.)
+                                                    ¿Resultado ok?
+
+        Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                  17
+
+===== PAGINA 18 =====
+
+Problema-Datos-Features
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 19 =====
+
+Ejemplo de proyecto de ML
+Example of ML project
+
+
+
+
+                                                  19
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2025
+
+===== PAGINA 20 =====
+
+Visión del proyecto
+Vision of the project
+
+• ¿Cual es el objetivo del proyecto?
+      • Construir un algoritmo no es el objetivo!! (casi nunca)
+
+• ¿Como va a usarse el resultado del modelo?
+      • ¿Se va a implementar en tiempo real el modelo? ¿Independiente o como parte de otro?
+      • ¿Hay algún tipo de error del sistema que no deba producirse? (Diagnostico erróneo de una enfermedad)
+
+• ¿Hay algún modelo que actualmente se use para esto en la empresa/laboratorio/etc?
+      • Referencia de performance, que estrategia se siguió para resolver el problema…
+
+
+Estas preguntas ya van a empezar a deﬁnir:
+- Algoritmos que podemos usar: clasiﬁcación/regresión, supervisado/no supervisado, DL o ML…
+- Métricas debemos evaluar: precisión (y que métrica usar) , tiempo de computo, complejidad del sistema…
+- Cuánto esfuerzo debemos poner y qué aspectos optimizar
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                           20
+
+===== PAGINA 21 =====
+
+Visión del proyecto
+Vision of the project
+
+• ¿Cual es el objetivo del proyecto?
+      • Construir un algoritmo no es el objetivo!! (casi nunca)
+
+• ¿Cómo va a usarse el resultado del modelo?
+      • ¿Se va a implementar en tiempo real el modelo? ¿Independiente o como parte de otro?
+      • ¿Hay algún tipo de error del sistema que no deba producirse? (Diagnóstico erróneo de una enfermedad)
+
+• ¿Hay algún modelo que actualmente se use para esto en la empresa/laboratorio/etc?
+      • Referencia de performance, que estrategia se siguió para resolver el problema…
+
+
+Estas preguntas ya van a empezar a deﬁnir:
+- Algoritmos que podemos usar: clasiﬁcación/regresión, supervisado/no supervisado, DL o ML…
+- Métricas debemos evaluar: precisión (y que métrica usar) , tiempo de computo, complejidad del sistema…
+- Cuánto esfuerzo debemos poner y qué aspectos optimizar
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                           21
+
+===== PAGINA 22 =====
+
+Visión del proyecto
+Vision of the project
+
+• ¿Cual es el objetivo del proyecto?
+      • Construir un algoritmo no es el objetivo!! (casi nunca)
+
+• ¿Cómo va a usarse el resultado del modelo?
+      • ¿Se va a implementar en tiempo real el modelo? ¿Independiente o como parte de otro?
+      • ¿Hay algún tipo de error del sistema que no deba producirse? (Diagnóstico erróneo de una enfermedad)
+
+• ¿Hay algún modelo que actualmente se use para esto en la empresa/laboratorio/etc?
+      • Referencia de performance, que estrategia se siguió para resolver el problema…
+
+
+Estas preguntas ya van a empezar a deﬁnir:
+- Algoritmos que podemos usar: clasiﬁcación/regresión, supervisado/no supervisado, DL o ML…
+- Métricas debemos evaluar: precisión (y que métrica usar) , tiempo de computo, complejidad del sistema…
+- Cuánto esfuerzo debemos poner y qué aspectos optimizar
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                           22
+
+===== PAGINA 23 =====
+
+Visión del proyecto
+Vision of the project
+
+• ¿Cual es el objetivo del proyecto?
+      • Construir un algoritmo no es el objetivo!! (casi nunca)
+
+• ¿Cómo va a usarse el resultado del modelo?
+      • ¿Se va a implementar en tiempo real el modelo? ¿Independiente o como parte de otro?
+      • ¿Hay algún tipo de error del sistema que no deba producirse? (Diagnóstico erróneo de una enfermedad)
+
+• ¿Hay algún modelo que actualmente se use para esto en la empresa/laboratorio/etc?
+      • Referencia de performance, que estrategia se siguió para resolver el problema…
+
+
+Estas preguntas ya van a empezar a deﬁnir:
+- Algoritmos que podemos usar: clasiﬁcación/regresión, supervisado/no supervisado, DL o ML…
+- Métricas debemos evaluar: precisión (y que métrica usar) , tiempo de cómputo, complejidad del sistema…
+- Cuánto esfuerzo debemos poner y qué aspectos optimizar
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                           23
+
+===== PAGINA 24 =====
+
+Visión del proyecto
+Vision of the project
+
+• ¿Cual es el objetivo del proyecto?                  Construir una herramienta automática de diagnóstico de Cáncer de
+      • Construir un algoritmo no es el objetivo!! (casi nunca)          pecho a partir de imágenes.
+
+• ¿Cómo va a usarse el resultado del modelo?
+      • ¿Se va a implementar en tiempo real el modelo? ¿Independiente o como parte de otro?
+                                                                            Se va a utilizar
+      • ¿Hay algún tipo de error del sistema que no deba producirse? (Diagnostico    erróneo offline
+                                                                                                 de (no
+                                                                                                     unatiempo real).
+                                                                                                          enfermedad)
+                                                                    El Falso negativo es el tipo de error que más penaliza.
+• ¿Hay algún modelo que actualmente se use para esto en la empresa/laboratorio/etc?
+      • Referencia de performance, que estrategia se siguió para resolver el problema…
+
+
+Estas preguntas ya van a empezar a deﬁnir:                   1) No hay limitación en tiempo de cómputo (ya que no se va a
+- Algoritmos que podemos usar: clasiﬁcación/regresión, supervisado/no supervisado,usar enDL o
+                                                                                          tiempo
+                                                                                               ML…real)
+- Métricas debemos evaluar: precisión (y que métrica usar) , tiempo de computo, complejidad del la
+                                                              2) Las métricas deben tener en cuenta     presencia de Falsos
+                                                                                                     sistema…
+                                                                                        Negativos
+- Cuánto esfuerzo debemos poner y qué aspectos optimizar
+                                                                   3) No tenemos acceso a una gran cantidad de datos
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                              24
+
+===== PAGINA 25 =====
+
+Datos
+Data
+
+- ¿Qué factores son relevantes para el problema a resolver?
+    • ¿Cómo resolverías tú el problema manualmente?
+    • Preguntar a expertos en el tema (multidisciplinar!)
+    • ¿Hay problemas similares ya resueltos?
+
+- ¿Qué capacidad de cómputo y almacenamiento tenemos?
+
+- ¿Tenemos ya los datos?
+     • Entender bien la estructura de los datos y qué son cada una de las características.
+
+Antes de seguir, crear el conjunto de test y separar esos datos para no volverlos a usar hasta el ﬁnal del
+proyecto
+- Típicamente seleccionar aleatoriamente 20% de los datos (a no ser que tengamos un dataset muy grande)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              25
+
+===== PAGINA 26 =====
+
+Datos
+Data
+
+- ¿Qué factores son relevantes para el problema a resolver?
+    • ¿Cómo resolverías tú el problema manualmente?
+    • Preguntar a expertos en el tema (multidisciplinar!)
+    • ¿Hay problemas similares ya resueltos?
+
+- ¿Qué capacidad de cómputo y almacenamiento tenemos?
+ Un patólogo para realizar su diagnóstico se
+ basa en:
+- ¿Tenemos ya los datos?
+      • Entender
+ - Uniformidad    bien(Benigno:
+               nuclear   la estructura  de- los datos y qué son cada una de las características.
+                                  núcleos
+  pequeños y uniformes, Maligno: núcleos
+Antes   deeseguir,
+  grandes            crear el conjunto de test y separar esos datos para no volverlos a usar hasta el ﬁnal del
+             irregulares)
+proyecto
+  - Mitosis (Benigno: rara o ausente, Maligno:
+- frecuente)
+   Típicamente seleccionar aleatoriamente 20% de los datos (a no ser que tengamos un dataset muy grande)
+  - Contorno nuclear (Benigno: lisos, Maligno:
+  irregulares o dentados)
+                          …
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  26
+
+===== PAGINA 27 =====
+
+Datos
+Data
+
+
+
+
+a) Radio (media de las distancias desde el centro a los puntos del perímetro)
+b) Textura (desviación estándar de los valores en escala de grises)
+c) Perímetro
+d) Área
+e) Suavidad (variación local en las longitudes del radio)
+f) Compacidad (perímetro² / área - 1.0)
+g) Concavidad (gravedad de las porciones cóncavas del contorno)
+h) Puntos cóncavos (número de porciones cóncavas del contorno)
+i) Simetría
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                27
+
+===== PAGINA 28 =====
+
+Datos
+Data                                                                              a) Radio
+                                                                                  b) Textura
+- ¿Qué factores son relevantes para el problema a resolver?                       c) Perímetro
+                                                                                  d) Área
+    • ¿Cómo resolverías tú el problema manualmente?
+                                                                                  e) Suavidad
+    • Preguntar a expertos en el tema (multidisciplinar!)                         f) Compacidad
+    • ¿Hay problemas similares ya resueltos?                                      g) Concavidad
+                                                                                  h) Puntos cóncavos
+                                                                                  i) Simetría
+- ¿Qué capacidad de cómputo y almacenamiento tenemos?
+
+- ¿Tenemos ya los datos?
+     • Entender bien la estructura de los datos y qué son cada una de las características.
+
+Antes de seguir, crear el conjunto de test y separar esos datos para no volverlos a usar hasta el ﬁnal del
+proyecto
+- Típicamente seleccionar aleatoriamente 20% de los datos (a no ser que tengamos un dataset muy grande)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              28
+
+===== PAGINA 29 =====
+
+Datos
+Data
+
+- ¿Qué factores son relevantes para el problema a resolver?
+    • ¿Cómo resolverías tú el problema manualmente?
+    • Preguntar a expertos en el tema (multidisciplinar!)
+    • ¿Hay problemas similares ya resueltos?
+
+- ¿Qué capacidad de cómputo y almacenamiento tenemos?
+
+- ¿Tenemos ya los datos?
+     • Entender bien la estructura de los datos y qué son cada una de las características.
+
+Antes de seguir, crear el conjunto de test y separar esos datos para no volverlos a usar hasta el ﬁnal del
+proyecto
+- Típicamente seleccionar aleatoriamente 20% de los datos (a no ser que tengamos un dataset muy grande)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              29
+
+===== PAGINA 30 =====
+
+Datos
+Data
+
+- ¿Qué factores son relevantes para el problema a resolver?
+    • ¿Cómo resolverías tú el problema manualmente?
+    • Preguntar a expertos en el tema (multidisciplinar!)
+    • ¿Hay problemas similares ya resueltos?
+
+- ¿Qué capacidad de cómputo y almacenamiento tenemos?
+
+- ¿Tenemos ya los datos?
+     • Entender bien la estructura de los datos y qué son cada una de las características. ->EDA
+
+Antes de seguir, crear el conjunto de test y separar esos datos para no volverlos a usar hasta el ﬁnal del
+proyecto
+- Típicamente seleccionar aleatoriamente 20% de los datos (a no ser que tengamos un dataset muy grande)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              30
+
+===== PAGINA 31 =====
+
+Análisis Exploratorio de Datos (EDA)
+Exploratory Data Analysis (EDA)
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 32 =====
+
+Análisis Exploratorio de Datos (EDA)
+Exploratory Data Analysis (EDA)
+
+Antes de entrenar modelos, necesitamos entender los datos que tenemos
+
+
+En la clase anterior, vimos cómo transformar las variables a valores numéricos y cómo limpiar los posibles datos
+erróneos o anómalos
+
+
+EDA es el proceso siguiente y consiste en explorar y resumir un dataset
+
+
+Si hemos participado en la creación del dataset, ya tenemos mucho aprendido sobre las variables que tenemos, pero
+todavía necesitamos entender mejor la estructura, patrones y posibles problemas
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                   32
+
+===== PAGINA 33 =====
+
+Objetivos
+Goals
+
+El Análisis Exploratorio de Datos (EDA) consiste en examinar y visualizar los datos para
+comprender su estructura y patrones antes de entrenar modelos.
+
+
+ -     detectar problemas en los datos (limpieza de datos-Clase anterior)
+ -     entender las variables del dataset,
+ -     descubrir relaciones entre variables.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                            33
+
+===== PAGINA 34 =====
+
+Distribución de las variables/características
+Distribution of the variables/features
+
+- Estadísticas descriptivas (media, mediana, desviación estándar, mínimos y máximos)
+permiten obtener una primera comprensión de los datos.
+
+
+- Histogramas y Boxplots
+Nos permiten entender mejor la distribución de los
+datos
+
+
+
+
+Como vimos en la clase anterior, también nos
+permite detectar outliers y posibles valores erróneos
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                   34
+
+===== PAGINA 35 =====
+
+Distribución de las variables/características - Ejemplo
+Distribution of the variables/features - Example
+
+
+Variable peso en un sistema de envío
+
+                                                  Podríamos pensar que es numérica continua, pero al
+                                                  ver el histograma vemos que está discretizada al peso
+                                                  del envío (categoría de precio..)
+
+
+
+                                                  Solución:
+
+                                                  Aplicar lo que vimos de numéricas discretas:
+
+                                                  one-hot encoding
+
+                                                  -> o crear otra feature binaria (ej., >15 kgs)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                       35
+
+===== PAGINA 36 =====
+
+Distribución de las variables/características - Ejemplo 2
+Distribution of the variables/features - Example 2
+
+Variable frecuencia visitas a una web /dia)
+
+                                                  Otro pico en torno a 120/dia… probablemente bots -> 2 poblaciones
+                                                  distintas!
+
+                                                  -Evaluar si el modelo debe modelar también el comportamiento de esa
+                                                  población. Si no, quitarlo. Si si… :
+
+                                                   a)   Dar esa info al sistema: crear variable is_bot (binaria) que sea 1
+                                                        si nvisitas>80 (por ejemplo)
+                                                   b)   Separar el dataset en dos y entrenar dos modelos distintos
+                                                        Ver cantidad de datos y relevancia del segundo grupo para ver si
+                                                        se justiﬁca y se puede hacer
+                                                        Ver el histograma separado para cada población para ver si
+                                                        realmente son distinta las otras variables en función a esta
+                                                        división
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                     36
+
+===== PAGINA 37 =====
+
+Distribución de las variables/características - Ejemplo 2
+Distribution of the variables/features - Example 2
+
+Variable frecuencia visitas a una web /dia)
+
+                                                  Otro pico en torno a 120/dia… probablemente bots -> 2 poblaciones
+                                                  distintas!
+
+                                                  -Evaluar si el modelo debe modelar también el comportamiento de esa
+                                                  población. Si no, quitarlo. Si si… :
+
+                                                   a)   Dar esa info al sistema: crear variable is_bot (binaria) que sea 1
+                                                        si nvisitas>80 (por ejemplo)
+                                                   b)   Separar el dataset en dos y entrenar dos modelos distintos
+                                                        Ver cantidad de datos y relevancia del segundo grupo para ver si
+                                                        se justiﬁca y se puede hacer
+                                                        Ver el histograma separado para cada población para ver si
+                                                        realmente son distintas las otras variables en función a esta
+                                                        división
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                     37
+
+===== PAGINA 38 =====
+
+Distribución de las variables/características - Ejemplo 2
+Distribution of the variables/features - Example 2
+
+Variable frecuencia visitas a una web /dia)
+
+                                                  Otro pico en torno a 120/dia… probablemente bots -> 2 poblaciones
+                                                  distintas!
+
+                                                  -Evaluar si el modelo debe modelar también el comportamiento de esa
+                                                  población. Si no, quitarlo. Si si… :
+
+                                                   a)   Dar esa info al sistema: crear variable is_bot (binaria) que sea 1
+                                                        si nvisitas>80 (por ejemplo)
+                                                   b)   Separar el dataset en dos y entrenar dos modelos distintos
+                                                        Ver cantidad de datos y relevancia del segundo grupo para ver si
+                                                        se justiﬁca y se puede hacer
+                                                        Ver el histograma separado para cada población para ver si
+                                                        realmente son distintas las otras variables en función a esta
+                                                        división
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                     38
+
+===== PAGINA 39 =====
+
+Distribución de las variables/características - Ejemplo 3
+Distribution of the variables/features - Example 3
+
+Variable superﬁcie de una propiedad
+                                                  ¿Qué está ocurriendo?
+
+
+                                                  Dos opciones:
+                                                  a) dos tipos de propiedades muy distintas
+                                                  b) Superﬁcie tomada en dos sistemas de medida
+                                                  distintos: metros y pies!
+
+
+                                                  Comprobar el dataset y entender qué ocurre
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   39
+
+===== PAGINA 40 =====
+
+Escalado de variables
+Relevancia
+Las variables numéricas pueden tener escalas muy diferentes.
+
+Ejemplo:
+
+ ●     edad → 0–100
+
+ ●     ingresos → 0–100000
+
+ ●     número de compras → 0–50
+
+
+Estas diferencias de escala pueden afectar a algunos modelos.
+
+El error de regresión, por ejemplo, será mucho mayor en las variables de mayor rango, y por tanto el
+modelo priorizará reducir el error en esas variables
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                        40
+
+===== PAGINA 41 =====
+
+Escalado de variables
+Relevancia
+Antes de comparar características o entrenar ningún clasiﬁcador, es recomendable siempre
+escalar las variables para que todas estén en el mismo rango:
+
+
+Sin escalado, algunos métodos daría más peso a las variables con rangos más grandes (errores
+más grandes)
+
+
+Por eso siempre se transforman las variables para que tengan escalas comparables.
+
+Métodos más usados:
+
+ ●     min–max scaling
+ ●     standardization (z-score)
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                            41
+
+===== PAGINA 42 =====
+
+Escalado de variables
+min-max scaling
+min-max:
+
+
+
+
+Se usa cuando quieres acotar los valores en un rango ﬁjo.
+Recomendado cuando:
+ ●     cuando el rango [0,1] tiene sentido práctico
+
+ ●     redes neuronales (si la función de activación requiere ese rango tanh…)
+
+
+contra: muy sensible a outliers.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                  42
+
+===== PAGINA 43 =====
+
+Escalado de variables
+z-score normalization
+z-score:
+
+
+
+
+Se usa por defecto en la mayoría de modelos.
+
+Es mucho menos sensible a outliers
+
+
+
+*si la variable tiene distribución gaussiana: el 68, 95 y 99 % de los datos tendrán z < 1,2 y 3
+respectivamente
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   43
+
+===== PAGINA 44 =====
+
+Variables: Cuantas más… ¿mejor?
+Features: The more… the merrier?
+
+
+No
+No
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   44
+
+===== PAGINA 45 =====
+
+Variables: Cuantas más… ¿mejor?
+Features: The more… the merrier?
+
+
+No - No todas las variables aportan información nueva o relevante
+No - Not all the variables add new or relevant information
+
+Aumentar la dimensionalidad hace el problema más complejo: hay más grados de libertad y más formas posibles de
+separar o ajustar los datos.
+Higher dimensionality makes the problem more complex: there are more degrees of freedom and more ways to ﬁt or
+separate the data.
+
+
+Si parte de esas features aporta poco valor, añadimos ruido que el modelo puede aprender en train.
+If some features add little useful information, we introduce noise that the model can ﬁt on the training data.
+
+Más dimensionalidad → mayor riesgo de overﬁtting.
+Higher dimensionality → higher risk of overﬁtting.
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                 45
+
+===== PAGINA 46 =====
+
+Variables: Cuantas más… ¿mejor?
+Features: The more… the merrier?
+
+
+Más variables no signiﬁca necesariamente más información.
+More features do not necessarily mean more information.
+
+
+
+
+Dos fuentes frecuentes de complejidad innecesaria:
+Two common sources of unnecessary complexity:
+
+        Variables poco informativas: poca o nula relación con y.
+        Weakly informative features: little or no relationship with y.
+
+        Variables redundantes: contienen información muy similar entre sí.
+        Redundant features: they carry largely overlapping information.
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                             46
+
+===== PAGINA 47 =====
+
+Siguientes pasos
+Next steps
+
+
+1.     Analizar si las características de nuestro dataset son “buenas”
+       Check if all our features are “good”
+
+
+
+2.     Analizar si todas esas variables son necesarias
+       Check if all our features are necessary
+
+
+
+3.     (Opcional) Buscar combinaciones de las variables que puedan ser útiles
+       (Optional) Look for combinations of variables that help the model
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                 47
+
+===== PAGINA 48 =====
+
+Relación con la variable objetivo (y)
+Relationship with the target variable (y)
+
+
+
+¿Aportan información todas las variables?
+
+
+En problemas supervisados, es importante analizar
+la relación entre cada variable y la variable
+objetivo.
+
+
+En regresión -> Correlación de las variable con y
+En clasiﬁcación -> Boxplot/histograma de cada
+variable por separado entre las clases (más
+métodos luego)
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026     48
+
+===== PAGINA 49 =====
+
+Relación entre variables (x)
+Feature redundancy
+
+Analizar la relación entre variables puede revelar patrones o dependencias relevantes para el modelo.
+
+
+
+Calcular la correlación entre variables,           la más usada, Pearson:
+
+
+
+La correlación mide qué tan alineadas están las variaciones de dos variables: los cambios de una variable tienden a
+ir acompañados por cambios en otra.
+
+
+
+                                                                            ¡Correlación no implica causalidad!
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                      49
+
+===== PAGINA 50 =====
+
+Relación entre variables (x)
+Feature redundancy
+
+Analizar la relación entre variables puede revelar patrones o dependencias relevantes para el modelo.
+
+
+
+Calcular la correlación entre variables,           la más usada, Pearson:
+
+
+
+La correlación mide qué tan alineadas están las variaciones de dos variables: los cambios de una variable tienden a ir
+acompañados por cambios en otra.
+
+
+
+                                                                            ¡Correlación no implica causalidad!
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                     50
+
+===== PAGINA 51 =====
+
+Correlación NO implica causalidad
+Correlation DOES NOT imply causality
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   51
+
+===== PAGINA 52 =====
+
+Correlación NO implica causalidad
+Correlation DOES NOT imply causality
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   52
+
+===== PAGINA 53 =====
+
+Relación entre variables (x) - Matriz de correlación
+Feature redundancy - Correlation Matrix
+
+Muestra la correlación de cada variable con cada una
+de las otras.
+
+Muy útil para analizar de forma rápida la relación
+entre variables
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026        53
+
+===== PAGINA 54 =====
+
+Relación entre variables (x) - Matriz de correlación
+Feature redundancy - Correlation Matrix
+
+Muestra la correlación de cada variable con cada una
+de las otras.
+
+Muy útil para analizar de forma rápida la relación
+entre variables
+
+
+
+Variables con alta correlación, contienen información
+muy similar y son probablemente redundantes
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026         54
+
+===== PAGINA 55 =====
+
+Relación entre variables (x) - Matriz de correlación
+Feature redundancy - Correlation Matrix
+
+Muestra la correlación de cada variable con cada una
+de las otras.
+
+Muy útil para analizar de forma rápida la relación
+entre variables
+
+
+
+Variables con alta correlación, contienen información
+muy similar y son probablemente redundantes
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026         55
+
+===== PAGINA 56 =====
+
+Hasta aquí…
+So far…
+
+Hemos analizado / we have analyzed:
+
+ ●     La distribución de las variables / Feature distributions
+ ●     Outliers y valores anómalos o faltantes / Outliers, missing and weird data values
+ ●     Posibles inconsistencias en los datos / Potential data inconsistencies
+ ●     Relaciones entre variables / Relationships between features
+
+
+
+Terminamos esta etapa ajustando la escala de las variables cuando es necesario.
+We ﬁnish this stage by adjusting feature scales when needed.
+
+
+
+Con toda esta información, la siguiente pregunta es: ¿Qué variables deberíamos usar en el modelo?
+With all this information, the next question is: Which features should we use in the model?
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     56
+
+===== PAGINA 57 =====
+
+Selección de características
+Feature Selection
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 58 =====
+
+Introducción
+Introduction
+
+No siempre es necesario seleccionar características pero suele ayudar al modelo
+Not always necessary, but it usually helps the model (we have seen why a few slides ago)
+
+
+
+
+Tener un número elevado de variables (alta dimensionalidad), tiene efectos negativos sobre el
+modelo:
+
+El modelo se vuelve más lento y menos ﬁable.
+En general, más features implica más ruido y por tanto, más datos necesarios.
+Y más riesgo de overﬁtting!
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 58
+
+===== PAGINA 59 =====
+
+La maldición de la dimensionalidad
+The dimensionality curse
+
+A medida que aumenta el número de dimensiones, los datos se vuelven más dispersos.
+As dimensionality increases, data become increasingly sparse.
+
+Cada región del espacio contiene menos ejemplos. / Each region of the feature space contains fewer observations.
+
+Más dimensiones requieren exponencialmente más datos para mantener una densidad comparable.
+Higher dimensions require exponentially more data to maintain comparable density.
+
+Las distancias pierden poder discriminativo. / Distances become less informative.
+
+
+
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  59
+
+===== PAGINA 60 =====
+
+La maldición de la dimensionalidad
+The dimensionality curse
+
+A medida que aumenta el número de dimensiones, los datos se vuelven más dispersos.
+As dimensionality increases, data become increasingly sparse.
+
+Cada región del espacio contiene menos ejemplos. / Each region of the feature space contains fewer observations.
+
+Más dimensiones requieren exponencialmente más datos para mantener una densidad comparable.
+Higher dimensions require exponentially more data to maintain comparable density.
+
+Las distancias pierden poder discriminativo. / Distances become less informative.
+
+
+Los métodos basados en vecinos o similitud funcionan peor. / Neighbor- and similarity-based methods become less effective.
+
+Consecuencia: aumenta el riesgo de overﬁtting. Consequence: the risk of overﬁtting increases.
+
+
+El modelo tiene más oportunidades de ajustar ruido o patrones accidentales.
+The model has more opportunities to ﬁt noise or spurious patterns.
+
+    Aprendizaje Automático – ©Carlos Bibián, 2026                                                                            60
+
+===== PAGINA 61 =====
+
+Dos estrategias para reducir la dimensionalidad
+Two strategies for dimensionality reduction
+
+1. Feature Selection
+Elegir qué variables conservar / Choose which original features to keep
+
+        Conserva un subconjunto de las variables originales. / Keeps a subset of the original features.
+
+        Puede apoyarse en importancia de variables, asociación con y o criterios estadísticos.
+        Can rely on feature importance, association with y, or statistical criteria.
+
+2. Feature Projection
+Crear nuevas variables / Create new lower-dimensional features
+
+        Combina las variables originales en una representación más compacta. / Combines the original features into a more compact
+        representation.
+
+        Busca reducir dimensionalidad preservando la mayor cantidad posible de información relevante.
+        Aims to reduce dimensionality while preserving as much relevant information as possible.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                            61
+
+===== PAGINA 62 =====
+
+Selección características - Métodos
+Feature Selection - Methods
+
+Filtros → Aplican métricas o criterios estadísticos independientes del modelo para evaluar features.
+      - Correlación de Pearson, ANOVA F-test o Chi² (variables categóricas).
+
+   Son rápidos, fáciles de aplicar, pero no consideran interacciones entre variables.
+
+Wrappers → Evalúa subsets de variables con un modelo y elige el que maximiza la performance.
+    - Forward Selection (empezar sin features, añadir uno a uno) o Backward Elimination
+(empezar con todos, quitar de a uno).
+
+    Consideran interacciones entre variables, pero son muy costosos computacionalmente.
+
+Embedded → Selección automática de variables dentro del entrenamiento del modelo.
+    - Random Forest (feature importance- RFI) o Lasso (L1 regularization)
+
+    Son un buen balance entre precisión y coste computacional.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                62
+
+===== PAGINA 63 =====
+
+Selección características - Métodos
+Feature Selection - Methods
+
+Filtros → Aplican métricas o criterios estadísticos independientes del modelo para evaluar features.
+      - Correlación de Pearson, ANOVA F-test o Chi² (variables categóricas).
+
+   Son rápidos, fáciles de aplicar, pero no consideran interacciones entre variables.
+
+Wrappers → Evalúa subsets de variables con un modelo y elige el que maximiza la performance.
+    - Forward Selection (empezar sin features, añadir uno a uno) o Backward Elimination
+(empezar con todos, quitar de a uno).
+
+    Consideran interacciones entre variables, pero son muy costosos computacionalmente.
+
+Embedded → Selección automática de variables dentro del entrenamiento del modelo.
+    - Random Forest (feature importance- RFI) o Lasso (L1 regularization)
+
+    Son un buen balance entre precisión y coste computacional.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                63
+
+===== PAGINA 64 =====
+
+Filtros de características
+Correlación de Pearson
+Mide la relación lineal entre dos variables (para variables numéricas continuas)
+
+Dos aplicaciones en selección de features:
+- Calcular correlación con variable objetivo (y), y si un feature está correlacionado con el target
+  será más útil.
+- Calcular correlación entre variables, y si dos features están muy correlacionadas entre sí
+  podemos eliminar una de ellas ya que aportan información muy similar.
+
+Tener en cuenta que ¡únicamente capta relaciones lineales!
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                               64
+
+===== PAGINA 65 =====
+
+Filtros de características
+Correlación de Pearson
+Mide la relación lineal entre dos variables (para variables numéricas continuas)
+
+Dos aplicaciones en selección de features:
+- Calcular correlación con variable objetivo (y), y si un feature está correlacionado con el target
+  será más útil.
+- Calcular correlación entre variables, y si dos features están muy correlacionadas entre sí
+  podemos eliminar una de ellas ya que aportan información muy similar.
+
+Tener en cuenta que ¡únicamente capta relaciones lineales!
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                               65
+
+===== PAGINA 66 =====
+
+Filtros de características
+Información Mutua - Mutual Information (MI)
+Mide cuánta información aporta un feature sobre la variable objetivo.
+     - MI: cuánta incertidumbre sobre Y reducimos por conocer X
+
+
+
+
+Ventajas:
+Detecta relaciones no lineales (a diferencia de Pearson).
+Útil tanto en clasiﬁcación como en regresión.
+
+Limitaciones:
+Más costosa de calcular.
+
+En Scikit-Learn:
+mutual_info_classif (clasiﬁcación). mutual_info_regression (regresión).
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                           66
+
+===== PAGINA 67 =====
+
+Filtros de características
+Ejemplo
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   67
+
+===== PAGINA 68 =====
+
+Filtros de características
+ANOVA F-test
+Compara la varianza entre clases vs. la varianza dentro de cada clase.
+
+Si la varianza entre clases ≫ varianza dentro de clases, el feature es relevante.
+
+Se usa en clasiﬁcación (features numéricos con target categórico).
+Asume normalidad y varianzas similares.
+
+
+1-Calcular el estadístico F para cada feature vs. target categórico.
+
+2-Conservar los features con mayor F (o con p-value signiﬁcativo).
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                     68
+
+===== PAGINA 69 =====
+
+Filtros de características
+Chi² (Chi-cuadrado)
+
+Mide la dependencia entre dos variables (feature vs. target) categóricas.
+
+Si hay alta dependencia, el feature es informativo.
+
+Uso: clasiﬁcación con variables categóricas.
+
+Calcular p-value para cada feature vs. target.
+Seleccionar los features con p-value menor a un umbral (ej. 0.05)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                             69
+
+===== PAGINA 70 =====
+
+Selección características - Métodos
+Feature Selection - Methods
+
+Filtros → Aplican métricas o criterios estadísticos independientes del modelo para evaluar features.
+      - Correlación de Pearson, ANOVA F-test o Chi² (variables categóricas).
+
+   Son rápidos, fáciles de aplicar, pero no consideran interacciones entre variables.
+
+Wrappers → Evalúa subsets de variables con un modelo y elige el que maximiza la performance.
+    - Forward Selection (empezar sin features, añadir uno a uno) o Backward Elimination
+(empezar con todos, quitar de a uno).
+
+    Consideran interacciones entre variables, pero son muy costosos computacionalmente.
+
+Embedded → Selección automática de variables dentro del entrenamiento del modelo.
+    - Random Forest (feature importance- RFI) o Lasso (L1 regularization)
+
+    Son un buen balance entre precisión y coste computacional.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                70
+
+===== PAGINA 71 =====
+
+Selección características - Métodos
+Feature Selection - Methods
+
+Filtros → Aplican métricas o criterios estadísticos independientes del modelo para evaluar features.
+      - Correlación de Pearson, ANOVA F-test o Chi² (variables categóricas).
+
+   Son rápidos, fáciles de aplicar, pero no consideran interacciones entre variables.
+
+Wrappers → Evalúa subsets de variables con un modelo y elige el que maximiza la performance.
+    - Forward Selection (empezar sin features, añadir uno a uno) o Backward Elimination
+(empezar con todos, quitar de a uno).
+
+    Consideran interacciones entre variables, pero son muy costosos computacionalmente.
+
+Embedded → Selección automática de variables dentro del entrenamiento del modelo.
+    - Random Forest (feature importance- RFI) o Lasso (L1 regularization)
+
+    Son un buen balance entre precisión y coste computacional.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                71
+
+===== PAGINA 72 =====
+
+Wrappers
+RFE (Recursive Feature Elimination)
+Entrenar modelo sucesivamente eliminando cada vez la feature menos importante y evaluar el
+impacto en clasiﬁcación cada vez. (se puede hacer también al revés añadiendo de una en una -
+Forward Selection)
+
+Pasos:
+     Entrenar un modelo inicial (ej. regresión lineal o SVM).
+     Medir importancia de cada feature*
+     Eliminar el menos importante.
+     Repetir hasta llegar al número deseado de variables o hasta que la performance baje.
+     Visualización sugerida: ranking de variables → eliminación progresiva.
+
+*Cómo medir la importancia de cada feature?-> impacto en performance de añadirla, o valor del
+coeﬁciente de esa feature en modelos lineales, o reducción de impureza que aporta esa feature (DT o RF)…
+
+Scikit-Learn: RFE o RFECV (con validación cruzada para elegir el número óptimo de features).
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                    72
+
+===== PAGINA 73 =====
+
+Selección características - Métodos
+Feature Selection - Methods
+
+Filtros → Aplican métricas o criterios estadísticos independientes del modelo para evaluar features.
+      - Correlación de Pearson, ANOVA F-test o Chi² (variables categóricas).
+
+   Son rápidos, fáciles de aplicar, pero no consideran interacciones entre variables.
+
+Wrappers → Evalúa subsets de variables con un modelo y elige el que maximiza la performance.
+    - Forward Selection (empezar sin features, añadir uno a uno) o Backward Elimination
+(empezar con todos, quitar de a uno).
+
+    Consideran interacciones entre variables, pero son muy costosos computacionalmente.
+
+Embedded → Selección automática de variables dentro del entrenamiento del modelo.
+    - Random Forest (feature importance- RFI) o Lasso (L1 regularization)
+
+    Son un buen balance entre precisión y coste computacional.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                73
+
+===== PAGINA 74 =====
+
+Selección características - Métodos
+Feature Selection - Methods
+
+Filtros → Aplican métricas o criterios estadísticos independientes del modelo para evaluar features.
+      - Correlación de Pearson, ANOVA F-test o Chi² (variables categóricas).
+
+   Son rápidos, fáciles de aplicar, pero no consideran interacciones entre variables.
+
+Wrappers → Evalúa subsets de variables con un modelo y elige el que maximiza la performance.
+    - Forward Selection (empezar sin features, añadir uno a uno) o Backward Elimination
+(empezar con todos, quitar de a uno).
+
+    Consideran interacciones entre variables, pero son muy costosos computacionalmente.
+
+Embedded → Selección automática de variables dentro del entrenamiento del modelo.
+    - Random Forest (feature importance- RFI), L1 Lasso (regularización)
+
+    Son un buen balance entre precisión y coste computacional.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                74
+
+===== PAGINA 75 =====
+
+Selección de características
+Wrappers vs Filtros
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   75
+
+===== PAGINA 76 =====
+
+Selección de características
+Wrappers vs Filtros
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   76
+
+===== PAGINA 77 =====
+
+Selección de características
+Wrappers vs Filtros
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   77
+
+===== PAGINA 78 =====
+
+… ¿y si todas las variables son relevantes?
+
+Feature Selection: Nos quedamos con las variables originales más útiles.
+
+- De 20 tests médicos, elegir los 5 más predictivos.
+
+Pero… ¿Qué pasa si todas las variables aportan algo?
+
+Por ejemplo, en una imagen, cada píxel tiene información, no podemos descartar alegremente.
+
+En vez de elegir, tenemos que transformar y combinar las variables para generar un espacio más
+compacto (menor dimensionalidad), perdiendo poca información.
+
+Esto es Feature Projection (Dimensionality Reduction). - Módulo 4
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                            78
+
+===== PAGINA 79 =====
+
+ Selección de características
+ Comparación - Resumen
+
+Método                            Cómo funciona         Ventajas                Desventajas            Ejemplos
+                                  Evalúa cada feature
+                                  de forma
+                                                        Muy rápido, simple,     No captura             Chi², Correlación de
+                                  independiente del
+Filtro                                                  escalable a alta        interacciones entre    Pearson, ANOVA
+                                  modelo (tests
+                                                        dimensión.              features.              F-test.
+                                  estadísticos,
+                                  correlación).
+                                  Evalúa subsets de                             Muy costoso
+                                                        Considera                                      Forward selection,
+                                  features entrenando                           computacionalmente,
+Wrapper                                                 interacciones, suele                           Backward elimination,
+                                  un modelo                                     no garantiza subset
+                                                        mejorar performance.                           RFE.
+                                  repetidamente.                                óptimo.
+                                  El modelo decide      Buen equilibrio entre
+                                                                                                       Random Forest
+                                  durante el            precisión y coste,      Depende del modelo
+Embedded                                                                                               importance, Lasso
+                                  entrenamiento qué     selección más           elegido, puede sesgar.
+                                                                                                       (L1), Elastic Net.
+                                  features conservar.   “natural”.
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                    79
+
+===== PAGINA 80 =====
+
+ Selección de características
+ Comparación - Resumen
+
+Método                            Cómo funciona         Ventajas                Desventajas            Ejemplos
+                                  Evalúa cada feature
+                                  de forma
+                                                        Muy rápido, simple,     No captura             Chi², Correlación de
+                                  independiente del
+Filtro                                                  escalable a alta        interacciones entre    Pearson, ANOVA
+                                  modelo (tests
+                                                        dimensión.              features.              F-test.
+                                  estadísticos,
+                                  correlación).
+                                  Evalúa subsets de                             Muy costoso
+                                                        Considera                                      Forward selection,
+                                  features entrenando                           computacionalmente,
+Wrapper                                                 interacciones, suele                           Backward elimination,
+                                  un modelo                                     no garantiza subset
+                                                        mejorar performance.                           RFE.
+                                  repetidamente.                                óptimo.
+                                  El modelo decide      Buen equilibrio entre
+                                                                                                       Random Forest
+                                  durante el            precisión y coste,      Depende del modelo
+Embedded                                                                                               importance, Lasso
+                                  entrenamiento qué     selección más           elegido, puede sesgar.
+                                                                                                       (L1), Elastic Net.
+                                  features conservar.   “natural”.
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                    80
+
+===== PAGINA 81 =====
+
+Regularización
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 82 =====
+
+Regularización
+Complejidad del modelo
+Los modelos complejos pueden ajustarse demasiado a los datos de
+entrenamiento.
+
+
+
+
+     x2                                              x2                       x2
+
+
+
+
+Aprendizaje Automático – ©Carlos Bibián, 2026                                      82
+                             x1                                 x1                                    x1
+                        w1 x + b                          w1 x + w2 x 2 + b             w1 x + w2 x 2 + w3 x 3+ w4 x4… + b
+
+   underﬁtting / alto sesgo                               buen ajuste              overﬁtting / alta varianza
+                                 high bias                                                                 high variance
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           82
+
+===== PAGINA 83 =====
+
+Regularización
+Complejidad del modelo
+Los modelos complejos tienden a ajustar demasiado bien los datos “vistos” y a
+generalizar mal a datos nuevos
+
+
+                                                  Objetivo: controlar la
+                                                  complejidad del modelo
+  x2                                                                       x
+                                                  para que generalice
+                                                  mejor
+
+                      x1
+        w1 x + w2x 2 + w3x 3+ w4x 4… + b
+
+       overﬁtting / alta varianza
+                            high variance
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                83
+
+===== PAGINA 84 =====
+
+Regularización
+Complejidad del modelo
+Los modelos complejos tienden a ajustar demasiado bien los datos “vistos” y a
+generalizar mal a datos nuevos
+
+
+                                                  Objetivo: controlar la
+                                                  complejidad del modelo
+  x2                                                                       x2
+                                                  para que generalice
+                                                  mejor
+
+                      x1                                                              x1
+        w1 x + w2x 2 + w3x 3+ w4x 4… + b                                        w1 x + w2 x 2 + b
+
+       overﬁtting / alta varianza                                               buen ajuste
+                            high variance
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     84
+
+===== PAGINA 85 =====
+
+Regularización
+Idea principal
+La regularización busca controlar la complejidad del modelo.
+
+La idea es penalizar modelos demasiado complejos durante el entrenamiento.
+
+
+
+En modelos lineales:
+
+
+
+
+La complejidad del modelo está relacionada con
+ el tamaño de los coeﬁcientes w.                       Coeﬁcientes muy grandes pueden indicar un modelo
+                                                       demasiado sensible a los datos.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     85
+
+===== PAGINA 86 =====
+
+Métricas de evaluación
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 87 =====
+
+Métricas para regresión
+Error de predicción y RMS
+
+El error de predicción mide la diferencia entre el valor predicho por el
+modelo y el valor real observado.
+
+
+
+El Root Mean Squared Error mide el promedio de los errores al
+cuadrado entre las predicciones y los valores reales.
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                             87
+
+===== PAGINA 88 =====
+
+Métricas para regresión
+Coeﬁciente de determinación (R2)
+El coeﬁciente R² mide qué proporción de la variabilidad de la variable objetivo
+es explicada por el modelo.
+
+
+
+Interpretación:
+Valores de R² cercanos a 1 indican un buen ajuste del modelo, mientras que
+valores cercanos a 0 indican un modelo poco informativo.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                               88
+
+===== PAGINA 89 =====
+
+Regularización
+Idea principal
+La regularización busca controlar la complejidad del modelo.
+
+¿Como?
+
+Modiﬁcando la función de coste para penalizar coeﬁcientes altos:
+
+
+
+                                                                   Error(w) mide el ajuste a los datos
+
+                                                                   λ controla la intensidad de la
+                                                                   regularización
+
+
+
+Esto obliga al modelo a equilibrar ajuste y simplicidad.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                      89
+
+===== PAGINA 90 =====
+
+Regularización
+L1 (Lasso)
+La penalización es la suma de los valores absolutos de los coeﬁcientes
+
+
+
+
+La penalización L1 favorece soluciones donde w = 0 para algunas variables. (modelos más sparse)
+
+Si w=0, la variable no se usa. Por eso Lasso es también considerado un método de selección de
+variables
+
+λ, parámetro de regularización -> cuanto mayor, más se fuerza al modelo a tener coeﬁcientes
+pequeños. Valor que tenemos que elegir nosotros durante el entrenamiento/Validación
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   90
+
+===== PAGINA 91 =====
+
+Regularización
+L2 (Ridge)
+La penalización es la suma del cuadrado de los coeﬁcientes
+
+
+
+
+Los coeﬁcientes grandes reciben una penalización mayor.
+
+L2 empuja los coeﬁcientes hacia valores pequeños, pero raramente los hace exactamente cero.
+
+Todas las variables siguen participando en el modelo.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               91
+
+===== PAGINA 92 =====
+
+Regularización
+Elastic Net
+Combina ambos (L1 y L2) mediante alpha
+
+
+
+
+Lambda es la “fuerza” de la regularización y alpha el balance entre L1 y L2
+
+L1 empuja algunos coeﬁcientes exactamente a 0; L2 mantiene muchos coeﬁcientes pequeños y
+estabiliza el modelo. Elastic Net intenta obtener las dos ventajas.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                            92
+
+===== PAGINA 93 =====
+
+Regularización
+Ejemplo
+¿Cómo elegirían el valor de lambda?
+How would you choose the value of lambda?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   93
+
+===== PAGINA 94 =====
+
+Regularización
+Ejemplo
+Dataset: Diabetes dataset (kaggle)
+
+Separamos el 20% para test
+
+Entrenamos modelos sobre 80% de los datos - 5-fold cross-validation
+Utilizamos el RMSE como métrica
+
+Modelos a probar:
+
+                                       ○      regresión lineal
+                                       ○      regresión polinómica (grado 2) + L1, λ=0.001
+                                       ○      regresión polinómica (grado 2) + L1, 0.01,
+                                       ○      regresión polinómica (grado 2) + L1, λ=0.1
+                                       ○      regresión polinómica (grado 2) + L1, λ=1
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                              94
+
+===== PAGINA 95 =====
+
+Regularización
+Ejemplo
+¿Cuál elegimos?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   95
+
+===== PAGINA 96 =====
+
+Regularización
+Ejemplo
+¿Cuál elegimos?
+
+El modelo con menor error en Dev/Validation
+
+-> la regresión lineal
+
+
+
+Validation RMSE (Linear): 53.853
+
+
+
+
+¿Cuál esperaría que tuviese más diferencia
+entre train y dev error?
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026   96
+
+===== PAGINA 97 =====
+
+Regularización
+Ejemplo
+El modelo con menor error en Dev/Validation es la
+regresión lineal
+
+
+
+Al comparar train y dev, vemos que , como esperábamos,
+hay más overﬁtting para lambdas bajas
+
+
+
+
+Esa diferencia es lo que se llama generalization gap
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026         97
+
+===== PAGINA 98 =====
+
+ Ejemplo ﬁnal
+ Final Example
+
+Un equipo prueba 200 conﬁguraciones distintas sobre el mismo validation set.
+A team tests 200 different conﬁgurations on the same validation set.
+
+Elige la mejor:
+
+Train: 96%, Validation: 91% …. Test: 84%
+
+¿Que ha podido pasar?
+
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                             98
+
+===== PAGINA 99 =====
+
+ Ejemplo ﬁnal
+ Final Example
+
+Un equipo prueba 200 conﬁguraciones distintas sobre el mismo validation set.
+A team tests 200 different conﬁgurations on the same validation set.
+
+Elige la mejor:
+
+Train: 96%, Validation: 91% …. Test: 84%
+
+¿Que ha podido pasar?
+
+Al elegir el mejor resultado entre muchas estimaciones ruidosas, tendemos a seleccionar también una conﬁguración que tuvo
+ruido favorable.
+ When we select the best result among many noisy estimates, we also tend to select a conﬁguration that beneﬁted from
+favorable noise.
+
+
+
+                           El modelo aprende del train. Nosotros aprendemos del validation.
+                           The model learns from the train set. We learn from the validation set.
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                          99
+
+===== PAGINA 100 =====
+
+ Cómo reducimos overﬁtting a la validación (Avanzado)
+ How to reduce overﬁtting the validation set (Advanced)
+
+Cross-validation
+Reduce la dependencia de un único validation split. /   Reduces dependence on a single validation split.
+
+Limitar búsquedas ad hoc
+Cuantas más decisiones tomamos mirando validation, mayor riesgo de adaptarnos a él.
+The more decisions we make based on validation, the greater the risk of adapting to it.
+
+Mantener otro test set intacto - holdout / shallow test set
+Se usa sólo al ﬁnal para estimar la generalización del pipeline elegido. Puede ser usado unas pocas veces
+Keep the test set untouched until the end to estimate the generalization of the selected pipeline. Can be used a few times
+
+Nested cross-validation
+Para selección intensiva de modelos o datasets pequeños: CV interna para elegir y CV externa para evaluar.
+For intensive model selection or small datasets: inner CV for selection, outer CV for evaluation.
+
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                                                           100
+
+===== PAGINA 101 =====
+
+    Proyecto de ML
+    Pipeline clásico de un proyecto
+                                                                                                                5. EDA (Exploratory
+1. Deﬁnición del          2. Recolección de                                                                     Data Analysis)
+                                                                                    4. Limpieza de datos
+problema                  datos                                                                                   - Distribuciones
+                                                                                      - Missing values
+                                                                                      - Outliers                  - Correlaciones
+                                                                                      - Inconsistencias           - Insights iniciales
+
+                                                    3. Data Splitting
+                                                                                                                                         6. Feature
+                                                      - Train / Validation
+                                                                                                                                         Engineering /
+                                                    / Test
+                                                                                                                                         Selection
+                                                                                                                                           - Transformaciones
+                                                                                                                                           - Selección de
+                                                                                                                                         variables
+
+
+
+                                            10. Iteración / Mejora
+
+ 11. Selección del modelo                                                    9. Evaluación (en Dev)        8. Regularización             7. Modelado
+ y Evaluación ﬁnal en                                     no                   - Métricas (accuracy,         - Control de overﬁtting
+ Test                                          si                            precision, recall, etc.)
+   - Métricas (accuracy,
+ precision, recall, etc.)
+                                                    ¿Resultado ok?
+
+        Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                101
+
+===== PAGINA 102 =====
+
+    Proyecto de ML
+    Pipeline clásico de un proyecto
+                                                                                                                5. EDA (Exploratory
+1. Deﬁnición del          2. Recolección de                                                                     Data Analysis)
+                                                                                    4. Limpieza de datos
+problema                  datos                                                                                   - Distribuciones
+                                                                                      - Missing values
+                                                                                      - Outliers                  - Correlaciones
+                                                                                      - Inconsistencias           - Insights iniciales
+
+                                                    3. Data Splitting
+                                                                                                                                         6. Feature
+                                                      - Train / Validation
+ Siguiente Módulo                                                                                                                        Engineering /
+                                                    / Test
+                                                                                                                                         Selection
+                                                                                                                                           - Transformaciones
+                                                                                                                                           - Selección de
+                                                                                                                                         variables
+
+
+
+                                            10. Iteración / Mejora
+
+ 11. Selección del modelo                                                    9. Evaluación (en Dev)        8. Regularización             7. Modelado
+ y Evaluación ﬁnal en                                     no                   - Métricas (accuracy,         - Control de overﬁtting
+ Test                                          si                            precision, recall, etc.)
+   - Métricas (accuracy,
+ precision, recall, etc.)
+                                                    ¿Resultado ok?
+
+        Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                102
+

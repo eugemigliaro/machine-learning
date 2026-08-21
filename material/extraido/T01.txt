@@ -1,0 +1,1531 @@
+FUENTE: T01
+TITULO: Introducción al Aprendizaje Automático
+ORIGINAL: material/catedra/teoria/Clase 1. Introducción al Aprendizaje Automático.pdf
+PAGINAS: 74
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+Plan de la sesión de hoy
+ -    Presentación
+ -    Qué es ML y por qué es importante
+ -    Tipos de aprendizaje
+ -    Contenido y objetivos de la asignatura
+ -    Estructura de un proyecto ML y principales desafíos
+
+===== PAGINA 2 =====
+
+Aspectos organizativos importantes
+-   Las clases serán grabadas y estarán disponibles hasta la clase siguiente
+
+
+-   La nota de la materia será calculada como promedio de la nota de la cursada y la del
+    TPﬁnal
+
+
+-   La nota de la cursada será el promedio de las notas de los 4 TPs
+
+
+-   Los TPs realizarán en grupos durante en horario de la materia*
+     *algunos alumnos nos han notiﬁcado que no van a poder asistir a algunas clases. Si
+     este es tu caso, escríbenos un mail contándonos tu situación para que podamos
+     organizar los grupos de TPs y sus horarios de defensa.
+
+
+-   La defensa del TP consta de una presentación oral del 20 mín (estricto) y 10 min de
+    preguntas sobre el trabajo
+
+===== PAGINA 3 =====
+
+Aspectos organizativos importantes
+-   Las clases serán grabadas y estarán disponibles hasta la clase siguiente
+
+
+-   La nota de la materia será calculada como promedio de la nota de la cursada y la del
+    TPﬁnal
+
+
+-   La nota de la cursada será el promedio de las notas de los 4 TPs
+
+
+-   Los TPs realizarán en grupos durante en horario de la materia*
+     *algunos alumnos nos han notiﬁcado que no van a poder asistir a algunas clases. Si
+     este es tu caso, escríbenos un mail contándonos tu situación para que podamos
+     organizar los grupos de TPs y sus horarios de defensa.
+
+
+-   La defensa del TP consta de una presentación oral del 20 mín (estricto) y 10 min de
+    preguntas sobre el trabajo
+
+===== PAGINA 4 =====
+
+Aspectos organizativos importantes
+-   Las clases serán grabadas y estarán disponibles hasta la clase siguiente
+
+
+-   La nota de la materia será calculada como promedio de la nota de la cursada y la del
+    TPﬁnal
+
+
+-   La nota de la cursada será el promedio de las notas de los 3 TPs
+
+
+-   Los TPs realizarán en grupos durante en horario de la materia*
+     *algunos alumnos nos han notiﬁcado que no van a poder asistir a algunas clases. Si
+     este es tu caso, escríbenos un mail contándonos tu situación para que podamos
+     organizar los grupos de TPs y sus horarios de defensa.
+
+
+-   La defensa del TP consta de una presentación oral del 20 mín (estricto) y 10 min de
+    preguntas sobre el trabajo
+
+===== PAGINA 5 =====
+
+Aspectos organizativos importantes
+-   Las clases serán grabadas y estarán disponibles hasta la clase siguiente
+
+
+-   La nota de la materia será calculada como promedio de la nota de la cursada y la del
+    TPﬁnal
+
+
+-   La nota de la cursada será el promedio de las notas de los 3 TPs
+
+
+-   Los TPs realizarán en grupos durante en horario de la materia*
+     *algunos alumnos nos han notiﬁcado que no van a poder asistir a algunas clases. Si
+     este es tu caso, escríbenos un mail contándonos tu situación para que podamos
+     organizar los grupos de TPs y sus horarios de defensa.
+
+
+-   La defensa del TP consta de una presentación oral del 20 mín (estricto) y 10 min de
+    preguntas sobre el trabajo
+
+===== PAGINA 6 =====
+
+Aspectos organizativos importantes
+-   Las clases serán grabadas y estarán disponibles hasta la clase siguiente
+
+
+-   La nota de la materia será calculada como promedio de la nota de la cursada y la del
+    TPﬁnal
+
+
+-   La nota de la cursada será el promedio de las notas de los 4 TPs
+
+
+-   Los TPs realizarán en grupos durante en horario de la materia*
+     *algunos alumnos nos han notiﬁcado que no van a poder asistir a algunas clases. Si
+     este es tu caso, escríbenos un mail contándonos tu situación para que podamos
+     organizar los grupos de TPs y sus horarios de defensa.
+
+
+-   La defensa del TP consta de una presentación oral del 10 mín (estricto) y 10 min de
+    preguntas sobre el trabajo
+
+===== PAGINA 7 =====
+
+Introducción al Aprendizaje Automático
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+Centro de Inteligencia Computacional
+
+===== PAGINA 8 =====
+
+¿Qué es aprendizaje?
+
+                          … es el proceso mediante el cual un sistema (humano, animal o máquina)
+                          adquiere, modifica o mejora su comportamiento o conocimiento a partir de
+                          la experiencia o la información del entorno, permitiéndole adaptarse y
+                          responder mejor a situaciones futuras.
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026<                                                 8<<<<
+
+===== PAGINA 9 =====
+
+¿Qué es aprendizaje?
+
+                            … es el proceso mediante el cual un sistema (humano, animal o máquina)
+                            adquiere, modifica o mejora su comportamiento o conocimiento a partir
+                            de la experiencia o la información del entorno, permitiéndole adaptarse y
+                            responder mejor a situaciones futuras.
+
+
+
+                            ¿Y el aprendizaje automático?
+
+“Campo de estudio que confiere a los ordenadores la capacidad de
+aprender sin ser programados explícitamente” Arthur Samuel (1959)
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                        9
+
+===== PAGINA 10 =====
+
+¿sin ser programados explícitamente?
+“Campo de estudio que confiere a los ordenadores la capacidad de aprender
+sin ser programados explícitamente” Arthur Samuel (1959)
+
+      Programación“tradicional”
+
+      Datos                     Programa
+
+
+
+
+                 Ordenador
+
+
+
+
+                    Output
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                             10
+
+===== PAGINA 11 =====
+
+¿sin ser programados explícitamente?
+“Campo de estudio que confiere a los ordenadores la capacidad de aprender
+sin ser programados explícitamente” Arthur Samuel (1959)
+
+      Programación“tradicional”
+
+      Datos                     Programa
+
+
+                                                  Ejemplos:
+
+                 Ordenador                            Ordenar una lista de números
+                                                      Verificador de contraseña
+                                                      Contador de palabras
+
+
+
+                    Output
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                      11
+
+===== PAGINA 12 =====
+
+¿sin ser programados explícitamente?
+“Campo de estudio que confiere a los ordenadores la capacidad de aprender
+sin ser programados explícitamente” Arthur Samuel (1959)
+
+      Programación“tradicional”
+
+    379210                  Ordena una lista de números
+                                                  for i in range(len(nums)):
+                                                    for j in range(i + 1, len(nums)):
+                                                       if nums[i] > nums[j]:
+                 Ordenador                                nums[i], nums[j] = nums[j], nums[i]
+                                                  print(nums)
+
+
+
+
+                 012379
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 12
+
+===== PAGINA 13 =====
+
+¿sin ser programados explícitamente?
+“Campo de estudio que confiere a los ordenadores la capacidad de aprender
+sin ser programados explícitamente” Arthur Samuel (1959)
+
+      Programación“tradicional”                    Aprendizaje Automático
+ Datos (nuevos)                 Programa          Datos               Outputs
+
+
+
+
+                 Ordenador                                Ordenador             Ejemplos:
+
+                                                                                    Clasificador de spam
+                                                                                    Predictor del precio de una casa
+                                                                                    Identificación de pájaros
+                    Output                                Programa
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                 13
+
+===== PAGINA 14 =====
+
+Flujo de un programa de AA
+
+
+
+ Datos (nuevos)                 Programa          Datos               Outputs
+
+
+
+
+                 Ordenador                                Ordenador
+
+
+
+
+                    Output                                Programa
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                 14
+
+===== PAGINA 15 =====
+
+Flujo de un programa de AA
+
+ Ejemplo: Clasificador de spam
+
+
+ Nuevo correo              Clasificador Spam      Correos               Spam (marcar como spam)
+
+
+
+
+                 Ordenador                                  Ordenador
+
+
+
+
+                                                      Clasificador Spam
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   15
+
+===== PAGINA 16 =====
+
+Flujo de un programa de AA
+
+ Ejemplo: Clasificador de spam
+                                                                                Etiquetar (label)
+
+ Nuevo correo              Clasificador Spam      Correos               Spam (marcar como spam)
+
+
+
+
+                 Ordenador                                  Ordenador
+
+
+
+
+                                                      Clasificador Spam
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     16
+
+===== PAGINA 17 =====
+
+Ventajas del Aprendizaje Automático
+
+¿Cómo haríamos un detector de spam con programación “tradicional”?
+
+
+    Programación“tradicional”
+
+       Datos           Programa detector de spam
+
+
+
+                                                 1-Observar decenas/cientos correos spam
+                 Ordenador                       2-Identificar patrones como el uso de ciertas palabras:
+                                                      por ej.: "gratis", "promoción“, uso de mayúsculas…
+                                                 3-Programar reglas específicas para estas palabras
+                                                 4-Evaluar la eficiencia del programa
+                                                 5-Volver al punto 2 si no estás satisfecho con el resultado
+                   Output
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                 17
+
+===== PAGINA 18 =====
+
+ Ventajas del Aprendizaje Automático
+Ejemplo Clasificador Spam: “tradicional”vs Aprendizaje Automático
+Programación“tradicional”                                 Aprendizaje Automático
+1-Observar decenas/cientos correos spam
+2-Identificar patrones como el uso de ciertas palabras:
+     por ej.: "gratis", "promoción“, uso de mayúsculas
+3-Programar reglas específicas para estas palabras
+4-Evaluar la eficiencia del programa
+5-Volver al punto 2 para mejorar resultado
+
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                 18
+
+===== PAGINA 19 =====
+
+¿Qué tipos de AA hay?
+ Varios criterios:
+
+ 1 - ¿Es el aprendizaje supervisado por el humano? (el más usado)
+
+ 2 - ¿Se aprende en tiempo real de un flujo de datos continuo?
+
+ 3 - ¿Qué estrategia usa para generalizar a nuevos datos?
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                      19
+
+===== PAGINA 20 =====
+
+¿Qué tipos de AA hay?
+ Varios criterios:
+
+ 1 - ¿Es el aprendizaje supervisado por el humano? (el más
+ usado)
+
+ 2 - ¿Se aprende en tiempo real de un flujo de datos continuo?
+
+ 3 - ¿Qué estrategia usa para generalizar a nuevos datos?
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                   20
+
+===== PAGINA 21 =====
+
+¿Cómo aprendemos?
+                                                                                                 4x
+
+ Identificar perro:
+ - viendo varios perros, extraemos rasgos característicos
+
+
+                           Agrupar juguetes por colores
+                           - observamos patrones en un grupo de juguetes, como forma o color, sin que
+                           nadie nos diga que son colores distintos
+
+
+                                         Aprender a caminar
+                                         - Probamos movimientos recibiendo feedback en base de
+                                         “caída/no caída”y vamos ajustando en cada intento
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                          21
+
+===== PAGINA 22 =====
+
+¿Cómo aprendemos?
+                                                                                                 4x
+
+ Identificar perro:
+ - viendo varios perros, extraemos rasgos característicos
+
+
+                           Agrupar juguetes por colores
+                           - observamos patrones en un grupo de juguetes, como forma o color, sin que
+                           nadie nos diga que son colores distintos
+
+
+                                         Aprender a caminar
+                                         - Probamos movimientos recibiendo feedback en base de
+                                         “caída/no caída”y vamos ajustando en cada intento
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                          22
+
+===== PAGINA 23 =====
+
+¿Cómo aprendemos?
+                                                                                                 4x
+
+ Identificar perro:
+ - viendo varios perros, extraemos rasgos característicos
+
+
+                           Agrupar juguetes por colores
+                           - observamos patrones en un grupo de juguetes, como forma o color, sin que
+                           nadie nos diga que son colores distintos
+
+
+                                         Aprender a caminar
+                                         - Probamos movimientos recibiendo feedback en base de
+                                         “caída/no caída”y vamos ajustando en cada intento
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                          23
+
+===== PAGINA 24 =====
+
+Tipos de Aprendizaje Automático
+                                                                              4x
+
+ Identificar perro -> Supervisado
+
+
+
+
+                           Agrupar juguetes por colores ->No supervisado
+
+
+
+
+                                         Aprender a caminar -> Por refuerzo
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                     24
+
+===== PAGINA 25 =====
+
+Aprendizaje supervisado
+
+ ¿Cómo funciona este tipo de aprendizaje?
+ Aprender una función que mapea entradas → salidas a partir de ejemplos etiquetados.
+
+
+
+
+                                                                                   4x
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                          25
+
+===== PAGINA 26 =====
+
+Aprendizaje supervisado                                            1
+
+
+
+
+                                                 Orejas de perro
+
+                                                                   0
+                                                                       0                   1
+                                                                           Cola de perro
+
+
+
+
+                                                                                               4x
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                      26
+
+===== PAGINA 27 =====
+
+Aprendizaje supervisado                                                                           1
+
+
+
+
+                                                                                Orejas de perro
+
+                                                                                                  0
+                                                                                                      0                   1
+                                                                                                          Cola de perro
+
+
+
+
+                                                                                                                              4x
+
+
+
+  ¿Qué queremos?
+  • Una buena estrategia para de etiquetar (clasiﬁcar) nuevos datos
+                        módulo 1, y más en profundidad en módulo 2 y módulo 3
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                     27
+
+===== PAGINA 28 =====
+
+Aprendizaje no supervisado
+ Agrupar juguetes por colores ->No supervisado
+                                                                                módulo 4
+ ¿Cómo funciona este tipo de aprendizaje?
+ Algoritmos diseñados para buscar patrones en los datos
+
+
+
+
+  ¿Qué queremos?
+  • Encontrar patrones en los datos que los agrupen de la mejor forma posible
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                             28
+
+===== PAGINA 29 =====
+
+Aprendizaje no supervisado
+  Agrupar juguetes por colores ->No supervisado
+                                                           módulo 4
+  ¿Como funciona este tipo de aprendizaje?
+  Algoritmos diseñados para buscar patrones en los datos
+
+
+   1
+
+
+
+R
+(RGB)
+
+
+   0
+         0                         1
+              G
+              (RGB)
+  Aprendizaje Automático – ©Carlos Bibián, 2026                       29
+
+===== PAGINA 30 =====
+
+Aprendizaje no supervisado
+  Agrupar juguetes por colores ->No supervisado
+                                                           módulo 4
+  ¿Como funciona este tipo de aprendizaje?
+  Algoritmos diseñados para buscar patrones en los datos
+
+
+   1
+
+
+
+R
+(RGB)
+
+
+   0
+         0                         1
+              G
+              (RGB)
+  Aprendizaje Automático – ©Carlos Bibián, 2026                       30
+
+===== PAGINA 31 =====
+
+Aprendizaje no supervisado
+  Agrupar juguetes por colores ->No supervisado
+                                                           módulo 4
+  ¿Como funciona este tipo de aprendizaje?
+  Algoritmos diseñados para buscar patrones en los datos
+
+
+   1
+
+
+
+R
+(RGB)
+
+
+   0
+         0                         1
+              G
+              (RGB)
+  Aprendizaje Automático – ©Carlos Bibián, 2026                       31
+
+===== PAGINA 32 =====
+
+Aprendizaje por refuerzo
+ Aprender a caminar -> Por refuerzo
+
+ ¿Como funciona este tipo de aprendizaje?
+ • Aprende a tomar decisiones óptimas interactuando con un entorno (y recibiendo feedback
+   indirecto (incluso diferido)
+
+
+
+ Diferente a otros métodos ya que no se dice cual es la acción correcta, se
+ descubre mediante prueba y error, recibiendo recompensas cuando algo
+ está bien y castigos cuando se equivoca
+ • No hay un mapeo directo entre entrada y salida (como en supervisado)
+ • El agente aprende una política que maximiza recompensas
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                              32
+
+===== PAGINA 33 =====
+
+Aprendizaje por refuerzo
+ Ejemplo
+ Imagina que quieres entrenar a un robot para salir de un laberinto:
+
+       •Cada vez que avanza hacia la salida, recibe una pequeña
+        recompensa.
+
+       •Si choca contra una pared, recibe una penalización.
+
+       •Al final, cuando logra salir, recibe una gran recompensa.
+
+ Tras repetir este proceso muchas veces, el robot aprende el camino
+ más rápido para salir del laberinto sin que nadie se lo haya explicado
+ directamente.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                            33
+
+===== PAGINA 34 =====
+
+Aprendizaje por refuerzo
+ Más ejemplos
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   34
+
+===== PAGINA 35 =====
+
+Ejemplos de aplicación
+     Diagnóstico de imágenes médicas (supervisado)
+
+     Control de prótesis robóticas (por refuerzo)
+
+     Análisis genómico en ciencia: analizar grandes volúmenes de datos genéticos para detectar patrones clave. (no
+     supervisado)
+
+     Fraude financiero: detectar patrones de transacciones fraudulentas (supervisado)
+
+     Segmentación de clientes para recomendación personalizada (no supervisado)
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                       35
+
+===== PAGINA 36 =====
+
+¿Qué tipos de AA hay?
+ Varios criterios:
+
+ 1 - ¿Es el aprendizaje supervisado por el humano? (el más usado)
+
+ 2 - ¿Se aprende en tiempo real de un flujo de datos continuo?
+
+ 3 - ¿Qué estrategia usa para generalizar a nuevos datos?
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                      36
+
+===== PAGINA 37 =====
+
+¿Qué tipos de AA hay?
+ Varios criterios:
+
+ 1 - ¿Es el aprendizaje supervisado por el humano? (el más usado)
+
+ 2 - ¿Se aprende en tiempo real de un flujo de datos continuo?
+
+ 3 - ¿Qué estrategia usa para generalizar a nuevos datos?
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                      37
+
+===== PAGINA 38 =====
+
+¿Batch vs Online Learning?
+
+
+
+Batch/offline Learning                                 Online Learning
+
+                                                       Aprende de forma continua a partir de datos individuales o
+Aprende una vez y a partir de todos los datos
+                                                       pequeños paquetes de datos / mini-batches
+El entrenamiento suele ocupar muchos recursos: CPU,
+                                                       Entrenamiento “ligero” ya que debe ocurrir en tiempo real
+memoria…
+Si quieres adaptar el algoritmo a nuevos datos debes
+                                                       Se adapta a los nuevos datos de forma continua
+reentrenarlo totalmente (coste alto)
+                                                       Una secuencia de datos ruidosos podría arruinar el
+Robusto si una parte de los datos es ruidosa           funcionamiento por un tiempo. *Importante definir como de rápido
+                                                       se adapta a nuevos datos (learning rate)
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                    38
+
+===== PAGINA 39 =====
+
+¿Batch vs Online Learning?
+
+
+
+Batch/offline Learning                                 Online Learning
+
+                                                       Aprende de forma continua a partir de datos individuales o
+Aprende una vez y a partir de todos los datos
+                                                       pequeños paquetes de datos / mini-batches
+El entrenamiento suele ocupar muchos recursos: CPU,
+                                                       Entrenamiento “ligero” ya que debe ocurrir en tiempo real
+memoria…
+Si quieres adaptar el algoritmo a nuevos datos debes
+                                                       Se adapta a los nuevos datos de forma continua
+reentrenarlo totalmente (coste alto)
+                                                       Una secuencia de datos ruidosos podría arruinar el
+Robusto si una parte de los datos es ruidosa           funcionamiento por un tiempo. *Importante definir cómo de rápido
+                                                       se adapta a nuevos datos (learning rate)
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                    39
+
+===== PAGINA 40 =====
+
+¿Batch vs Online Learning?
+
+ Caso especial (out-of-core learning)
+
+ En entornos de poca memoria y/o muchos datos las estrategias de online learning
+ pueden ser muy útiles:
+
+     - Permiten aprender de los datos en mini-batches sin necesidad de guardarlos
+ todos en memoria/disco
+
+     - Entrenar offline pero aplicando métodos de online learning sería algo así como
+ aprendizaje incremental
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                          40
+
+===== PAGINA 41 =====
+
+¿Qué tipos de AA hay?
+ Varios criterios:
+
+ 1 - ¿Es el aprendizaje supervisado por el humano? (el más usado)
+
+ 2 - ¿Se aprende en tiempo real de un flujo de datos continuo?
+
+ 3 - ¿Qué estrategia usa para generalizar a nuevos datos?
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                      41
+
+===== PAGINA 42 =====
+
+¿Qué tipos de AA hay?
+ Varios criterios:
+
+ 1 - ¿Es el aprendizaje supervisado por el humano? (el más usado)
+
+ 2 - ¿Se aprende en tiempo real de un flujo de datos continuo?
+
+ 3 - ¿Qué estrategia usa para generalizar a nuevos datos?
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                      42
+
+===== PAGINA 43 =====
+
+¿Cómo generaliza a nuevos datos?
+
+
+
+
+Instance-Based Learning                            Model-Based Learning
+
+Literalmente “aprender de memoria”                 A partir de los datos, crea un modelo que los representa
+
+Se usan los datos para predecir – cual y cómo      Es el modelo lo que se usa para generalizar/predecir
+es el dato más parecido                            para datos nuevos
+Necesitamos definir como se evalúa esa             Necesitamos definir cómo construir en modelo a partir
+similitud entre datos                              de datos
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                           43
+
+===== PAGINA 44 =====
+
+¿Cómo generaliza a nuevos datos?
+
+
+
+
+Instance-Based Learning                            Model-Based Learning
+
+Literalmente “aprender de memoria”                 A partir de los datos, crea un modelo que los representa
+
+Se usan los datos para predecir – cuál y cómo      Es el modelo lo que se usa para generalizar/predecir
+es el dato más parecido                            para datos nuevos
+Necesitamos definir cómo se evalúa esa             Necesitamos definir cómo construir en modelo a partir
+similitud entre datos                              de datos
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                           44
+
+===== PAGINA 45 =====
+
+Muy interesante pero…
+
+                                                            e        !¿y los L
+                                                  !¿Dónd                      LM?!
+                                                             s
+                                                  están la
+                                                    redes
+                                                    r o n al e s!?
+                                                 neu
+                                                        ”
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                       45
+
+===== PAGINA 46 =====
+
+IA vs AA vs DL
+                                                 Cualquier simulación/imitación de la
+                                                 inteligencia   humana  en     máquinas.
+                                                 Máquinas programadas para imitar
+                                                 razonamiento humano, aprender o
+ Metodología de entrenar sistemas                resolver problemas.
+ para que sean capaces de aprender a
+ partir de datos pasados para hacer
+ predicciones.
+
+
+
+                                                               Sistemas de aprendizaje automático
+                                                               inspirados en las redes neuronales
+Redes neuronales grandes                                       humanas: formadas por neuronas
+con múltiples capas (>3)                                       conectadas para aprender las
+                                                               relaciones entre inputs y outputs
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                             46
+
+===== PAGINA 47 =====
+
+¿Donde se sitúa esta materia?
+                                                 Cualquier simulación/imitación de la
+                                                       Sistemas
+                                                 inteligencia      de Inteligencia
+                                                                humana    en   máquinas.
+                                                 Maquinas Artificial
+                                                              programadas
+                                                                        (SIA)para imitar
+                                                 razonamiento humano, aprender o
+ Metodología de entrenar sistemas                resolver problemas.
+ para que sean capaces de aprender
+ a partir de datos pasados para
+ hacer predicciones.
+
+
+
+                                                               Sistemas de aprendizaje automático
+                                                               inspirados en las redes neuronales
+Redes neuronales grandes                                       humanas: formadas por neuronas
+con múltiples capas (>3)                                       conectadas para aprender las
+                                                               relaciones entre inputs y outputs
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                             47
+
+===== PAGINA 48 =====
+
+Objetivos de la materia
+               Módulo 1 – Fundamentos y supervisado clásico
+                 Comprender los principios teóricos del aprendizaje supervisado y la estructura de un proyecto de ML supervisado.
+                 Analizar métricas y procesos de validación para evaluar modelos básicos.
+
+
+               Módulo 2 – Clasificadores supervisados
+                 Explorar el funcionamiento interno de clasificadores clásicos (KNN, SVM, árboles).
+                 Comparar su comportamiento y supuestos en distintos contextos de datos.
+
+
+               Módulo 3 – Teoría del aprendizaje y mejora de modelos
+                 Desarrollar criterios de diagnóstico y optimización (bias-variance, regularización, tuning).
+                 Entender la selección de modelos y estrategias para evitar errores comunes – Consejos prácticos y buenas prácticas
+
+
+               Módulo 4 – No supervisado y feature engineering
+                 Comprender los métodos de clustering y reducción de dimensionalidad y su aplicación.
+                 Integrar técnicas de preprocesamiento y representación para mejorar el rendimiento del modelo.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        48
+
+===== PAGINA 49 =====
+
+Objetivos de la materia
+               Módulo 1 – Fundamentos y supervisado clásico
+                 Comprender los principios teóricos del aprendizaje supervisado y la estructura de un proyecto de ML supervisado.
+                 Analizar métricas y procesos de validación para evaluar modelos básicos.
+
+
+               Módulo 2 – Clasificadores supervisados
+                 Explorar el funcionamiento interno de clasificadores clásicos (KNN, SVM, árboles).
+                 Comparar su comportamiento y supuestos en distintos contextos de datos.
+
+
+               Módulo 3 – Teoría del aprendizaje y mejora de modelos
+                 Desarrollar criterios de diagnóstico y optimización (bias-variance, regularización, tuning).
+                 Entender la selección de modelos y estrategias para evitar errores comunes – Consejos prácticos y buenas prácticas
+
+
+               Módulo 4 – No supervisado y feature engineering
+                 Comprender los métodos de clustering y reducción de dimensionalidad y su aplicación.
+                 Integrar técnicas de preprocesamiento y representación para mejorar el rendimiento del modelo.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        49
+
+===== PAGINA 50 =====
+
+Objetivos de la materia
+               Módulo 1 – Fundamentos y supervisado clásico
+                 Comprender los principios teóricos del aprendizaje supervisado y la estructura de un proyecto de ML supervisado.
+                 Analizar métricas y procesos de validación para evaluar modelos básicos.
+
+
+               Módulo 2 – Clasificadores supervisados
+                 Explorar el funcionamiento interno de clasificadores clásicos (KNN, SVM, árboles).
+                 Comparar su comportamiento y supuestos en distintos contextos de datos.
+
+
+               Módulo 3 – Teoría del aprendizaje y mejora de modelos
+                 Desarrollar criterios de diagnóstico y optimización (bias-variance, regularización, tuning).
+                 Entender la selección de modelos y estrategias para evitar errores comunes – Consejos prácticos y buenas prácticas
+
+
+               Módulo 4 – No supervisado y feature engineering
+                 Comprender los métodos de clustering y reducción de dimensionalidad y su aplicación.
+                 Integrar técnicas de preprocesamiento y representación para mejorar el rendimiento del modelo.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        50
+
+===== PAGINA 51 =====
+
+Objetivos de la materia
+               Módulo 1 – Fundamentos y supervisado clásico
+                 Comprender los principios teóricos del aprendizaje supervisado y la estructura de un proyecto de ML supervisado.
+                 Analizar métricas y procesos de validación para evaluar modelos básicos.
+
+
+               Módulo 2 – Clasificadores supervisados
+                 Explorar el funcionamiento interno de clasificadores clásicos (KNN, SVM, árboles).
+                 Comparar su comportamiento y supuestos en distintos contextos de datos.
+
+
+               Módulo 3 – Teoría del aprendizaje y mejora de modelos
+                 Desarrollar criterios de diagnóstico y optimización (bias-variance, regularización, tuning).
+                 Entender la selección de modelos y estrategias para evitar errores comunes – Consejos prácticos y buenas prácticas
+
+
+               Módulo 4 – No supervisado y feature engineering
+                 Comprender los métodos de clustering y reducción de dimensionalidad y su aplicación.
+                 Integrar técnicas de preprocesamiento y representación para mejorar el rendimiento del modelo.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                        51
+
+===== PAGINA 52 =====
+
+¿Dudas hasta aquí?
+ Módulo 1 – Fundamentos y supervisado clásico
+ Módulo 2 – Clasificadores supervisados
+ Módulo 3 – Teoría del aprendizaje y mejora de modelos
+ Módulo 4 – No supervisado y feature engineering
+
+
+
+
+                                                   4x
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026          52
+
+===== PAGINA 53 =====
+
+Estructura de un proyecto de ML
+supervisado
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+Centro de Inteligencia Computacional
+
+===== PAGINA 54 =====
+
+… en la presentación anterior
+Aprendizaje supervisado                                                                      1
+
+
+
+
+                                                                           Orejas de perro
+
+                                                                                             0
+                                                                                                 0                   1
+                                                                                                     Cola de perro
+
+
+                                                                                                                         4x
+
+
+   ¿Qué queremos?
+   • Una buena estrategia para de etiquetar (clasificar) nuevos datos
+                         módulo 1, y más en profundidad en módulo 2 y módulo 3
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                               54
+
+===== PAGINA 55 =====
+
+… en la presentación anterior
+Aprendizaje supervisado                                                                   1
+
+
+
+
+                                                                        Orejas de perro
+
+                                                                                          0
+                                                                                              0                   1
+                                                                                                  Cola de perro
+
+
+                      1. Obtener y preparar los datos                                                                 4x
+
+
+   ¿Qué queremos?
+   • Una buena estrategia para de etiquetar (clasificar) nuevos datos
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                            55
+
+===== PAGINA 56 =====
+
+… en la presentación anterior
+Aprendizaje supervisado                                                                   1
+
+
+
+
+                                                                        Orejas de perro
+
+                                                                                          0
+                                                                                              0                   1
+                                                                                                  Cola de perro
+
+
+                      1. Obtener y preparar los datos                                                                 4x
+
+
+   ¿Qué queremos? 2. Elegir una estrategia de aprendizaje (algoritmo)
+   • Una buena estrategia para de etiquetar (clasificar) nuevos datos
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                            56
+
+===== PAGINA 57 =====
+
+ … en la presentación anterior
+   Aprendizaje supervisado                                                                    1
+
+
+
+
+                                                                            Orejas de perro
+
+                                                                                              0
+                                                                                                  0                   1
+                                                                                                      Cola de perro
+
+
+                          1. Obtener y preparar los datos                                                                 4x
+
+
+       ¿Qué queremos? 2. Elegir una estrategia de aprendizaje (algoritmo)
+       • Una buena estrategia para de etiquetar (clasificar) nuevos datos
+3. Definir cómo evaluar el aprendizaje
+
+      Aprendizaje Automático – ©Carlos Bibián, 2026                                                                            57
+
+===== PAGINA 58 =====
+
+ … en la presentación anterior
+   Aprendizaje supervisado                                                                    1
+
+
+
+
+                                                                            Orejas de perro
+
+                                                                                              0
+                                                                                                  0                   1
+                                                                                                      Cola de perro
+
+
+                          1. Obtener y preparar los datos                                                                   4x
+
+
+       ¿Qué queremos? 2. Elegir una estrategia de aprendizaje (algoritmo)
+       • Una buena estrategia para de etiquetar (clasificar) nuevos datos
+3. Definir cómo evaluar el aprendizaje                                                        4. Evaluar cómo funcionará en datos nuevos
+
+      Aprendizaje Automático – ©Carlos Bibián, 2026                                                                               58
+
+===== PAGINA 59 =====
+
+Estructura de un proyecto ML
+
+ 1. Obtener y preparar los datos
+
+
+ 2. Elegir una estrategia de aprendizaje (algoritmo)
+
+
+3. Definir cómo evaluar el aprendizaje
+
+
+ 4. Evaluar cómo funcionará en datos nuevos
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026       59
+
+===== PAGINA 60 =====
+
+Estructura de un proyecto ML (ejemplo)
+                                                       Diagnóstico precoz de alzheimer
+
+
+ 1. Obtener y preparar los datos
+
+
+ 2. Elegir una estrategia de aprendizaje (algoritmo)
+
+
+3. Definir cómo evaluar el aprendizaje
+
+
+ 4. Evaluar cómo funcionará en datos nuevos
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                         60
+
+===== PAGINA 61 =====
+
+Estructura de un proyecto ML
+                                                       Diagnóstico precoz de alzheimer
+                                                       1.1 Hablar con neurólogos/leer para entender cómo se puede hacer.
+ 1. Obtener y preparar los datos                       1.2 Obtener imágenes de MRI y etiquetarlas (diagnóstico positivo y
+                                                       negativo)
+                                                       1.3 Extraer información de las imágenes en base a la info extraída:
+ 2. Elegir una estrategia de aprendizaje (algoritmo)   - descriptores de forma, contraste, color, textura.
+
+
+
+3. Definir como evaluar el aprendizaje
+
+
+ 4. Evaluar como funcionará en datos nuevos
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  61
+
+===== PAGINA 62 =====
+
+Estructura de un proyecto ML
+                                                       Diagnóstico precoz de alzheimer
+                                                       1.1 Hablar con neurólogos/leer para entender cómo se puede hacer.
+ 1. Obtener y preparar los datos                       1.2 Obtener imágenes de MRI y etiquetarlas (diagnóstico positivo y
+                                                       negativo)
+                                                       1.3 Extraer información de las imágenes en base a la info extraída:
+ 2. Elegir una estrategia de aprendizaje (algoritmo)   - descriptores de forma, contraste, color, textura…
+                                                       2.1 Viendo los datos y estado del arte, elegimos SVM (por ejemplo)
+
+3. Definir como evaluar el aprendizaje
+
+
+ 4. Evaluar como funcionará en datos nuevos
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  62
+
+===== PAGINA 63 =====
+
+Estructura de un proyecto ML
+                                                       Diagnostico precoz de alzheimer
+                                                       1.1 Hablar con neurólogos/leer para entender cómo se puede hacer.
+ 1. Obtener y preparar los datos                       1.2 Obtener imágenes de MRI y etiquetarlas (diagnóstico positivo y
+                                                       negativo)
+                                                       1.3 Extraer información de las imágenes en base a la info extraída:
+ 2. Elegir una estrategia de aprendizaje (algoritmo)   - descriptores de forma, contraste, color, textura…
+                                                       2.1 Viendo los datos y estado del arte, elegimos SVM (por ejemplo)
+                                                       3.1 Elegimos una métrica que penalice más el falso negativo para evitar
+3. Definir cómo evaluar el aprendizaje                 no detectar un posible caso positivo
+
+
+
+ 4. Evaluar como funcionará en datos nuevos
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  63
+
+===== PAGINA 64 =====
+
+Estructura de un proyecto ML
+                                                       Diagnostico precoz de alzheimer
+                                                       1.1 Hablar con neurólogos/leer para entender cómo se puede hacer.
+ 1. Obtener y preparar los datos                       1.2 Obtener imágenes de MRI y etiquetarlas (diagnóstico positivo y
+                                                       negativo)
+                                                       1.3 Extraer información de las imágenes en base a la info extraída:
+ 2. Elegir una estrategia de aprendizaje (algoritmo)   - descriptores de forma, contraste, color, textura…
+                                                       2.1 Viendo los datos y estado del arte, elegimos SVM (por ejemplo)
+                                                       3.1 Elegimos una métrica que penalice más el falso negativo para evitar
+3. Definir cómo evaluar el aprendizaje                 no detectar un posible caso positivo
+                                                       4.1 Probamos el sistema (pasos 1 a 3) en datos nuevos
+
+ 4. Evaluar cómo funcionará en datos nuevos
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  64
+
+===== PAGINA 65 =====
+
+Principales retos del ML
+
+  No tener suficientes datos
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   65
+
+===== PAGINA 66 =====
+
+Principales retos del ML
+
+  No tener suficientes datos
+
+  Que los datos no sean representativos del problema a resolver (sampling bias)
+
+  1948 Chicago Tribune.
+   - Encuestas hechas por teléfono
+   - En esa época las personas con bajo nivel adquisitivo no
+  tenían teléfono, pero (obviamente) sí votaban.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                   66
+
+===== PAGINA 67 =====
+
+Principales retos del ML
+
+  No tener suficientes datos
+
+  Que los datos no sean representativos del problema a resolver (sampling bias)
+
+  1948 Chicago Tribune.
+   - Encuestas hechas por teléfono
+   - En esa época las personas con bajo nivel adquisitivo no
+  tenían teléfono, pero (obviamente) sí votaban.
+
+  Survival bias.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                   67
+
+===== PAGINA 68 =====
+
+Principales retos del ML
+
+  No tener suficientes datos
+
+  Que los datos no sean representativos del problema a resolver (sampling bias)
+
+  Mala calidad de los datos
+
+  Parte importante de nuestro tiempo en un proyecto se va en esto:
+  - outliers, datos faltantes, errores en la obtención de datos, ruido...
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                   68
+
+===== PAGINA 69 =====
+
+Principales retos del ML
+
+  No tener suficientes datos
+
+  Que los datos no sean representativos del problema a resolver (sampling bias)
+
+  Mala calidad de los datos
+
+  Variables/características irrelevantes para el problema
+
+  Seleccionar/crear nuevas características es una parte crítica de un proyecto ML
+  - Tanto en el diseño del proyecto (antes de obtención de datos) como después a la hora
+  de seleccionar características o “extraer” nuevas combinando otras.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                            69
+
+===== PAGINA 70 =====
+
+Principales retos del ML
+
+  No tener suficientes datos
+
+  Que los datos no sean representativos del problema a resolver (sampling bias)
+
+  Mala calidad de los datos
+
+  Variables/características irrelevantes para el problema
+
+  Underfitting/overfitting
+
+  Pocos datos y un modelo muy complejo pueden llevarnos a overfitting
+    - Grabar más datos o implementar un algoritmo más simple, además de algunas
+  buenas prácticas, pueden reducir el overfitting
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                   70
+
+===== PAGINA 71 =====
+
+Estructura de un proyecto ML
+
+ 1. Obtener y preparar los datos
+
+
+ 2. Elegir una estrategia de aprendizaje (algoritmo)
+
+
+3. Definir cómo evaluar el aprendizaje
+
+
+ 4. Evaluar cómo funcionará en datos nuevos
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026       71
+
+===== PAGINA 72 =====
+
+Próxima clase
+                                                       - No tener suficientes datos
+                                                       - Tener datos que no representan el problema
+ 1. Obtener y preparar los datos                       - Mala calidad de los datos
+                                                       - Características (features) irrelevantes
+
+ 2. Elegir una estrategia de aprendizaje (algoritmo)
+
+                                                       - Underfitting
+3. Definir como evaluar el aprendizaje
+                                                       - Overfitting
+
+ 4. Evaluar como funcionará en datos nuevos                                                       4x
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                       72
+
+===== PAGINA 73 =====
+
+Próxima clase
+                                                            - No tener suficientes datos
+                                                            - Tener datos que no representan el problema
+ 1. Obtener y preparar los datos                            - Mala calidad de los datos
+                                                            - Características (features) irrelevantes
+
+ 2. Elegir una estrategia de aprendizaje (algoritmo)
+
+                                                              - Underfitting
+3. Definir
+    Todo elcomo  evaluar
+             proceso     el que
+                     desde  aprendizaje
+                                definimos el problema hasta que llegamos a tener
+                                                              - Overfitting
+    unas variables relevantes para poder resolverlo – Clase siguiente
+
+ 4. Evaluar como funcionará en datos nuevos                                                            4x
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                            73
+
+===== PAGINA 74 =====
+
+ ¿dudas?
+
+            1. Obtener y preparar los datos           4x
+
+
+
+2. Elegir una estrategia de aprendizaje (algoritmo)
+
+
+
+       3. Definir cómo evaluar el aprendizaje
+
+
+
+   4. Evaluar cómo funcionará en datos nuevos
+
+
+
+
+     Aprendizaje Automático – ©Carlos Bibián, 2026         74
+
