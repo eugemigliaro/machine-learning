@@ -1,5 +1,5 @@
 <!-- course-title:start -->
-# Course Wiki Template
+# Machine Learning
 <!-- course-title:end -->
 
 [English](README.en.md)
