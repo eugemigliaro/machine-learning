@@ -3,3 +3,4 @@ T01	teoria	Introducción al Aprendizaje Automático	material/catedra/teoria/Clas
 T02	teoria	Datos, variables, overfitting y métricas	material/catedra/teoria/Clase 2 Datos, variables, overfitting y métricas.pptx.pdf	97	2026	vigente	Clase 2 Datos, variables, overfitting y métricas.pptx.pdf
 T03	teoria	EDA, feature selection, regularización y métricas	material/catedra/teoria/Clase 3. EDA, Feature selection, Regularización y Métricas.pdf	102	2026	vigente	Clase 3. EDA, Feature selection, Regularización y Métricas.pdf
 P01	practica	TP1: Regresión e introducción a la evaluación de modelos	material/catedra/practica/TP1. Regresión e Introducción a la evaluación de modelos.pdf	3	2026	vigente	TP1. Regresión e Introducción a la evaluación de modelos.pdf
+D01	dataset	Insurance Charges	material/externo/datasets/insurance.csv			vigente	insurance.csv

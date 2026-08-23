@@ -26,3 +26,4 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 | T02 | Datos, variables, overfitting y métricas | Preparación de datos, regresión y particiones. |
 | T03 | EDA, feature selection, regularización y métricas | Flujo de proyecto, selección, regularización y evaluación. |
 | P01 | TP1: Regresión e introducción a la evaluación de modelos | Consigna práctica vigente del ciclo 2026. |
+| D01 | Insurance Charges | Dataset externo elegido para resolver el TP1. |
