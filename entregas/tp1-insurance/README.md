@@ -25,6 +25,21 @@ Abrir `tp1_insurance.ipynb`. El notebook fija semillas aleatorias, valida el esq
 
 El notebook fue verificado con Python 3.14.4 y las dependencias globales documentadas en `requirements.txt`.
 
+## Presentación
+
+- `presentacion_tp1_insurance.pptx`: presentación editable de 11 diapositivas; las primeras 9 forman la exposición de 10 minutos y las últimas 2 son de respaldo.
+- `presentacion_tp1_insurance.pdf`: copia lista para revisar o presentar.
+- `guion_defensa.md`: tiempos, relato sugerido y respuestas a preguntas probables.
+- `presentacion.md`: fuente editable de la presentación.
+
+Para regenerar gráficos y archivos de presentación se requieren `pandoc` y LibreOffice además de las dependencias Python:
+
+```bash
+python3 generar_graficos_presentacion.py
+pandoc presentacion.md --to=pptx --slide-level=2 --output=presentacion_tp1_insurance.pptx
+libreoffice --headless --convert-to pdf --outdir . presentacion_tp1_insurance.pptx
+```
+
 ## Estado
 
 - Dataset elegido y registrado.
