@@ -24,10 +24,6 @@ El split 90/10 y los 10 folds se estratifican por `smoker`. En cross-validation 
 
 Las filas originales 195 y 581 contienen los mismos seis predictores y el mismo valor de `charges`. Se conserva la primera y se elimina la segunda de la copia de trabajo antes del split. Mantener ambas podría ubicar una en entrenamiento y otra en validación, produciendo una estimación optimista. El CSV `[D01]` no se modifica.
 
-## Pendiente de decidir con evidencia de validación
-
-- Valores de regularización L1 que se compararán sobre grado 2.
-
 ## Observaciones de integridad
 
 - El CSV tiene 1.338 observaciones, 7 columnas y no contiene valores faltantes. [D01]
@@ -65,3 +61,23 @@ Las filas originales 195 y 581 contienen los mismos seis predictores y el mismo 
 | 3 | 164 | 4.609,56 | 5.040,02 | 430,46 |
 
 El grado 2 queda como candidato actual: mejora aproximadamente 20 % el RMSE de validación respecto del lineal. El grado 3 reduce train pero empeora validación y aumenta la brecha, señal de complejidad excesiva frente a grado 2. [T02, pp. 52–53] [T02, pp. 76–77]
+
+## Comparación de regularización L1
+
+Sobre el polinomio de grado 2 se comparan `lambda` 1, 10, 100 y 1000 en los mismos diez folds. Las 44 columnas polinómicas se estandarizan dentro de cada fold antes de aplicar L1, porque la penalización depende de la escala de los predictores. [T03, p. 90]
+
+| Lambda | RMSE train | RMSE validación | Brecha | Coeficientes activos medios |
+|---:|---:|---:|---:|---:|
+| 0 (sin L1) | 4.795,02 | 4.908,79 | 113,77 | — |
+| 1 | 4.795,04 | 4.907,90 | 112,86 | 40,1 |
+| 10 | 4.796,78 | 4.899,64 | 102,86 | 39,0 |
+| 100 | 4.839,40 | **4.872,42** | 33,02 | 23,4 |
+| 1000 | 5.285,18 | 5.250,36 | -34,82 | 4,0 |
+
+`lambda=100` queda seleccionado porque alcanza el menor RMSE medio de validación. Mejora 36,37 (0,74 %) respecto del grado 2 sin L1 y obtiene menor RMSE en 7 de 10 folds. La magnitud es pequeña frente a la dispersión entre folds, por lo que se considera una mejora modesta. `lambda=1000` muestra penalización excesiva y subajuste. El candidato final pasa a ser grado 2 con L1 y `lambda=100`; test no se consultó para tomar esta decisión. [P01, pp. 2–3] [T02, p. 89]
+
+## Evaluación final
+
+Una vez congelada la configuración, se reentrena el pipeline de grado 2 con L1 y `lambda=100` sobre los 1.203 casos de desarrollo completos. El modelo final conserva 22 de los 44 coeficientes distintos de cero.
+
+La única evaluación sobre los 134 casos de test obtiene **RMSE 3.957,83**. Este valor es menor que el RMSE medio de validación de 4.872,42, pero no se usa para cambiar el modelo. Se reporta como estimación final para datos nuevos con la cautela de que test es pequeño y la validación mostró un desvío de 776,46 entre folds. [P01, p. 3] [T02, pp. 89, 94–96]

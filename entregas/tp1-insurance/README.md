@@ -36,4 +36,6 @@ El notebook fue verificado con Python 3.14.4 y las dependencias globales documen
 - Decisiones de outliers, características y preprocesamiento confirmadas.
 - Regresión lineal evaluada con 10-fold CV: RMSE medio 6.135,04 en train y 6.157,57 en validación.
 - Grados polinómicos 2 y 3 comparados: grado 2 obtiene el menor RMSE de validación, 4.908,79.
-- Pendiente: evaluar regularización L1 sobre el candidato de grado 2.
+- Regularización L1 evaluada sobre grado 2 con `lambda` 1, 10, 100 y 1000: `lambda=100` obtiene el menor RMSE de validación, 4.872,42.
+- Modelo final reentrenado con todo desarrollo: polinomio de grado 2 con L1 y `lambda=100`.
+- Evaluación única sobre los 134 casos de test completada: RMSE final 3.957,83.
