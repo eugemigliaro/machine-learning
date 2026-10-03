@@ -8,6 +8,14 @@ En una variable, la regresión lineal usa `ŷ = β0 + β1x`; durante el entrenam
 
 La regresión polinómica agrega transformaciones de mayor grado para representar relaciones no lineales. Aumentar el grado incrementa la capacidad y también la complejidad. [T02, p. 52]
 
+Hay otros regresores no lineales:
+
+- **kNN regresor:** promedia la `y` de los `k` vecinos más cercanos. Un `k` chico tiende al sobreajuste y un `k` grande suaviza, pero atenúa los máximos. [T09, p. 63] [T09, p. 65]
+- **Árbol regresor:** predice el promedio de `y` de la hoja. Más `max_depth` da una salida más ruidosa. [T09, p. 69] [T09, p. 70]
+- **Random Forest regresor:** menos propenso al sobreajuste y más robusto que un árbol. [T09, p. 72]
+
+Ver [kNN como regresor](aprendizaje-basado-en-instancias.md#knn-como-regresor) y [Árboles de regresión](arboles-de-decision.md#árboles-de-regresión).
+
 ## Underfitting y overfitting
 
 - **Underfitting / alto sesgo:** el modelo es demasiado simple para capturar la relación relevante.
@@ -25,3 +33,5 @@ El material propone aumentar datos cuando sea posible, reducir características,
 - [Evaluación y validación](evaluacion-y-validacion.md)
 - [Regularización](regularizacion.md)
 - [Trabajo práctico 1](tp1-regresion.md)
+- [Regresión logística](regresion-logistica.md): por qué la regresión lineal no sirve para producir probabilidades de clase. [T04, p. 17]
+- [Árboles de decisión](arboles-de-decision.md) y [Ensambles y Random Forest](ensambles-random-forest.md): pre-poda para limitar la complejidad y ensambles para reducir la varianza. [T07, p. 28] [T07, p. 57]

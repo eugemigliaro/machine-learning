@@ -1,0 +1,1457 @@
+FUENTE: T09
+TITULO: Aprendizaje basado en instancias
+ORIGINAL: material/catedra/teoria/Clase 9. Aprendizaje Basado en Instancias.pdf
+PAGINAS: 72
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+Plan de la sesión de hoy
+                                                    … en la sesión anterior
+-   Aprendizaje Basado en Instancias
+-   knn                                             -    Árboles de decisión
+-   weighted-knn
+                                                    -    Hiperparámetros
+-   ANN
+-   knn, DT y RF como regresores                    -    Random Forests
+
+===== PAGINA 2 =====
+
+Resumen
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 3 =====
+
+¿Cómo predice un Árbol de Decisión
+How does a Decision Tree predict?
+
+
+
+                                                     b<       b>
+a’                                                   b’       b’
+
+                                                          a < a’         a > a’
+
+
+                                                                   b<             b>
+                                                                   b’’            b’’
+                                                                            3
+
+
+
+
+                              b’              b’
+                                              ’
+     Aprendizaje Automático – ©Carlos Bibián, 2026                                      3
+
+===== PAGINA 4 =====
+
+Ajuste de hiperparámetros
+Hyperparameter Tunning
+
+
+
+
+                                                 4
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026       4
+
+===== PAGINA 5 =====
+
+DT vs RF vs ET
+Comparison
+
+
+
+
+                                  Decision Tree           Random Forest               Extra Trees
+
+    Selección de                  Todas las features      Subconjunto aleatorio       Subconjunto aleatorio de
+    feature                       disponibles             de features                 features
+                                                                                  5
+    Selección de                                                                      Evalúa un umbral aleatorio
+                                  Mejor umbral (óptimo)   Mejor umbral (óptimo)
+    umbral                                                                            por cada feature
+                                                          Mejor split dentro de       Mejor split entre esos
+    ¿Qué optimiza? Mejor split global
+                                                          features elegidas           candidatos aleatorios
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                 5
+
+===== PAGINA 6 =====
+
+Ejemplo
+Example
+
+
+
+
+                                                                            6
+
+
+
+
+               **Estamos usando solo dos características así que los random forests
+               pierden un poco de potencial en este ejemplo
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                        6
+
+===== PAGINA 7 =====
+
+Métodos basados en vecinos
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 8 =====
+
+Métodos basados en vecinos
+Neighbor-based methods
+
+
+
+
+Basar su estimación/clasiﬁcación en las propiedades de los valores cercanos
+Make predictions based on the characteristics of the nearest neighbors
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                               8
+
+===== PAGINA 9 =====
+
+Idea general formalizada
+Formalizing the general idea
+
+
+Suponemos continuidad local en nuestros datos
+We assume local continuity in our data.
+
+
+
+
+Instancias cercanas en el espacio de características deberían tener propiedades similares
+Nearby instances in the feature space are expected to have similar properties.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         9
+
+===== PAGINA 10 =====
+
+Aprendizaje perezoso
+Lazy Learning
+
+NO construyen un modelo explícito a partir de los datos
+They do NOT build an explicit model from the training data.
+
+
+Adoptan una estrategia de aprendizaje “perezosa” (lazy learning)
+Follow a lazy learning approach: learning is deferred until a prediction is needed.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                       10
+
+===== PAGINA 11 =====
+
+Aprendizaje perezoso
+Lazy Learning
+
+NO construyen un modelo explícito a partir de los datos
+They do NOT build an explicit model from the training data.
+
+
+Adoptan una estrategia de aprendizaje “perezosa” (lazy learning)
+Follow a lazy learning approach: learning is deferred until a prediction is needed.
+
+
+  - No aprenden de los datos, sino que posponen todo el computo para el momento de la predicción
+  Rather than learning an explicit model from the data, they defer most of the computation until prediction
+  time.
+
+  - Ante un dato nuevo, el algoritmo consulta los datos de entrenamiento para identiﬁcar instancias
+  cercanas e inferir el output
+  Given a new data point, the algorithm searches the training set for its nearest neighbors and uses them to
+  infer the output.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           11
+
+===== PAGINA 12 =====
+
+Aprendizaje Basado en Instancias vs Modelo
+Instance vs Model - Based Learning
+
+
+
+
+Instance-Based Learning                            Model-Based Learning
+
+Literalmente “aprender de memoria”                 A partir de los datos, crea un modelo que los representa
+
+Se usan los datos para predecir – cuál y cómo es   Es el modelo lo que se usa para generalizar/predecir para
+el dato más parecido                               datos nuevos
+Necesitamos deﬁnir cómo se evalúa esa similitud    Necesitamos deﬁnir cómo construir en modelo a partir de
+entre datos                                        datos
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                               12
+
+===== PAGINA 13 =====
+
+Aprendizaje Basado en Instancias vs Modelo
+Instance vs Model - Based Learning
+
+
+
+
+Instance-Based Learning                            Model-Based Learning
+
+Literalmente “aprender de memoria”                 A partir de los datos, crea un modelo que los representa
+
+Se usan los datos para predecir – cuál y cómo es   Es el modelo lo que se usa para generalizar/predecir para
+el dato más parecido                               datos nuevos
+Necesitamos deﬁnir cómo se evalúa esa similitud    Necesitamos deﬁnir cómo construir en modelo a partir de
+entre datos                                        datos
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                               13
+
+===== PAGINA 14 =====
+
+Aprendizaje Basado en Instancias
+Instance-Based Learning
+
+Implicaciones / Implications
+ • Fase de entrenamiento prácticamente inexistente (lazy learning)
+Virtually no training phase (lazy learning).
+
+
+ • La complejidad se traslada a la etapa de inferencia/predicción
+Computational complexity shifts to the inference/prediction stage.
+
+
+ • La calidad de la predicción depende mucho de los datos (y la correcta elección de hiperparámetros
+   y métricas)
+Prediction quality strongly depends on the training data, as well as the choice of hyperparameters and
+distance metrics.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          14
+
+===== PAGINA 15 =====
+
+k-vecinos más cercanos
+k-nearest neighbours (knn)
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 16 =====
+
+K-vecinos más cercanos (knn)
+k-nearest neighbours (knn)
+
+- Algoritmo más característico de esta familia.
+The most representative algorithm in this family.
+
+- Dada una nueva instancia, identiﬁca los k vecinos más cercanos en el conjunto de entrenamiento y
+le asigna la clase más frecuente entre esos vecinos.
+Given a new instance, it identiﬁes the k nearest neighbors in the training set and assigns the most frequent
+class among them.
+
+- K es el número de vecinos a considerar (¡hiperparámetro!): cuántos vecinos mirar.
+K is the number of neighbors to consider (a hyperparameter!): how many neighbors to look at.
+
+- Simple, pero muy competitivo y capaz de captar estructuras complejas.
+Simple yet highly competitive, with the ability to capture complex patterns in the data.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                16
+
+===== PAGINA 17 =====
+
+K-vecinos más cercanos (knn)
+k-nearest neighbours (knn)
+
+- Algoritmo más característico de esta familia.
+The most representative algorithm in this family.
+
+- Dada una nueva instancia, identiﬁca los k vecinos más cercanos en el conjunto de entrenamiento y
+le asigna la clase más frecuente entre esos vecinos.
+Given a new instance, it identiﬁes the k nearest neighbors in the training set and assigns the most frequent
+class among them.
+
+- K es el número de vecinos a considerar (¡hiperparámetro!): cuántos vecinos mirar.
+K is the number of neighbors to consider (a hyperparameter!): how many neighbors to look at.
+
+- Simple, pero muy competitivo y capaz de captar estructuras complejas.
+Simple yet highly competitive, with the ability to capture complex patterns in the data.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                17
+
+===== PAGINA 18 =====
+
+Implementación
+Implementation
+
+
+
+1. Calcular la distancia desde la nueva instancia a cada uno de los datos de entrenamiento.
+Calculate the distance between the new instance and each training data point.
+
+
+
+2. Ordenar las instancias de entrenamiento según su distancia y seleccionar las k más cercanas.
+Sort the training instances by distance and select the k nearest neighbors.
+
+
+
+3. Asignar al nuevo punto la clase más frecuente entre esos k vecinos.
+Assign the new data point the most frequent class among its k nearest neighbors.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   18
+
+===== PAGINA 19 =====
+
+¿Vecinos más cercanos?
+Nearest neighbors?
+
+¿Cómo identiﬁcamos los vecinos más cercanos? / How do we identify the nearest neighbors?
+
+
+
+Dada una nueva instancia, calculamos su distancia a cada instancia de entrenamiento
+Given a new instance, we compute its distance to each training instance.
+
+
+Los k vecinos más cercanos son las k instancias de entrenamiento con las distancias más pequeñas.
+The k nearest neighbors are the k training instances with the smallest distances.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                19
+
+===== PAGINA 20 =====
+
+¿Más cercanos? - Cálculo de distancias
+Nearest? - Distances calculation
+
+Debemos deﬁnir una métrica de distancia
+
+Ésta va a determinar la geometría del espacio de características y, por lo tanto, determina también qué
+instancias se consideran vecinas.
+The distance metric determines the geometry of the feature space and, consequently, which instances are considered
+neighbors.
+
+
+
+Euclidean distance                                Manhattan distance                   Cosine similarity
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            20
+
+===== PAGINA 21 =====
+
+¿Más cercanos? - Cálculo de distancias
+Nearest? - Distances calculation
+
+Debemos deﬁnir una métrica de distancia
+
+Ésta va a determinar la geometría del espacio de características y, por lo tanto, determina también qué
+instancias se consideran vecinas.
+The distance metric determines the geometry of the feature space and, consequently, which instances are considered
+neighbors.
+
+
+
+Euclidean distance                                Manhattan distance                   Cosine similarity
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            21
+
+===== PAGINA 22 =====
+
+¿Más cercanos? - Cálculo de distancias
+Nearest? - Distance calculation
+
+Qué métrica de distancia utilizo? -> Depende de en qué espacio viven nuestros datos
+Which distance metric should I use? -> Depends on the space our data lives in
+
+
+
+Ejemplos:
+
+Distancia Euclidea /Euclidean distance
+
+
+
+Medidas físicas / Physical measurements
+
+-> Útil cuando las dimensiones tienen una interpretación geométrica comparable.
+ Useful when dimensions have a comparable geometric interpretation.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                       22
+
+===== PAGINA 23 =====
+
+¿Más cercanos? - Cálculo de distancias
+Nearest? - Distance calculation
+
+Qué métrica de distancia utilizo? -> Depende de en qué espacio viven nuestros datos
+Which distance metric should I use? -> Depends on the space our data lives in
+
+
+
+Ejemplos:
+
+Distancia Euclidea /Euclidean distance
+
+
+
+Medidas físicas / Physical measurements
+
+-> Útil cuando las dimensiones tienen una interpretación geométrica comparable.
+ Useful when dimensions have a comparable geometric interpretation.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                       23
+
+===== PAGINA 24 =====
+
+¿Más cercanos? - Cálculo de distancias
+Nearest? - Distance calculation
+
+Qué métrica de distancia utilizo? -> Depende de en qué espacio viven nuestros datos
+Which distance metric should I use? -> Depends on the space our data lives in
+
+
+
+Ejemplos:
+
+Manhattan distance
+
+
+
+Datos dispersos/conteos / Sparse data/counts
+
+-> Útil cuando interesa acumular diferencias coordenada por coordenada.
+ Useful when differences should accumulate independently across coordinates.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                       24
+
+===== PAGINA 25 =====
+
+¿Más cercanos? - Cálculo de distancias
+Nearest? - Distance calculation
+
+Qué métrica de distancia utilizo? -> Depende de en qué espacio viven nuestros datos
+Which distance metric should I use? -> Depends on the space our data lives in
+
+
+
+Ejemplos:
+
+Cosine similarity
+
+
+
+Embeddings
+
+-> Útil cuando importa más la dirección o el patrón del vector que su magnitud.
+Useful when vector direction or pattern matters more than magnitude.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                       25
+
+===== PAGINA 26 =====
+
+¿Más cercanos? - Elección de distancias
+Nearest? - Choosing distances
+
+La métrica de distancia puede tratarse como un hiperparámetro del modelo.
+The distance metric can be treated as another model hyperparameter.
+
+
+
+También podemos transformar el espacio de features para que la distancia Euclídea sea más informativa.
+We can also transform the feature space so that Euclidean distance becomes more informative.
+
+Ejemplo: una variable cíclica como “día del año” puede codiﬁcarse con seno y coseno.
+Example: a cyclic variable such as “day of the year” can be encoded using sine and cosine.
+
+Así, valores cercanos en el ciclo también quedan cercanos bajo distancia Euclídea.
+This way, values that are close in the cycle also become close under Euclidean distance.
+
+A veces no necesitamos cambiar la distancia: necesitamos una mejor representación de los datos.
+Sometimes we do not need a different distance: we need a better representation of the data.
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                         26
+
+===== PAGINA 27 =====
+
+¿Más cercanos? - Elección de distancias
+Nearest? - Choosing distances
+
+La métrica de distancia puede tratarse como un hiperparámetro del modelo.
+The distance metric can be treated as another model hyperparameter.
+
+
+
+También podemos transformar el espacio de features para que la distancia Euclídea sea más informativa.
+We can also transform the feature space so that Euclidean distance becomes more informative.
+
+Ejemplo: una variable cíclica como “día del año” puede codiﬁcarse con seno y coseno.
+Example: a cyclic variable such as “day of the year” can be encoded using sine and cosine.
+
+Así, valores cercanos en el ciclo también quedan cercanos bajo distancia Euclídea.
+This way, values that are close in the cycle also become close under Euclidean distance.
+
+A veces no necesitamos cambiar la distancia: necesitamos una mejor representación de los datos.
+Sometimes we do not need a different distance: we need a better representation of the data.
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                         27
+
+===== PAGINA 28 =====
+
+Elección del número de vecinos (k)
+Choosing the number of neighbours (k)
+
+Principal hiperparámetro de k-NN.
+The main hyperparameter of k-NN.
+
+¿Que efecto tiene k?
+
+
+ - Valores pequeños: bajo sesgo, pero alta varianza (mayor riesgo de sobreajuste).
+ Small values of k: low bias but high variance (greater risk of overﬁtting).
+
+
+
+ - Valores altos: mayor estabilidad, pero alto sesgo y menor sensibilidad a estructuras locales.
+ Large values of k: greater stability, but higher bias and reduced sensitivity to local patterns.
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                    28
+
+===== PAGINA 29 =====
+
+Elección del número de vecinos (k)
+Choosing the number of neighbours (k)
+
+Principal hiperparámetro de k-NN.
+The main hyperparameter of k-NN.
+
+¿Que efecto tiene k?
+
+
+ - Valores pequeños: bajo sesgo, pero alta varianza (mayor riesgo de sobreajuste).
+ Small values of k: low bias but high variance (greater risk of overﬁtting).
+
+
+
+ - Valores altos: mayor estabilidad, pero alto sesgo y menor sensibilidad a estructuras locales.
+ Large values of k: greater stability, but higher bias and reduced sensitivity to local patterns.
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                    29
+
+===== PAGINA 30 =====
+
+Elección del número de vecinos (k)
+Choosing the number of neighbours (k)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   30
+
+===== PAGINA 31 =====
+
+Elección del número de vecinos (k)
+Choosing the number of neighbours (k)
+
+Enfoque similar al de cualquier hiperparámetro (validación cruzada).
+As with any other hyperparameter, k can be selected using cross-validation.
+
+Consideraciones adicionales: / Additional considerations:
+
+- Clases desbalanceadas: un k alto puede favorecer sistemáticamente a la clase mayoritaria.
+Imbalanced classes: a large k may systematically favor the majority class.
+
+- Dimensionalidad alta: el concepto de vecindad pierde fuerza. Puede ser conveniente ajustar k junto con
+estrategias de reducción de dimensionalidad.
+High dimensionality: the notion of proximity becomes less meaningful. Consider tuning k alongside dimensionality reduction
+techniques.
+
+- Valores impares de k para reducir la posibilidad de empates (en problemas multiclase, evitar múltiplos del
+número de clases puede ayudar, aunque no garantiza evitar empates).
+Odd values of k help reduce the likelihood of ties (in multiclass problems, avoiding multiples of the number of classes may help, but does
+not guarantee tie-free predictions).
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                  31
+
+===== PAGINA 32 =====
+
+Cálculo de distancias y escalado
+Distance Calculation and Scaling
+
+Como kNN se basa en el cálculo de distancias, es fundamental que las features estén en escalas comparables.
+Since kNN relies on distance calculations, it is essential that features are on comparable scales.
+
+
+
+
+De lo contrario, las features con valores de mayor magnitud dominarán la distancia y tendrán una inﬂuencia
+desproporcionada sobre la predicción.
+Otherwise, features with larger numerical scales will dominate the distance and have a disproportionate inﬂuence on the
+prediction.
+
+
+                     Normalización Min-Max                       Estandarización (z-score)
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                          32
+
+===== PAGINA 33 =====
+
+Ponderación de vecinos
+weighted k-nearest neighbours (weighted knn)
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 34 =====
+
+Ponderación de vecinos
+Weighted neighbours
+
+• El knn convencional da la misma importancia a todos los vecinos dentro del rango k, sin
+  importar cómo de cerca estén
+
+
+• Ponderación basada en distancia: a la hora de calcular la clase más presente, cada vecino tiene
+  el peso de la inversa de su distancia al punto
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     34
+
+===== PAGINA 35 =====
+
+Efecto del número de vecinos (k) - ponderado
+Impact of the number of neighbours (k) - weighted
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026     35
+
+===== PAGINA 36 =====
+
+Efecto del número de vecinos (k) - ponderado
+Impact of the number of neighbours (k) - weighted
+
+Tanto reducir k como ponderar, dan más importancia a los vecinos más cercanos
+
+
+¡No son equivalentes!
+  - Una k muy pequeña es más inestable y susceptible al ruido o al efecto de outliers
+  - Una k moderada (10-20), combinado con una ponderación, suele ser un sistema ser más
+      estable y robusto
+
+
+Esta combinación es especialmente útil en:
+  - Regiones de alta variabilidad como las cercanas a las fronteras de decisión
+  - Espacios con densidad heterogénea
+  - Datos ruidosos
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                           36
+
+===== PAGINA 37 =====
+
+Limitaciones de los métodos basados en vecinos
+Limitations of Neighbor-based methods
+
+
+
+
+                                      ¿Limitaciones?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026        37
+
+===== PAGINA 38 =====
+
+Limitaciones de los métodos basados en vecinos
+Limitations of Neighbor-based methods
+
+1- Coste computacional elevado, especialmente en el momento de la predicción.
+High computational cost, especially at prediction time.
+
+ ●     Para clasiﬁcar o estimar un nuevo punto, kNN debe calcular su distancia a todos los puntos del conjunto de
+       entrenamiento.
+       To classify or predict a new point, kNN must compute its distance to every point in the training set.
+
+Las distancias pierden capacidad discriminativa en espacios de alta dimensionalidad.
+Distances become less discriminative in high-dimensional spaces.
+
+ ●     A medida que aumenta el número de dimensiones, las distancias entre puntos tienden a volverse más
+       similares y la noción de “vecino cercano” pierde signiﬁcado.
+       As dimensionality increases, distances between points tend to become more similar, and the notion of a “nearest
+       neighbor” becomes less meaningful.
+ ●     Además, todas las features contribuyen al cálculo de la distancia, incluso aquellas poco informativas.
+       In addition, all features contribute to the distance calculation, including weakly informative ones.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                      38
+
+===== PAGINA 39 =====
+
+Limitaciones de los métodos basados en vecinos
+Limitations of Neighbor-based methods
+
+2-Las distancias pierden capacidad discriminativa en espacios de alta dimensionalidad.
+Distances become less discriminative in high-dimensional spaces.
+
+ ●     A medida que aumenta el número de dimensiones, las distancias entre puntos tienden a volverse más
+       similares y la noción de “vecino cercano” pierde signiﬁcado.
+       As dimensionality increases, distances between points tend to become more similar, and the notion of a “nearest
+       neighbor” becomes less meaningful.
+ ●     Además, todas las features contribuyen al cálculo de la distancia, incluso aquellas poco informativas.
+       In addition, all features contribute to the distance calculation, including weakly informative ones.
+
+
+Este problema suele afectar menos a los métodos basados en árboles, ya que cada split
+evalúa únicamente una feature cada vez.
+This issue is usually less severe for tree-based methods, since each split evaluates only one feature
+at a time.
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                      39
+
+===== PAGINA 40 =====
+
+Limitaciones de los métodos basados en vecinos
+Limitations of Neighbor-based methods
+
+
+
+
+                                      ¿Soluciones?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026      40
+
+===== PAGINA 41 =====
+
+Eﬁciencia en Knn
+ANN, Ball Trees y ANNOY
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 42 =====
+
+Eﬁciencia en KNN - Reducción de dimensionalidad
+KNN Efficiency - Dimensionality Reduction
+
+  Para reducir coste computacional, pero también para que el cálculo de distancias sea
+  más informativo, es recomendable reducir las dimensiones (o asegurarnos que todas
+  aportan información relevante)
+
+
+  Como ya vimos en la clase 3, podemos:
+
+  • Estudiar la separabilidad entre clases que aporta cada feature (dimensión)
+    y seleccionar aquellas con mayor valor.
+  • Evaluar correlación entre features
+  • Aplicar métodos como PCA o Autoencoders para proyectar nuestras características a
+    un nuevo espacio de características
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                          42
+
+===== PAGINA 43 =====
+
+Eﬁciencia en KNN - Vecinos más cercanos aproximados (ANN)
+KNN Efficiency - Approximate Nearest Neighbours (ANN)
+
+
+
+
+ • La familia de métodos más usados para calcular vecinos de forma más eﬁciente computacionalmente
+   son los Approximate Nearest Neighours (ANN)
+ • Encuentra vecinos cercanos de forma aproximada, en lugar de exacta, pero mucho más rápido
+   (especialmente en espacios de alta dimensión o con grandes volúmenes de datos).
+
+
+Funcionamiento del ANN:
+
+        1)   Preprocesa los datos para crear una estructura que divide el espacio de características en
+             subespacios.
+      2)     Calcula distancias únicamente con los vecinos que pertenecen al mismo subespacio que el
+             punto a evaluar.
+Sacriﬁca un poco de precisión en los vecinos, a cambio de muchísima velocidad.
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                            43
+
+===== PAGINA 44 =====
+
+Eﬁciencia en KNN - Vecinos más cercanos aproximados (ANN)
+KNN Efficiency - Approximate Nearest Neighbours (ANN)
+
+
+
+
+ • La familia de métodos más usados para calcular vecinos de forma más eﬁciente computacionalmente
+   son los Approximate Nearest Neighours (ANN)
+ • Encuentra vecinos cercanos de forma aproximada, en lugar de exacta, pero mucho más rápido
+   (especialmente en espacios de alta dimensión o con grandes volúmenes de datos).
+
+
+Funcionamiento del ANN:
+
+        1)         Preprocesa los datos para crear una estructura que divide el espacio de características en
+                   subespacios.
+        2)         Calcula distancias únicamente con los vecinos que pertenecen al mismo subespacio que el
+                   punto a evaluar.
+
+Sacriﬁca un poco de precisión en los vecinos, a cambio de muchísima velocidad.
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  44
+
+===== PAGINA 45 =====
+
+Búsqueda Informada - KD-Trees
+Informed Search - KD-Trees
+
+
+Utiliza árboles de decisión (DT) para dividir el espacio de características
+En cada nodo divide el subespacio en 2 partes en base al valor mediano en una dimensión (la
+dimensión utilizada cambia en cada nodo)
+
+
+
+
+Espacio dividido en regiones rectangulares que
+contienen un n inferior
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               45
+
+===== PAGINA 46 =====
+
+Búsqueda Informada - KD-Trees
+Informed Search - KD-Trees
+
+
+Utiliza árboles de decisión (DT) para dividir el espacio de características
+En cada nodo divide el subespacio en 2 partes en base al valor mediano en una dimensión (la
+dimensión utilizada cambia en cada nodo)
+
+
+
+
+Espacio dividido en regiones rectangulares que
+contienen un n inferior
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               46
+
+===== PAGINA 47 =====
+
+Búsqueda Informada - KD-Trees
+Informed Search - KD-Trees
+
+
+Utiliza árboles de decisión (DT) para dividir el espacio de características
+En cada nodo divide el subespacio en 2 partes en base al valor mediano en una dimensión (la
+dimensión utilizada cambia en cada nodo)
+
+
+
+
+Espacio dividido en regiones rectangulares que
+contienen un n inferior
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               47
+
+===== PAGINA 48 =====
+
+Búsqueda Informada - KD-Trees
+Informed Search - KD-Trees
+
+
+Utiliza árboles de decisión (DT) para dividir el espacio de características
+En cada nodo divide el subespacio en 2 partes en base al valor mediano en una dimensión (la
+dimensión utilizada cambia en cada nodo)
+
+
+
+
+Espacio dividido en regiones rectangulares que
+contienen un n inferior
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               48
+
+===== PAGINA 49 =====
+
+Búsqueda Informada - KD-Trees
+Informed Search - KD-Trees
+
+
+Utiliza árboles de decisión (DT) para dividir el espacio de características
+En cada nodo divide el subespacio en 2 partes en base al valor mediano en una dimensión (la
+dimensión utilizada cambia en cada nodo)
+
+
+
+¿Cuando (o donde) funciona mal esta división del
+espacio de características?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               49
+
+===== PAGINA 50 =====
+
+Búsqueda Informada - KD-Trees
+Informed Search - KD-Trees
+
+
+Utiliza árboles de decisión (DT) para dividir el espacio de características
+En cada nodo divide el subespacio en 2 partes en base al valor mediano en una dimensión (la
+dimensión utilizada cambia en cada nodo)
+
+
+
+¿Cuando funciona mal esta división del espacio de
+características?
+
+-> cuando el punto esté demasiado cerca del corte!
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               50
+
+===== PAGINA 51 =====
+
+KD-Trees + knn
+KD-Trees + knn
+
+
+ 1.    Divide el espacio de características utilizando DT
+ 2.    Cuando tienes que evaluar un punto, recorre el árbol para ver en que hoja está
+
+
+ 3.    Calcula distancias en esa hoja, y saca la distancia (d) de los vecinos más cercanos
+ 4.    Hace Backtracking:
+        a. Recorre el árbol hacia arriba, evaluando si la distancia del punto con el corte de cada
+            nodo es menor que d
+        b. Si es menor que d, recorre ese nodo hacia abajo, calculando las distancias de las hojas
+            cuyo corte estén cerca (<d) del punto a evaluar
+ 5.    Con todos esos vecinos “candidatos” encontramos los más cercanos
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                      51
+
+===== PAGINA 52 =====
+
+Locality-Sensitive Hashing (LSH)
+
+                                                                         *hashing: picar/dividir en trozos
+Busca una división (hashing) del espacio donde la cercanía (locality) se mantenga
+
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a que bucket pertenece: puntos que
+       compartan el mismo h(x).
+ 3.    Podemos crear varios h(x) con distintos planos aleatorios, en ese caso, calculariamos los buckets
+       a los que pertenece el punto en cada espacio hash distinto y “marcaríamos” los puntos estan en
+       el mismo bucket al menos una vez.
+4.     Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!) y
+       aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            52
+
+===== PAGINA 53 =====
+
+Locality-Sensitive Hashing (LSH)
+
+                                                                         *hashing: picar/dividir en trozos
+Busca una división (hashing) del espacio donde la cercanía (locality) se mantenga
+
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a que bucket pertenece: puntos que
+       compartan el mismo h(x).
+ 3.    Podemos crear varios h(x) con distintos planos aleatorios, en ese caso, calculariamos los buckets
+       a los que pertenece el punto en cada espacio hash distinto y “marcaríamos” los puntos estan en
+       el mismo bucket al menos una vez.
+4.     Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!) y
+       aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            53
+
+===== PAGINA 54 =====
+
+Locality-Sensitive Hashing (LSH)
+
+                                                                         *hashing: picar/dividir en trozos
+Busca una división (hashing) del espacio donde la cercanía (locality) se mantenga
+
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a qué bucket pertenece: puntos que
+       compartan el mismo h(x).
+ 3.    Podemos crear varios h(x) con distintos planos aleatorios, en ese caso, calculariamos los buckets
+       a los que pertenece el punto en cada espacio hash distinto y “marcaríamos” los puntos estan en
+       el mismo bucket al menos una vez.
+4.     Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!) y
+       aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            54
+
+===== PAGINA 55 =====
+
+Locality-Sensitive Hashing (LSH)
+
+                                                                         *hashing: picar/dividir en trozos
+Busca una división (hashing) del espacio donde la cercanía (locality) se mantenga
+
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a qué bucket pertenece: puntos que
+       compartan el mismo h(x).
+                 *Podemos crear varios h(x) con distintos grupos de planos aleatorios, en este caso,
+                 calculamos los buckets a los que pertenece el punto en cada espacio hash distinto y
+                 “marcaremos” los puntos están en el mismo bucket al menos una vez.
+ 3.    Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!) y
+       aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            55
+
+===== PAGINA 56 =====
+
+Locality-Sensitive Hashing (LSH)
+
+                                                                         *hashing: picar/dividir en trozos
+Busca una división (hashing) del espacio donde la cercanía (locality) se mantenga
+
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a qué bucket pertenece: puntos que
+       compartan el mismo h(x).
+                 *Podemos crear varios h(x) con distintos grupos de planos aleatorios, en este caso,
+                 calculamos los buckets a los que pertenece el punto en cada espacio hash distinto y
+                 “marcaremos” los puntos están en el mismo bucket al menos una vez.
+ 3.    Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!)
+       y aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          56
+
+===== PAGINA 57 =====
+
+Locality-Sensitive Hashing (LSH)
+Ejemplo
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   57
+
+===== PAGINA 58 =====
+
+Locality-Sensitive Hashing (LSH)
+
+
+¿Qué hiperparámetros tiene?
+
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a qué bucket pertenece: puntos que
+       compartan el mismo h(x).
+                 *Podemos crear varios h(x) con distintos grupos de planos aleatorios, en este caso,
+                 calculamos los buckets a los que pertenece el punto en cada espacio hash distinto y
+                 “marcaremos” los puntos están en el mismo bucket al menos una vez.
+ 3.    Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!)
+       y aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          58
+
+===== PAGINA 59 =====
+
+Locality-Sensitive Hashing (LSH)
+
+
+¿Qué hiperparámetros tiene?                          3 hiperparámetros!
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a qué bucket pertenece: puntos que
+       compartan el mismo h(x).
+                 *Podemos crear varios h(x) con distintos grupos de planos aleatorios, en este caso,
+                 calculamos los buckets a los que pertenece el punto en cada espacio hash distinto y
+                 “marcaremos” los puntos están en el mismo bucket al menos una vez.
+ 3.    Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!) y
+       aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            59
+
+===== PAGINA 60 =====
+
+Locality-Sensitive Hashing (LSH)
+Hiperparámetros
+
+                                                                         *hashing: picar/dividir en trozos
+Busca una división (hashing) del espacio donde la cercanía (locality) se mantenga
+
+
+Pasos:
+ Tres  hiperparámetros:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada hiperplano está,
+     obteniendo un vector hash para cada punto
+   - Número -> de  hiperplanos
+                h(x) =           aleatorios (k) (Longitud del hash vector)
+                       (1,0,0,0,1,0)
+       -> cuanto mayor, más pequeños los buckets y más rápido será el método pero menos preciso
+ 2. Cuando tenemos que clasiﬁcar un punto, calculamos a qué bucket pertenece: puntos que
+     compartan el mismo h(x).
+   - Cantidad de buckets (L) (proyecciones hash distintas / grupos de k hiperplanos)
+       -> mayor  cantidad,
+            *Podemos       menos
+                       crear       riesgocon
+                             varios h(x)   de no evaluar los
+                                              distintos      mejores
+                                                        grupos       vecinos, pero
+                                                               de planos           másencoste
+                                                                          aleatorios,         computacional
+                                                                                         este caso,
+            calculamos los buckets a los que pertenece el punto en cada espacio hash distinto y
+   - Cuantos“marcaremos”
+                vecinos másloscercanos
+                               puntos están
+                                         (knnen  el mismo bucket al menos una vez.
+                                              típico)
+ 3.    Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en el hash!) y
+       aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            60
+
+===== PAGINA 61 =====
+
+Caso real de ANN: ANNOY - Spotify
+Real use case of ANN: Approximate Nearest Neighbors Oh Yeah (ANNOY)
+
+
+
+
+Se crea para un contexto muy concreto: recomendar canciones similares de una base de datos de
+millones de canciones a millones de usuarios y en tiempo real
+
+Implicaciones:
+
+ • Miles de búsquedas por segundo
+
+ • Construcción razonablemente rápida (se actualiza frecuentemente)
+
+ • Indexar nuevos ítems sin rehacer todo (cada nueva canción/usuario reentrenar todo?!?)
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 61
+
+===== PAGINA 62 =====
+
+Knn como regresor
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 63 =====
+
+KNN como regresor
+KNN as a regressor
+
+Knn como clasiﬁcador: Asigna la clase más votada de los k vecinos más cercanos
+
+
+Knn como regresor: el valor y(x) se calcula como el promedio del valor de y de los k
+vecinos más cercanos
+
+
+
+
+weighted-knn como regresor: el valor y(x) se calcula como el promedio ponderado con el
+inverso de la distancia del valor de y de los k vecinos más cercanos
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                        63
+
+===== PAGINA 64 =====
+
+KNN como regresor
+KNN as a regressor
+
+Knn como regresor: el valor y(x) se calcula como el promedio del valor de y de los k vecinos
+más cercanos
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                64
+
+===== PAGINA 65 =====
+
+KNN como regresor
+KNN as a regressor
+
+Knn como regresor: el valor y(x) se calcula como el promedio del valor de y de los k vecinos
+más cercanos
+
+
+                                                  Un k alto, da una regresión más suavizada pero
+                                                  atenúa más los “máximos” de la función
+
+
+                                                  Igual que en clasiﬁcación, un k pequeño más
+                                                  tendencia al overﬁtting
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                    65
+
+===== PAGINA 66 =====
+
+KNN como regresor
+KNN as a regressor
+ -     Modelo no paramétrico (no asume nada sobre el modelo
+
+
+ -     No aprende una función global
+
+
+ -     Muy sensible a escala y ruido
+
+
+ -     Puede modelar relaciones muy complejas
+
+
+ -     Igual que en clasiﬁcación:
+         - Es muy costoso computacionalmente
+         - Escala mal con datasets grandes y muchas
+             dimensiones (features)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026               66
+
+===== PAGINA 67 =====
+
+KNN como regresor
+KNN as a regressor
+
+Mejora de eﬁciencia:
+
+Podemos también usar KD-Trees para mejorar la eﬁciencia
+ - Con muchas dimensiones (>20) no es tan efectivo ya que las distancias son cada vez
+    menos informativas)
+
+Podemos usar también ANN, pero en este caso, al ser un cálculo aproximado de vecinos,
+la regresión se ve más afectada que la clasiﬁcación (calculamos un valor de y, no una
+clase)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         67
+
+===== PAGINA 68 =====
+
+DT como regresor
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 69 =====
+
+DT (y RF) como regresor
+DT (and RF) as a regressor
+
+Divide el espacio en hojas, y la predicción de y para un valor de x es la y promedio
+de las x de esa hoja
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                        69
+
+===== PAGINA 70 =====
+
+DT (y RF) como regresor
+DT (and RF) as a regressor
+
+Divide el espacio en hojas, y la predicción de y para un valor de x es la y promedio
+de las x de esa hoja
+
+
+
+max_depth, me permite más
+divisiones del espacio de feats,
+salida más ruidosa/sensible a
+los datos
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                        70
+
+===== PAGINA 71 =====
+
+DT (y RF) como regresor
+DT (and RF) as a regressor
+
+Ventajas e inconvenientes
+
+
+
+
+Como en clasiﬁcación:
+-puede capturar geometrias
+complejas
+-muy interpretable
+-propenso al overﬁtting
+-inestable
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026   71
+
+===== PAGINA 72 =====
+
+Comparación DT y RF como regresores
+DT vs RF regressors
+
+Divide el espacio en hojas, y la predicción de y para un valor de x es la y promedio de las
+x de esa hoja
+
+
+
+Como en clasiﬁcación, RF:
+-puede capturar geometrías
+complejas
+-menos interpretable
+-menos propenso al overﬁtting
+-robusto
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               72
+

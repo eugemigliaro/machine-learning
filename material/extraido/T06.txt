@@ -1,0 +1,806 @@
+FUENTE: T06
+TITULO: GDA y Naive Bayes
+ORIGINAL: material/catedra/teoria/Clase 6. GDA y Naive Bayes (WIP ).pptx (4).pdf
+PAGINAS: 50
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+Alexa Sessarego Aurich
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+
+
+
+
+                                                      … en la sesión anterior
+
+Plan de la sesión de hoy
+ -   Repaso de probabilidades y modelos generativos      -   Regresión Logística
+
+ -   Inferencia Bayesiana (MAP vs. ML)
+ -   LDA (protagonista), QDA y GDA
+ -   Naive Bayes
+                                                                                   1
+
+===== PAGINA 2 =====
+
+Modelos Generativos
+
+
+
+Francisco Pérez Sammartino,
+frperez@itba.edu.ar
+
+
+
+
+Instituto Tecnológico de Buenos Aires
+Centro de Inteligencia Computacional
+
+
+
+
+                                        2
+
+===== PAGINA 3 =====
+
+Modelos Discriminativos vs. Generativos
+¿Cómo aprendemos a clasiﬁcar?
+
+
+Modelos Discriminativos (ej. Regresión Logística):
+ ● Intentan aprender el límite de decisión (frontera).
+ ● Matemáticamente: Modelan directamente “dado un elemento x, cual es la probabilidad
+     que pertenezca a la clase y” P(y|x) Ej. P(“gato”/x) = 0.35
+
+Modelos Generativos (ej. GDA, Naive Bayes):
+ ● Intentan aprender cómo se distribuye cada clase por separado.
+ ● Si aprendo cómo se distribuyen, puedo intentar generar algún dato nuevo.
+ ● Matemáticamente: Modelan P(x|y) (la verosimilitud) y P(y) (el prior).
+
+
+
+
+                                                                                        3
+
+===== PAGINA 4 =====
+
+Un poco de probabilidades
+
+
+
+
+                            4
+
+===== PAGINA 5 =====
+
+Repaso
+
+ ●    Espacio muestral: conjunto de todos los resultados posibles de un experimento.
+ ●    Sucesos/eventos: Cualquier subconjunto del espacio muestral.
+
+
+Frecuencia Relativa:
+Supongamos que repetimos n veces un mismo experimento aleatorio en forma independiente y bajo las
+mismas condiciones. Sea nA el número de veces que ocurre el suceso A, entonces la frecuencia relativa
+de A está dada por:
+
+
+
+
+                                                                                                        5
+
+===== PAGINA 6 =====
+
+Repaso
+
+  Frecuencia Relativa               Probabilidad
+
+0.53 = 106/200                   0.50              0.50
+                 0.47 = 94/200
+
+
+
+
+                                                          6
+
+===== PAGINA 7 =====
+
+Probabilidad conjunta
+¿Cuál es la probabilidad de que salgan dos caras?
+
+
+Esto se denomina probabilidad conjunta , ya que consiste en unir dos eventos.
+Por lo tanto, la probabilidad de que salgan dos caras es:
+
+
+
+
+Las probabilidades conjuntas son conmutativas:
+
+
+
+
+                                                                                7
+
+===== PAGINA 8 =====
+
+Un poco de probabilidades
+Propiedades:
+
+ ●   Los eventos A y B son independientes si:
+
+          P(A ∩ B) = P(A) ∗ P(B)
+
+ ●   Si A y B son independientes, entonces A y Bc también lo son.
+
+ ●   Si los sucesos A y B son mutuamente excluyentes entonces A ∩ B = ∅ y A y B
+
+     no son independientes.
+
+
+
+                                                                                  8
+
+===== PAGINA 9 =====
+
+Probabilidad condicional
+        La probabilidad condicional es cuando determinamos la probabilidad de que
+
+        ocurra una determinada condición o evento dado que otro evento ya ha ocurrido
+
+
+
+
+        ¿Cuál es la probabilidad de elegir los 3 diamantes de un mazo dado que hemos elegido
+
+        una carta roja?
+
+
+
+
+                                                                                               9
+
+===== PAGINA 10 =====
+
+     Probabilidad condicional
+
+13
+
+
+
+
+                                1
+13
+                                26
+
+
+
+
+                                    10
+
+===== PAGINA 11 =====
+
+Probabilidad condicional
+¿Cuál es la probabilidad de elegir los 3 diamantes de una baraja de manos dado que hemos elegido una
+carta roja?
+
+
+
+
+Formalizando:
+
+
+
+                                                                                                       11
+
+===== PAGINA 12 =====
+
+Teorema de probabilidad total
+Sea S el espacio de muestreo, Bi, i=1,.., n una partición de S y A otro evento en S
+
+
+
+
+     Prob Condicional
+                                                                                      12
+
+===== PAGINA 13 =====
+
+Thomas Bayes
+Matemático Inglés, nació en Londres, Inglaterra en 1702 y murió en Tunbridge
+Wells, Kent, Inglaterra el 17 de Abril de 1761.
+
+
+
+Sea S el espacio de muestreo y A y B dos eventos en S
+
+
+
+
+                                                                               13
+
+===== PAGINA 14 =====
+
+Teorema de Bayes en el aprendizaje automático
+
+●   El Razonamiento Bayesiano provee un enfoque probabilístico
+    para realizar inferencias.
+
+
+●   Algoritmos basados en Razonamiento Bayesiano compiten con
+    otros métodos, incluyendo Árboles de decisión y Redes
+    Neuronales y incuso a veces llegando a mejores resultados en
+    algunas aplicaciones (Michie et al.)
+
+
+
+
+                                                                   14
+
+===== PAGINA 15 =====
+
+Clasiﬁcadores Bayesianos
+
+
+
+
+                           15
+
+===== PAGINA 16 =====
+
+Deﬁniciones
+                 probabilidad a priori
+probabilidad a
+  posteriori                       verosimilitud
+
+
+
+
+                                 Evidencia
+                                                   16
+
+===== PAGINA 17 =====
+
+Teorema de Bayes en el aprendizaje de
+Conceptos
+Buscamos la mejor Hipótesis
+Un camino es buscar la hipótesis más probable, dentro de un conjunto de hipótesis
+H y tomando un conjunto de entrenamiento D.
+
+
+El teorema de Bayes nos da una forma de calcular la probabilidades
+Entonces si las hipòtesis posibles son h1, . . . , hn buscamos la màs probable.
+
+
+
+
+                                                                                    17
+
+===== PAGINA 18 =====
+
+Maximum a Posteriori (MAP)
+Probabilidad a Posteriori
+
+
+
+MAP
+Signiﬁca maximizar la probabilidad a posteriori de las hipótesis, dado el conjunto
+de entrenamiento.
+
+
+                                                                    constante
+
+
+
+                                                                                     18
+
+===== PAGINA 19 =====
+
+Máxima verosimilitud
+Si todas las hipótesis en el conjunto de entrenamiento H son equiprobables, es
+decir P(hi)= P(hj) ∀i, j entonces
+
+
+                                       constante
+
+ML: Maximum Likelihood
+
+                         h_ML =
+
+
+Cuando las hipótesis son equiprobables, entonces hMAP = hML.
+
+                                                                                 19
+
+===== PAGINA 20 =====
+
+Concept Check: El poder del Prior
+
+
+
+
+Situación
+Tenés un detector de metales en la playa que suena. Suponemos que ambos
+objetos hacen sonar el detector:
+P(Sonido | Lata) ≈ P(Sonido | Tesoro) ≈ 1
+
+Pregunta
+¿Por qué, a pesar del sonido, es mucho más probable haber encontrado
+una lata que un tesoro pirata?
+
+===== PAGINA 21 =====
+
+Cómo estimamos P(D/h)?
+
+
+
+
+                         21
+
+===== PAGINA 22 =====
+
+Campana de Gauss
+
+Para atributos continuos, modelamos P(x | y) como la densidad de cada clase asumiendo
+distribución normal.
+Usamos una campana de Gauss en varias dimensiones.
+Para deﬁnir la campana de la clase k hay que estimar dos cosas:
+
+
+Media μₖ                                         Covarianza Σₖ
+Dónde está centrado el grupo.                    Forma, estiramiento y orientación
+El punto de máxima densidad.                     de la nube de puntos.
+
+===== PAGINA 23 =====
+
+LDA
+Análisis de
+Discriminante Lineal
+
+
+
+
+                       23
+
+===== PAGINA 24 =====
+
+LDA - Requisitos
+●   Misma matriz de Covarianza/Dispersión.
+●   Distribución normal por clase
+
+
+
+
+                                             24
+
+===== PAGINA 25 =====
+
+Deducción discriminante
+
+
+1   Bayes en logaritmos
+    Score(k) = ln P(x | Cₖ) + ln P(Cₖ)
+    El log evita la exponencial de la Gaussiana y no cambia el argmax.
+
+
+
+2   Reemplazamos P(x | Cₖ) por la Gaussiana multivariada
+    Score(k) = −(d/2) ln(2π) − (1/2) ln|Σ| − (1/2)(x − μₖ)ᵀ Σ⁻¹ (x − μₖ) + ln P(Cₖ)
+
+
+
+
+3   Expandimos (x − μₖ)ᵀ Σ⁻¹ (x − μₖ)
+    Score(k) = −(1/2) xᵀ Σ⁻¹ x + xᵀ Σ⁻¹ μₖ − (1/2) μₖᵀ Σ⁻¹ μₖ + ln P(Cₖ) + cte
+    Aparece un término cuadrático en x, uno lineal y uno constante (no depende de x).
+
+===== PAGINA 26 =====
+
+Se cancela el término cuadrático
+
+
+4   Cancelación mágica: Score(1)-Score(0) > 0
+    El término −(1/2) xᵀ Σ⁻¹ x es idéntico en ambas clases: Σ es compartida.
+    Al restar, se cancela. Desaparece x². Si cada clase tuviera su Σₖ (QDA), no se cancela.
+    Quedan solo términos lineales en x y constantes.
+
+
+
+
+Resultado: función discriminante lineal δₖ(x)
+
+δₖ(x) = xᵀ (Σ⁻¹ μₖ) − (1/2) μₖᵀ Σ⁻¹ μₖ + ln P(Cₖ)
+δₖ(x) = wₖᵀ x + bₖ
+Ecuación de primer grado: un hiperplano (en 2D, una recta).
+La normal de esa recta es w ∝ Σ⁻¹ (μ₁ − μ₀). Criterio de Fisher.
+
+===== PAGINA 27 =====
+
+La magia de LDA: la mejor separación lineal
+                                                                                Proyección LDA
+1. Cancelación del cuadrado
+Al igualar P(C₁|x) = P(C₀|x), el término xᵀ Σ⁻¹ x es idéntico en ambos lados.
+Σ es compartida, así que se cancelan. Queda una ecuación lineal.
+
+
+
+
+2. Dirección de separación óptima (criterio de Fisher)
+w = Σ⁻¹ (μ₁ − μ₂)
+LDA maximiza la distancia entre centros relativa a cuán apretada está
+cada clase.
+Reducción de dimensionalidad
+
+===== PAGINA 28 =====
+
+LDA vs PCA
+
+●   Maximizar separación entre clases vs maximizar varianza
+
+
+
+
+                                                              28
+
+===== PAGINA 29 =====
+
+Ejercicio
+
+●   Generar un conjunto de datos de puntos en [0,1]x[0,1] que
+    tengan 3 clases.
+●   Dividir el conjunto en 70% entrenamiento, 30% test.
+●   Visualizar el cuadrantes con los puntos y las clases
+    representadas con colores.
+●   Mostrar la transformación con LDA (para una dimensión), sobre
+    el mismo gráfico
+●   Realizar la predicción del 30% de test usando el algoritmo LDA
+    para clasificar. Mostrar los resultados.
+
+
+
+
+                                                                     29
+
+===== PAGINA 30 =====
+
+QDA: qué pasa si el supuesto falla (GDA)
+El problema de LDA
+Si una clase es un círculo chico y la otra un óvalo enorme, forzar una sola Σ da una mala frontera
+(mucho sesgo).
+La solución de QDA
+Cada clase tiene su propia matriz de covarianza Σₖ.
+Los términos xᵀ Σₖ⁻¹ x ya no se cancelan. La frontera se vuelve cuadrática (curva).
+Trade-off
+QDA es más ﬂexible, pero estima muchos más parámetros.
+
+
+
+
+La familia de métodos se llama Gaussian Discriminant Analysis (GDA)
+
+===== PAGINA 31 =====
+
+Concept Check: ¿LDA o QDA en la práctica?
+
+Dataset de imágenes médicas
+
+200 pacientes y 500 características por paciente.
+Sospechamos que las clases tienen dispersiones un poco distintas.
+
+¿Elegimos LDA o QDA?
+
+===== PAGINA 32 =====
+
+    De GDA a Naive Bayes
+
+GDA / QDA (Quadratic Discriminant Analysis):
+ ● Cada clase tiene su propia media y su propia matriz de covarianza.
+ ● Resultado: Froneteras de decisión cuadráticas (curvas). Mucha flexibilidad, muchos parámetros.
+
+LDA (Linear Discriminant Analysis):
+ ● Cada clase tiene su media pero todas comparten la misma matriz de covarianza.
+ ● Resultado: Las curvas se vuelven rectas. Fronteras de decisión lineales.
+
+Gaussian Naive Bayes:
+ ● Asumimos que los atributos son independientes entre sí dada la clase.
+ ● Esto equivale a decir que matriz de covarianza es una Matriz Diagonal (ceros fuera de la diagonal).
+ ● Resultado: Solo nos importa la varianza de cada variable por separado. Muy pocos parámetros, ideal
+    para cuando hay pocos datos o muchas dimensiones.
+
+
+
+                                                                                                         32
+Colab link
+
+===== PAGINA 33 =====
+
+La gran familia generativa
+
+Modelo                 Matriz de covarianza (Σ)         Frontera
+
+
+
+
+LDA (principal)        Idéntica para todas las clases   Lineal (separación óptima)
+
+
+
+
+QDA (alternativa)      Distinta para cada clase         Cuadrática (curvas)
+
+
+
+
+Gaussian Naive Bayes   Diagonal (sin correlación)       Lineal / cuadrática simple
+
+===== PAGINA 34 =====
+
+Naive Bayes
+Atributos categóricos
+
+
+
+
+                        34
+
+===== PAGINA 35 =====
+
+Independencia Condicional
+Sean X, Y y Z tres variables aleatorias a valores discretos, decimos que X es
+independiente condicional de Y dado Z, si
+
+
+
+
+La probabilidad de X, dados Y y Z es la probabilidad de X dado Z.
+
+
+
+
+                                                                                35
+
+===== PAGINA 36 =====
+
+Concept Check: ¿es realmente independiente?
+
+Clasiﬁcamos propiedades inmobiliarias
+
+Dos atributos: tamaño_en_m² y numero_de_habitaciones.
+
+¿Se cumple la independencia condicional de Naive Bayes?
+
+===== PAGINA 37 =====
+
+Clasiﬁcador Bayesiano naive
+
+La clase con mayor probabilidad posterior:
+
+
+
+
+                                             ← Usando Bayes
+
+
+
+                                             ← constante
+
+
+
+
+                                                              37
+
+===== PAGINA 38 =====
+
+Clasiﬁcador Bayesiano naive
+El clasiﬁcador Bayesiano naive asume que los valores de los atributos son
+independientes, dado el valor de la clase, por eso lleva esa denominación de ingenuo.
+
+
+Los valores de los atributos son independientes dada la clase, es decir:
+
+
+
+
+Los valores P(ai |vj) se estiman con la frecuencia de los datos observados.
+                                                                                        38
+
+===== PAGINA 39 =====
+
+Ejemplo
+
+Este es un ejemplo de cómo aplicar el clasiﬁcador naive Bayes para el concepto "Pepe juega al
+tenis los sábados por la mañana":
+
+
+ ●   La variable objetivo es binaria: "Pepe juega al tenis" (sí/no).
+ ●   Cada instancia (un sábado) se describe mediante 4 atributos:
+      ○    Pronóstico (soleado, nublado, lluvioso)
+      ○    Temperatura (calurosa, templada, fría)
+      ○    Humedad (alta, normal)
+      ○    Viento (fuerte, débil)
+
+                                                                                                39
+
+===== PAGINA 40 =====
+
+Ejemplo
+
+Se tiene una tabla de 14 ejemplos de
+entrenamiento, con días descritos por
+esos 4 atributos y el valor de la clase
+"si/no juega tenis".
+Los atributos:
+ ●    pronóstico
+ ●    temperatura
+ ●    humedad
+ ●    viento
+
+                                          40
+
+===== PAGINA 41 =====
+
+Ejemplo
+Clasiﬁcar una nueva instancia como la siguiente aplicando naive Bayes:
+      <pronóstico = soleado, temperatura = fría, humedad = alta, viento = fuerte>
+
+Vamos a usar:
+
+
+
+
+                          P(si) * P(soleado|si) * P(frío|si) * P(alta|si) * P(fuerte|si),
+                         P(no) * P(soleado|no) * P(frío|no) * P(alta|no) * P(fuerte|no)
+
+
+
+
+Resolverlo                                                                                  41
+
+===== PAGINA 42 =====
+
+   ¿Probabilidades Nulas?
+
+El clasiﬁcador naive Bayes puede tener problemas si existen
+probabilidades nulas o ceros en las estimaciones a partir de los datos de
+entrenamiento.
+
+Por ejemplo:
+Imaginemos que humedad puede ser “Baja” .No hay ejemplo para
+Humedad Baja en el conjunto.:
+        P(Humedad=Baja| “Juega”) = 0
+
+
+                          ¿Cómo lo solucionamos?
+
+                                                                            42
+
+===== PAGINA 43 =====
+
+Corrección de Laplace
+Se basa en la asignación de una probabilidad no nula para que una posible
+probabilidad nula en la productoria no anule la probabilidad ﬁnal.
+
+Calculando p la frecuencia relativa
+
+
+
+
+La probabilidad corregida por el método de Laplace es;
+                                                                 p1    p2    p3    p4
+                                                                0.333 0.125
+                                                                0.375 0.167 0.083 0.5
+                                                                              0   0.417
+siendo k el número de clases posibles.
+
+                                                                                          43
+
+===== PAGINA 44 =====
+
+Corrección de Laplace
+Se basa en asumir que la variable aleatoria siempre tomará alguno de los valores
+posibles.
+Entonces ¿cuál es la probabilidad que la variable tome un determinado valor?,
+observamos la muestra y estimamos la probabilidad usando la frecuencia relativa.
+
+
+Cálculo ^p:
+La probabilidad corregida por el método de Laplace es
+
+k: la cantidad de valores diferentes que la variable puede tomar.
+ni: : cantidad de veces que la variable toma el valor i en la muestra.
+N: es la cantidad de veces que la variable toma alg ́un valor y
+                                                                                   44
+
+===== PAGINA 45 =====
+
+Algoritmo para el Clasiﬁcador de Bayes
+Queremos clasiﬁcar según el conjunto V cuyas opciones son {vj, j = 1, ..., k}, dado un conjunto
+de entrenamiento D con atributos {ai , i = 1, . . . , n}
+
+
+
+
+Los valores de       y      se estiman con la frecuencia de los datos observados o
+conjunto de entrenamiento.
+La probabilidad más alta nos dará    , el valor de la clasiﬁcación                                45
+
+===== PAGINA 46 =====
+
+Naive Bayes: ¿este correo es spam?
+Dataset sintético: 4 correos por clase. Priors: P(spam) = P(no spam) = ½.
+Ejemplos del dataset (se muestran 2 de 4 correos por clase)
+Spam: «oferta urgente» · «oferta oferta»
+No spam: «reunión reunión» · «oferta reunión»
+Conteos de palabras                                                           Correo: «oferta urgente»
+Palabra                          Spam           No spam
+                                                                              Score de spam
+oferta                             4               1
+urgente                            3               1                          ½ × (4 + 1)/11 × (3 + 1)/11
+reunión                            1               6                          = 10/121 ≈ 0,0826
+Total                              8               8                          Score de no spam
+Laplace (α = 1), vocabulario de 3 palabras:                                   ½ × (1 + 1)/11 × (1 + 1)/11
+P(palabra | clase) = (conteo + 1) / (8 + 3)                                   = 2/121 ≈ 0,0165
+
+Predicción: spam                                           P(spam | correo) = 10 / (10 + 2) = 83,3 %
+Posterior del modelo. Los scores se normalizan para obtener probabilidades.
+
+===== PAGINA 47 =====
+
+¡Fin! ¿Alguna pregunta?
+
+           Proyección LDA
+
+
+
+
+                            47
+
+===== PAGINA 48 =====
+
+Problema Ejemplo
+
+Consideremos el siguiente vector de atributos binarios para representar
+preferencias de una persona:
+          (scones, cerveza, whiskey, avena, fútbol)
+
+
+Por ejemplo, el vector: x = (1, 0, 1, 1, 0) signiﬁca que esta persona
+ ●   Le gustan los scones (1)
+ ●   No toma cerveza (0)
+ ●   Le gusta el whiskey (1)
+ ●   Le gusta la avena (1)
+ ●   No ve fútbol (0)
+                                                                          48
+
+===== PAGINA 49 =====
+
+Problema Ejemplo
+Conjunto de Entrenamiento o datos observados
+En las columnas de las siguientes tablas se dan los vectores de preferencias de 6
+personas inglesas y 7 personas escocesas.
+
+
+
+
+Dado el ejemplo x = (1, 0, 1, 1, 0) determinar si corresponde a las preferencias de una
+persona inglesa o escocesa..
+
+                                                                            ¿?            49
+
+===== PAGINA 50 =====
+
+Datos
+
+
+
+
+Columnas: Atributos o variables
+Filas: Registros                  50
+

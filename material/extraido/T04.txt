@@ -1,0 +1,809 @@
+FUENTE: T04
+TITULO: Regresión logística y métricas de evaluación
+ORIGINAL: material/catedra/teoria/Clase 4. Regresión Logística, Métricas de Evaluación.pdf
+PAGINAS: 56
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+Plan de la sesión de hoy                                … en la sesión anterior
+-    Regresión Logística                                -     Problema-Datos-Features
+-    Métricas de Evaluación                             -     EDA
+-    Métricas de Evaluación con clases desbalanceadas
+                                                        -     Feature selection
+-    Curva ROC
+                                                        -     Regularización
+-    Multiclase
+                                                        -     Métricas
+
+===== PAGINA 2 =====
+
+Repaso Clase 3
+
+ ●Problema — Datos — Features: deﬁnir el objetivo y entender los datos disponibles
+
+
+ ●EDA: explorar distribuciones, outliers y relaciones entre variables
+
+
+ ●Feature Selection y Regularización: elegir variables y controlar la complejidad del modelo
+
+
+ ●Métricas: cómo medimos si un modelo generaliza bien
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                 2
+
+===== PAGINA 3 =====
+
+Repaso Clase 3
+Exploratory Data Analysis
+EDA: entender los datos antes de modelar
+
+●Estadísticas descriptivas, histogramas y boxplots para ver
+distribuciones y detectar outliers
+
+
+●Correlación (Pearson) y matriz de correlación para ver
+relaciones entre variables
+
+
+●Escalado de variables (min-max o z-score) antes de
+comparar o entrenar modelos
+
+===== PAGINA 4 =====
+
+Repaso Clase 3
+Feature Selection
+Feature Selection: ¿cuáles variables conservar? / Feature Selection: which features to keep?
+
+
+●Más variables no es necesariamente mejor: maldición de la dimensionalidad y riesgo de overﬁtting
+
+
+●Filtros: métricas estadísticas independientes del modelo (Pearson, Mutual Information, ANOVA,
+Chi²)
+
+
+●Wrappers (Recursive Feature Elimination) y Embedded (Lasso, Random Forest importance): usan el
+modelo para elegir variables
+
+===== PAGINA 5 =====
+
+Ejemplo
+
+===== PAGINA 6 =====
+
+Repaso Clase 3
+Regularización
+Regularización: controlar la complejidad del modelo / Regularization: controlling model complexity
+
+
+●Penaliza coeﬁcientes grandes para evitar el overﬁtting
+
+
+●L1 (Lasso): puede llevar coeﬁcientes a cero — también selecciona variables
+
+
+●L2 (Ridge) y Elastic Net: reducen los coeﬁcientes sin anularlos, combinando ambos enfoques
+
+===== PAGINA 7 =====
+
+Repaso Clase 3
+Métricas
+Métricas: ¿cómo sabemos si el modelo generaliza?
+
+●RMSE: promedio del error de predicción al cuadrado
+
+
+
+
+●R²: proporción de la variabilidad explicada por el modelo
+
+===== PAGINA 8 =====
+
+Regresión Logística
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 9 =====
+
+Regresión Logística
+Motivación
+Resolver problemas de clasificación binaria basado en datos anteriores, por ejemplo:
+ - Emails: no es spam / es spam
+ - Tumor: benigno / maligno
+ - Producción de semiconductores: unidad defectuosa / unidad OK
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                         9
+
+===== PAGINA 10 =====
+
+Regresión Logística
+Motivación
+Resolver problemas de clasificación binaria basado en datos anteriores, por ejemplo:
+ - Emails: no es spam / es spam
+ - Tumor: benigno / maligno
+ - Producción de semiconductores: unidad defectuosa / unidad OK
+
+
+                                                 0: “clase negativa” (ej. tumor benigno)
+
+
+
+                                                 1: “clase positiva” (ej. tumor maligno)
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                             10
+
+===== PAGINA 11 =====
+
+Regresión Logística
+Motivación
+Ya vimos la variable a predecir Y, ahora ¿cuáles podrían ser los features X para cada
+uno de estos ejemplos?
+
+
+  -     Emails: no es spam / es spam → frecuencia de palabras: address / free / order
+
+  -     Tumor: benigno / maligno → radio / textura / perímetro / área / suavidad
+
+  -     Semiconductor: funciona / es defectuoso → información de sensores
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                          11
+
+===== PAGINA 12 =====
+
+Regresión Logística
+Ejemplo
+Tomemos como ejemplo un set de entrenamiento para clasificar un tumor como benigno/maligno.
+
+
+
+
+                  (Sí) 1
+
+
+             Maligno?
+
+
+
+                                                          Tamaño
+                (No) 0
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                12
+
+===== PAGINA 13 =====
+
+Regresión Logística
+Regresión Lineal
+
+
+
+
+                                                 Tamaño
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026            13
+
+===== PAGINA 14 =====
+
+Regresión Logística
+Regresión Lineal
+
+
+
+
+                      BENIGNO                             MALIGNO
+
+
+
+
+                                                 Tamaño
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                      14
+
+===== PAGINA 15 =====
+
+Regresión Logística
+Regresión Lineal
+
+
+
+
+                                                 Tamaño
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026            15
+
+===== PAGINA 16 =====
+
+Regresión Logística
+Regresión Lineal
+
+
+
+
+                     BENIGNO                              MALIGNO
+
+
+
+
+                                                 Tamaño
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                      16
+
+===== PAGINA 17 =====
+
+Regresión Logística
+Regresión Lineal
+                                                 Características:
+                                                   -   Predice valores continuos
+                                                   -   Resuelve problemas de regresión
+
+                                                 Problemas:
+                                                   -   Predice valores fuera del rango de 0 y 1, no tiene
+                                                       sentido interpretarlos como probabilidad
+
+
+
+                                                 Intuición: debemos “aplastarlo” para que los
+                                                 resultados caigan entre 0 y 1.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                   17
+
+===== PAGINA 18 =====
+
+Regresión Logística
+Función Sigmoidea
+Para resolver este problema la regresión logística utiliza la función sigmoidea:
+
+
+
+
+                      BENIGNO                                                 MALIGNO
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         18
+
+===== PAGINA 19 =====
+
+Regresión Logística
+Función Sigmoidea
+Para resolver este problema la regresión logística utiliza la función sigmoidea:
+
+
+
+
+                                                    -   Asíntotas en 0 y 1
+                                                    -   Transforma cualquier número real en una
+                                                        probabilidad
+                                                    -   Se utiliza para problemas de clasificación (NO
+                                                        REGRESIÓN)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          19
+
+===== PAGINA 20 =====
+
+Regresión Logística
+Función Sigmoidea
+Para resolver este problema la regresión logística utiliza la función sigmoidea:
+
+
+
+
+                                                    -   Asíntotas en 0 y 1
+                                                    -   Transforma cualquier número real en una
+                                                        probabilidad
+                                                    -   Se utiliza para problemas de clasificación (NO
+                                                        REGRESIÓN)
+
+                                                        Usamos el conjunto de entrenamiento para definir
+                                                        las variables w y b más adecuadas para nuestros
+                                                        datos.
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          20
+
+===== PAGINA 21 =====
+
+Regresión Logística
+Ejemplo
+Entrené mi modelo, tengo la regresión logística.
+
+
+                                                   Llega un paciente con un tumor de 4cm.
+
+
+                                                   Salida del modelo: 0.7
+
+
+                                                   Interpretación: el paciente tiene 70% de
+                                                   probabilidad de tener un tumor maligno.
+
+
+                                                   ¿Cómo paso de la probabilidad a la predicción?
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     21
+
+===== PAGINA 22 =====
+
+Regresión Logística
+Ejemplo
+Entrené mi modelo, tengo la regresión logística.
+
+
+                                                   Llega un paciente con un tumor de 4cm.
+
+
+                                                   Salida del modelo: 0.7
+
+
+                                                   Interpretación: el paciente tiene 70% de
+                                                   probabilidad de tener un tumor maligno.
+
+
+                                                   ¿Cómo paso de la probabilidad a la predicción?
+                                                     -   CON UN UMBRAL
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     22
+
+===== PAGINA 23 =====
+
+Regresión Logística
+Evaluación
+Ya entrenamos un modelo de regresión logística: dado el tamaño de un tumor, predice la probabilidad de
+que sea maligno.
+
+¿Cómo sabemos si este modelo es bueno?
+
+===== PAGINA 24 =====
+
+Métricas de Evaluación
+
+
+-   Accuracy (Porcentaje de aciertos)
+-   Matriz de confusión
+-   Elección del umbral y curva ROC
+-   Otras métricas (precisión, recall, F1)
+
+===== PAGINA 25 =====
+
+Métricas de evaluación
+Accuracy (porcentaje de aciertos)
+De todas las predicciones que hizo el modelo, ¿qué porcentaje acertó?
+
+
+                    Accuracy = predicciones correctas / total de predicciones
+
+===== PAGINA 26 =====
+
+Métricas de evaluación
+Accuracy (porcentaje de aciertos)
+De todas las predicciones que hizo el modelo, ¿qué porcentaje acertó?
+
+
+                    Accuracy = predicciones correctas / total de predicciones
+
+
+Ejemplo: probamos nuestro modelo con 10 pacientes nuevos, y acertó el diagnóstico (maligno/benigno)
+en 8 de ellos.
+ Accuracy = 8/10 = 80%
+
+
+
+Pero el accuracy no distingue qué tipo de error cometió el modelo. ¿Los dos pacientes mal
+diagnosticados eran falsos positivos o negativos?
+
+===== PAGINA 27 =====
+
+Métricas de evaluación
+Limitaciones del Accuracy
+3 modelos, 3 resultados distintos, 10 mismos pacientes, misma accuracy.
+
+===== PAGINA 28 =====
+
+Métricas de evaluación
+Matriz de Confusión
+Método de visualización para los resultados de un algoritmo clasificador.
+
+===== PAGINA 29 =====
+
+Métricas de evaluación
+Matriz de Confusión
+
+                         TP (verdadero positivo): tumor maligno, el
+                         modelo dijo maligno.
+
+                         TN (verdadero negativo): tumor benigno, el
+                         modelo dijo benigno.
+
+                         FP (falso positivo): tumor benigno, el modelo
+                         dijo maligno.
+
+                         FN (falso negativo): tumor maligno, el modelo
+                         dijo benigno - el error más grave acá.
+
+===== PAGINA 30 =====
+
+Métricas de evaluación
+Precisión y Recall
+
+===== PAGINA 31 =====
+
+Métricas de evaluación
+Precisión y Recall
+
+
+
+                                                 Precisión: qué tan exactas son las
+                                                 predicciones positivas
+
+
+
+
+     Recall: capacidad del modelo de encontrar
+     todos los casos positivos presentes.
+
+===== PAGINA 32 =====
+
+Métricas de evaluación
+Speciﬁcity y negative predicted value
+
+
+
+
+                                ?
+
+
+
+                     ?
+
+===== PAGINA 33 =====
+
+Métricas de evaluación
+Speciﬁcity y negative predicted value
+
+
+
+
+                            TN / (TN + FN)
+
+===== PAGINA 34 =====
+
+Métricas de evaluación
+Speciﬁcity y negative predicted value
+
+
+
+
+                            TN / (TN + FN)   Qué tan exactas son las predicciones
+                                             negativas.
+
+===== PAGINA 35 =====
+
+Métricas de evaluación
+Speciﬁcity y negative predicted value
+
+
+
+
+                TN / (TN + FP)
+
+===== PAGINA 36 =====
+
+Métricas de evaluación
+Speciﬁcity y negative predicted value
+
+
+
+
+                TN / (TN + FP)
+
+
+                Specificity: Capacidad del modelo de
+                encontrar los negativos.
+
+===== PAGINA 37 =====
+
+Métricas de evaluación
+Precisión y Recall (Sensitivity)
+
+
+
+
+                                   En el caso de la predicción de tumores
+                                   benignos/malignos. Preferimos tener un
+                                   recall alto o precisión alta?
+
+===== PAGINA 38 =====
+
+Métricas de evaluación
+El trade-off del Umbral
+Recordemos: la regresión logística devuelve una probabilidad. Nosotros elegimos el umbral para convertirla en
+0 o 1.
+
+===== PAGINA 39 =====
+
+Métricas de evaluación
+El trade-off del Umbral
+Recordemos: la regresión logística devuelve una probabilidad. Nosotros elegimos el umbral para convertirla en
+0 o 1.
+
+
+
+
+Si bajamos el umbral: el modelo marca maligno más seguido ↑ Recall, ↓ Precision más falsas alarmas pero
+no se escapa ningún maligno.
+
+===== PAGINA 40 =====
+
+Métricas de evaluación
+El trade-off del Umbral
+Recordemos: la regresión logística devuelve una probabilidad. Nosotros elegimos el umbral para convertirla en
+0 o 1.
+
+
+
+
+Si subimos el umbral: el modelo marca benigno más seguido ↑ Precision, ↓ Recall. No hay falsas alarmas
+pero se escapan algunos tumores malignos.
+
+===== PAGINA 41 =====
+
+Métricas de evaluación
+El Trade-Off del Umbral
+¿Qué conviene? Depende del costo de cada error:
+ -   Diagnóstico de cáncer:
+
+===== PAGINA 42 =====
+
+Métricas de evaluación
+El Trade-Off del Umbral
+¿Qué conviene? Depende del costo de cada error:
+ -   Diagnóstico de cáncer: preferimos umbral bajo (recall alto) — es peor dejar pasar
+     un maligno que revisar de más un caso benigno.
+
+===== PAGINA 43 =====
+
+Métricas de evaluación
+El Trade-Off del Umbral
+¿Qué conviene? Depende del costo de cada error:
+ -   Diagnóstico de cáncer: preferimos umbral bajo (recall alto) — es peor dejar pasar
+     un maligno que revisar de más un caso benigno.
+ -   Filtro de spam: preferimos umbral alto (precision alta) — es peor perder un mail
+     importante que dejar pasar algún spam.
+
+===== PAGINA 44 =====
+
+Métricas de evaluación
+El Trade-Off del Umbral
+¿Qué conviene? Depende del costo de cada error:
+ -   Diagnóstico de cáncer: preferimos umbral bajo (recall alto) — es peor dejar pasar
+     un maligno que revisar de más un caso benigno.
+ -   Filtro de spam: preferimos umbral alto (precision alta) — es peor perder un mail
+     importante que dejar pasar algún spam.
+
+
+No existe un umbral “correcto” universal: depende del problema.
+¿Cómo visualizamos este trade-off? → curva ROC.
+
+===== PAGINA 45 =====
+
+Métricas de evaluación
+Curva ROC
+En vez de fijar UN umbral y calcular UN (Precision, Recall), la curva ROC recorre todos los umbrales posibles.
+
+Para cada umbral, calculamos dos cosas:
+
+-TPR (True Positive Rate) = Recall: de los malignos reales, ¿a cuántos detectó?
+      TPR = TP / (TP + FN)
+
+-FPR (False Positive Rate): de los benignos reales, ¿a cuántos etiquetó mal como malignos?
+      FPR = FP / (FP + TN)
+
+Graficando cada (FPR, TPR) a medida que bajamos el umbral de 1 a 0, obtenemos la curva ROC.
+
+===== PAGINA 46 =====
+
+Métricas de evaluación                   TPR
+Curva ROC   TPR = TP / (TP + FN)
+                                     1
+            FPR = FP / (FP + TN)
+
+
+
+
+                                   0.5
+
+ TP = 0
+ FP = 0
+
+
+
+
+                                    0                    FPR
+                                          0    0.5   1
+
+===== PAGINA 47 =====
+
+Métricas de evaluación                          TPR
+Curva ROC                                   1
+
+
+
+
+                                          0.5
+
+ TP = 35
+            TPR = TP / (TP + FN) = 0,85
+ FP = 5
+            FPR = FP / (FP + TN) = 0,11
+ FN = 6
+ TN = 37
+
+                                           0                    FPR
+                                                 0    0.5   1
+
+===== PAGINA 48 =====
+
+Métricas de evaluación                       TPR
+Curva ROC                                1
+
+
+
+
+                                       0.5
+
+ TP = 45
+            TPR = TP / (TP + FN) = 1
+ FP = 45
+            FPR = FP / (FP + TN) =1
+ FN = 0
+ TN = 0
+
+                                        0                    FPR
+                                              0    0.5   1
+
+===== PAGINA 49 =====
+
+Métricas de evaluación         TPR
+Curva ROC                  1
+
+
+
+
+                         0.5
+
+ TP = 45
+ FP = 45
+ FN = 0
+ TN = 0
+
+                          0                    FPR
+                                0    0.5   1
+
+===== PAGINA 50 =====
+
+Métricas de evaluación
+Curva ROC
+
+                         ¿Cómo es un clasificador ideal?
+
+===== PAGINA 51 =====
+
+Métricas de evaluación
+AUC
+Manera equivalente de ver el desempeño del clasificador para diferentes umbrales.
+
+
+                                              AUC = 1 → Clasificador ideal
+
+                                              AUC = 0.5 → Clasificador aleatorio
+
+===== PAGINA 52 =====
+
+Métricas de evaluación
+Elección del mejor umbral
+No hay un umbral "correcto" único: depende de si priorizás positivos, negativos o ambos.
+Un criterio práctico: elegir el umbral cuyo punto (FPR, TPR) esté más cerca de (0, 1), el
+punto ideal en la curva ROC.
+Procedimiento:
+1.   Definir un rango de umbrales según el clasificador
+2.   Para cada umbral: clasificar los datos, calcular FPR y TPR, y guardar la distancia al
+     punto (0,1)
+3.   Elegir el umbral con distancia mínima
+
+===== PAGINA 53 =====
+
+MUCHAS GRACIAS!
+
+===== PAGINA 54 =====
+
+Referencias
+ [1] A. Géron, Hands-On Machine Learning with Scikit-Learn, Keras, and TensorFlow: Concepts,
+ Tools, and Techniques to Build Intelligent Systems, 3rd ed. Sebastopol, CA, USA: O'Reilly Media,
+ 2022.
+
+ [2] Codificando Bits, “Clasificación: la curva ROC y el AUC,” Codificando Bits, 2021. [Online].
+ Available: https://codificandobits.com/tutorial/clasificacion-curva-roc-auc/. [Accessed: Sep. 1,
+ 2026].
+
+ [3] [YouTube], “Video sobre regresión logística y clasificación,” YouTube. [Online]. Available:
+ https://www.youtube.com/watch?v=4u81xU7BIOc. [Accessed: Sep. 1, 2026].
+
+===== PAGINA 55 =====
+
+Regresión Logística
+El modelo logístico no es más que una regresión lineal común... pero aplicada sobre una escala
+logarítmica.
+Utiliza odds:
+                                                  Ejemplo: odds = 0.8 / 1 - 0.8 = 0.8/0.2 = 4   Dominio: p∈(0,1)
+
+                                                  Intuición: es 4 veces más probable            Rango: (0,+∞)
+                                                  que compre a que no compre
+
+
+Odds tiene rango de 0 a infinito, para estirar el rango a todos los reales se utiliza el logaritmo.
+
+
+                                                                                                Dominio: (0,+∞)
+                                                          El modelo es lineal, solo que no en
+                                                                p si no en logit de p.          Rango: (-∞,+∞)
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                 55
+
+===== PAGINA 56 =====
+
+Regresión Logística
+Despejamos p
+
+
+
+
+                                                 Función sigmoidea
+ Aprendizaje Automático – ©Carlos Bibián, 2026                       56
+

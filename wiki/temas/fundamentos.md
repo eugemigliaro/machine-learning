@@ -10,7 +10,7 @@ El aprendizaje automático busca que un sistema mejore su comportamiento a parti
 - **No supervisado:** busca patrones sin etiquetas, por ejemplo agrupamientos. [T01, p. 28]
 - **Por refuerzo:** un agente descubre una política de decisiones al interactuar con un entorno y recibir recompensas o castigos, posiblemente diferidos. [T01, p. 32]
 
-Hay otros ejes de clasificación. El aprendizaje **batch** entrena con el conjunto disponible y requiere reentrenamiento para incorporar datos nuevos; el aprendizaje **online** actualiza el modelo continuamente, pero puede ser vulnerable a secuencias ruidosas y depende de la velocidad de adaptación. [T01, p. 38] En **instance-based learning**, la predicción depende de la similitud con ejemplos almacenados; en **model-based learning**, se construye un modelo que luego generaliza. [T01, p. 43]
+Hay otros ejes de clasificación. El aprendizaje **batch** entrena con el conjunto disponible y requiere reentrenamiento para incorporar datos nuevos; el aprendizaje **online** actualiza el modelo continuamente, pero puede ser vulnerable a secuencias ruidosas y depende de la velocidad de adaptación. [T01, p. 38] En **instance-based learning**, la predicción depende de la similitud con ejemplos almacenados; en **model-based learning**, se construye un modelo que luego generaliza. [T01, p. 43] La clase 9 desarrolla el primer enfoque con kNN, un aprendizaje "perezoso" que pospone el cómputo hasta la predicción. [T09, p. 11] [T09, p. 13] Ver [Aprendizaje basado en instancias](aprendizaje-basado-en-instancias.md).
 
 ## Proyecto de ML
 
@@ -23,3 +23,5 @@ Desafíos recurrentes: datos insuficientes o no representativos, mala calidad, c
 - [Datos y preprocesamiento](datos-y-preprocesamiento.md)
 - [Evaluación y validación](evaluacion-y-validacion.md)
 - [EDA y selección](eda-y-seleccion.md)
+- Clasificación: [regresión logística](regresion-logistica.md), [modelos generativos](gda-y-naive-bayes.md) y [árboles](arboles-de-decision.md).
+- [Aprendizaje basado en instancias (kNN)](aprendizaje-basado-en-instancias.md)

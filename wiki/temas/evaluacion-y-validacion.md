@@ -38,3 +38,11 @@ Para residuos `eᵢ = yᵢ - ŷᵢ`, el material define:
 - `R²`: proporción de variabilidad del objetivo explicada por el modelo; valores cercanos a 1 indican mejor ajuste y cercanos a 0, poca información explicada, en la interpretación introductoria de la cátedra. [T03, p. 88]
 
 Si se prueban muchas configuraciones, también puede haber overfitting a dev. El material recomienda cross-validation, limitar búsquedas ad hoc, mantener test intacto y, para selección intensiva o pocos datos, nested cross-validation. [T03, p. 100]
+
+## Diagnóstico y búsqueda de hiperparámetros
+
+La clase de árboles repasa el mismo esquema con clasificación: calcular la métrica en train y validación, usar k-fold para una estimación más estable, leer el gap de generalización (gap grande: sobreajuste; gap chico con desempeño bajo: subajuste) y trazar curvas de validación en función de un hiperparámetro de complejidad. [T07, p. 50] [T07, p. 51] Para varios hiperparámetros propone grid search: primero rangos amplios por separado y después un rango acotado con margen, porque los hiperparámetros interactúan. [T07, p. 52] [T07, p. 53]
+
+## Métricas de clasificación
+
+Accuracy, matriz de confusión, precisión, recall, especificidad, curva ROC y AUC se desarrollan en [Métricas de clasificación](metricas-de-clasificacion.md). [T04, p. 24] El umbral de decisión también es un hiperparámetro que se elige sin mirar test. [T04, p. 52] [T02, p. 89]

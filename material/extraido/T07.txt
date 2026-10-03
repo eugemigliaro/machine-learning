@@ -1,0 +1,1516 @@
+FUENTE: T07
+TITULO: Árboles de decisión y Random Forest
+ORIGINAL: material/catedra/teoria/Clase 7 - Árboles de decisión y Random Forest.pdf
+PAGINAS: 73
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+                                                    … en la sesión anterior
+
+                                                    -     GDA
+Plan de la sesión de hoy                            -     Naive-Bayes
+-   Árboles de decisión
+                                                    -     LDA/GDA
+-   Hiperparámetros
+-   Random Forests
+
+===== PAGINA 2 =====
+
+  Clasiﬁcadores basados en Árboles
+  Árboles de Decisión y Random Forest
+
+
+
+
+  Carlos Bibián Nogueras, PhD
+  cbibian@itba.edu.ar |
+
+
+  Instituto Tecnológico de Buenos Aires
+
+
+
+
+Aprendizaje Automático – ©Carlos Bibián, 2026
+
+===== PAGINA 3 =====
+
+Idea principal
+• Llegar a una decisión a partir de una sucesión de preguntas de respuesta binaria
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                        3
+
+===== PAGINA 4 =====
+
+¿Qué es un Árbol de Decisión?
+
+• Un modelo predictivo que toma decisiones dividiendo el espacio de los datos
+  en reglas condicionales simples, de forma jerárquica.
+
+
+
+• Cada decisión lleva a una rama, hasta llegar a       b < b’        b > b’
+  una predicción final en una hoja.
+
+                                                                a < a’        a > a’
+• Secuencia de decisiones jerárquicas que dividen
+  el espacio de características en regiones cada vez
+  más homogéneas                                                         b < b’’       b > b’’
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                    4
+
+===== PAGINA 5 =====
+
+¿Cómo decidimos donde colocar cada corte?
+
+
+
+
+Aprendizaje Automático – ©Carlos Bibián, 2026   5
+
+===== PAGINA 6 =====
+
+¿Cómo decidimos donde colocar cada corte?
+
+                                                1.   Calcular el error/impureza de cada posible corte
+                                                     (para cada característica)
+                                                     Ej: calculando el porcentaje de elementos que no pertenecen a la clase
+                                                     mayoritaria en ese grupo a cada lado del corte
+
+
+
+
+                                                2.   Elegir el corte con menor error/impureza
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                            6
+
+===== PAGINA 7 =====
+
+¿Cómo decidimos donde colocar cada corte?
+                 1/53           13/76
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   7
+
+===== PAGINA 8 =====
+
+¿Cómo decidimos donde colocar cada corte?
+              0/42           23/87
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   8
+
+===== PAGINA 9 =====
+
+¿Cómo decidimos donde colocar cada corte?
+                    7/64            9/65
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   9
+
+===== PAGINA 10 =====
+
+¿Cómo decidimos donde colocar cada corte?
+                    7/64            9/65
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   10
+
+===== PAGINA 11 =====
+
+Problemas de este método
+
+
+
+• Insensible a los cambios dentro de nodos impuros.
+      • Por ejemplo, 65/35 y 55/45 dan errores de clasificación muy parecidos (0.35 vs 0.45), pero el
+        55/45 es muchísimo peor.
+
+
+• Puede que muchos cortes tengan el mismo “error de clasificación”, aunque sus
+  distribuciones internas sean muy distintas.
+
+
+• En general, árboles menos estables y precisos ->no captura bien cuán “mezcladas” están
+  realmente las clases.
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                           11
+
+===== PAGINA 12 =====
+
+¿Alternativas?
+
+
+
+
+Impureza de Gini
+
+
+
+Entropía (Shannon)
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   12
+
+===== PAGINA 13 =====
+
+¿Qué es la impureza Gini?
+
+
+
+
+• Viene de estadística económica (Corrado Gini, 1912) como medida de desigualdad:
+
+      • Mide la desigualdad en una distribución (por ejemplo, la distribución del ingreso en una población)
+
+
+
+• Penalizan más intensamente cuando hay mezcla de clases, incluso si una clase es
+  claramente dominante
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                             13
+
+===== PAGINA 14 =====
+
+¿Qué es la entropía?
+
+
+
+
+• Proviene de la teoría de la información (Claude Shannon, 1948):
+      • mide cantidad promedio de información (o incertidumbre) contenida en un mensaje aleatorio.
+      • Usada para cuantificar cuán impredecible es una fuente de información.
+
+
+
+• Es aún más sensible a proporciones bajas (por su forma logarítmica).
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                        14
+
+===== PAGINA 15 =====
+
+Comparación de métricas
+• El error de clasificación constante para todo p
+
+• El índice de Gini y la entropía penalizan más los
+  errores cuando hay pocas muestras de una clase. (p
+  pequeño)
+
+• Entropía y Gini mas sensibles a cambios en
+  pequeñas proporciones les permite construir
+  divisiones más informativas.
+
+• *Se suele usar Gini ya que es computacionalmente mas
+  eficiente que Shannon (multiplicación vs logaritmo)
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025            15
+
+===== PAGINA 16 =====
+
+Ejemplo de calculo de Gini
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   16
+
+===== PAGINA 17 =====
+
+Ejemplo de calculo de Gini
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   17
+
+===== PAGINA 18 =====
+
+¿Cómo se construye un Árbol de Decisión?
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   18
+
+===== PAGINA 19 =====
+
+¿Cómo se construye un Árbol de Decisión?
+
+                                                ¡Ya sabemos elegir un umbral!
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                   19
+
+===== PAGINA 20 =====
+
+¿Cómo se construye un Árbol de Decisión?
+
+                                                Hoja                               Nodo
+
+                                                       b < b’        b > b’
+
+
+                                                                a < a’        a > a’
+
+
+                                                                         b < b’’       b > b’’
+
+
+
+
+                          b’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                    20
+
+===== PAGINA 21 =====
+
+¿Cómo se construye un Árbol de Decisión?
+
+
+                                                b < b’        b > b’
+a’
+
+                                                         a < a’        a > a’
+
+
+                                                                  b < b’’       b > b’’
+
+
+
+
+                          b’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                             21
+
+===== PAGINA 22 =====
+
+¿Cómo se construye un Árbol de Decisión?
+
+
+                                                b < b’        b > b’
+a’
+
+                                                         a < a’        a > a’
+
+
+                                                                  b < b’’       b > b’’
+
+
+
+
+                          b’            b’’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                             22
+
+===== PAGINA 23 =====
+
+¿Cómo se construye un Árbol de Decisión?
+
+
+                                                b < b’        b > b’
+a’
+
+                                                         a < a’        a > a’
+
+
+                                                                  b < b’’       b > b’’
+
+
+
+
+                          b’            b’’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                             23
+
+===== PAGINA 24 =====
+
+¿Cómo predice un Árbol de Decisión?
+
+
+                                                b < b’        b > b’
+a’
+
+                                                         a < a’        a > a’
+
+
+                                                                  b < b’’       b > b’’
+
+
+
+
+                          b’            b’’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                             24
+
+===== PAGINA 25 =====
+
+¿Cómo predice un Árbol de Decisión?
+
+
+                                                b < b’        b > b’
+a’
+
+                                                         a < a’        a > a’
+
+
+                                                                  b < b’’       b > b’’
+
+
+
+
+                          b’            b’’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                             25
+
+===== PAGINA 26 =====
+
+Ventajas de Árboles de Decisión
+
+                                                tamaño < 12         tamaño > 12
+• Interpretabilidad clara
+                                                       color < 20      color > 20
+
+• Maneja datos numéricos y categóricos
+                                                         tamaño < 16         tamaño < 16
+
+
+• No necesita normalización
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                              26
+
+===== PAGINA 27 =====
+
+Desventajas de Árboles de Decisión
+
+• Propenso al sobreajuste
+
+• Fronteras de decisión muy rígidas
+
+
+
+• Vulnerable a la orientación de las features                     45º
+
+
+
+
+• Sensible a pequeñas variaciones
+      • Pequeño cambio en datos puede dar un árbol muy distinto
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                           27
+
+===== PAGINA 28 =====
+
+Técnicas para controlar sobreajuste
+
+
+
+
+Restricciones durante el crecimiento               Poda
+
+ - Limitar la profundidad del árbol                1) Se hace crecer el árbol sin restricciones
+ - Evitar que cree un nodo si tiene pocos datos.
+                                                   2) Eliminar ramas que aportan poca mejora
+ - Imponer mejora mínima para crear un nodo.
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                     28
+
+===== PAGINA 29 =====
+
+Técnicas para controlar sobreajuste
+
+
+
+                                                   Generalmente se usa la pre-poda ya que
+                                                   es mas eficiente computacionalmente
+
+
+
+Restricciones durante el crecimiento                       Poda
+
+ - Limitar la profundidad del árbol                        1) Se hace crecer el árbol sin restricciones
+ - Evitar que cree un nodo si tiene pocos datos.
+                                                           2) Eliminar ramas que aportan poca mejora
+ - Mejora mínima para crear un nodo.
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                             29
+
+===== PAGINA 30 =====
+
+¿Cómo aplican restricciones al crecimiento?
+                                                                                              Profundidad
+                                                                                              máxima = 3
+                                                    b < b’        b > b’
+a’
+
+                                                             a < a’        a > a’
+
+
+                                                                      b < b’’       b > b’’
+
+
+                                                Se crea una hoja, de la clase mayoritaria en el nodo
+
+
+                          b’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                        30
+
+===== PAGINA 31 =====
+
+¿Cómo se construye un Árbol de Decisión?
+                                                                                              Profundidad
+                                                                                              máxima = 3
+                                                    b < b’        b > b’
+a’
+
+                                                             a < a’        a > a’
+
+
+                                                                      b < b’’       b > b’’
+
+
+                                                Se crea una hoja, de la clase mayoritaria en el nodo
+
+
+                          b’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                        31
+
+===== PAGINA 32 =====
+
+¿dudas hasta aquí?
+
+
+                                                b < b’        b > b’
+a’
+
+                                                         a < a’        a > a’
+
+
+                                                                  b < b’’       b > b’’
+
+
+
+
+                          b’            b’’
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                             32
+
+===== PAGINA 33 =====
+
+¿Qué sabemos hasta ahora?
+
+1. Como funciona un árbol de decisión
+
+2. Evaluar los distintos umbrales posibles
+
+3. Técnicas para evitar overfitting
+
+Ahora… ¿como se construye?
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   33
+
+===== PAGINA 34 =====
+
+¿Como construimos un árbol?
+
+• Históricamente se han propuesto varios algoritmos, como ID3 y
+  C4.5,
+
+• En la actualidad el más utilizado es CART:
+       • Más simple e intuitivo
+       • Tiene amplio soporte en librerías modernas (como scikit-learn, Random
+         Forest y XGBoost…)
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                    34
+
+===== PAGINA 35 =====
+
+¿Como funciona el algoritmo CART?
+                                                                        Para Cada nodo                       No
+
+
+
+                                          Calcular impureza para cada                          ¿Es un nodo puro (solo
+                                           umbral posible para cada
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                             característica (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza             Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        35
+
+===== PAGINA 36 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        36
+
+===== PAGINA 37 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        37
+
+===== PAGINA 38 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        38
+
+===== PAGINA 39 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        39
+
+===== PAGINA 40 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        40
+
+===== PAGINA 41 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        41
+
+===== PAGINA 42 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        42
+
+===== PAGINA 43 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        43
+
+===== PAGINA 44 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        44
+
+===== PAGINA 45 =====
+
+¿Como funciona el algoritmo CART?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        45
+
+===== PAGINA 46 =====
+
+¿En que parte podemos mejorar la eficiencia?
+                                                                       Para Cada nodo                        No
+
+
+
+                                        Calcular Gini para cada umbral                         ¿Es un nodo puro (solo
+                                        posible para cada característica
+                                                                                               una clase) o se cumple            Si
+                                                                                              algún criterio de parada?
+                                                    (todas!)
+                                                                                                 tamaño mínimo de el split,
+                                                                                              profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                     Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                 Dividir el espacio de                          Crear una hoja y
+                                                                                características con ese                       asignar la clase mas
+                                                                                        umbral                                     frecuente
+
+
+                                                                           No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza            Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                        46
+
+===== PAGINA 47 =====
+
+Mejoras de eficiencia en el algoritmo CART
+                                                                         Para Cada nodo                             No
+
+
+                                        Calcular Gini para cada umbral                                ¿Es un nodo puro (solo
+                                        posible para cada característica                              una clase) o se cumple            Si
+                                                    (todas!)                                         algún criterio de parada?
+                                                Para n muestras y d features: ¡¡
+                                                                                                        tamaño mínimo de el split,
+                                                    (n-1)·d umbrales posibles!!                      profundidad máxima del árbol…
+
+
+
+
+                                           Elegir característica y                            Se crean dos nodos
+                                         umbral con menor impureza
+                                                                                        Dividir el espacio de                          Crear una hoja y
+                                                                                       características con ese                       asignar la clase mas
+                                                                                               umbral                                     frecuente
+
+
+                                                                                  No
+                                                 ¿se cumple algún
+                                                criterio de parada?
+                                                Ej: mejora mínima en
+                                                     la impureza                   Si
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                                                               47
+
+===== PAGINA 48 =====
+
+Mejoras de eficiencia en el algoritmo CART
+
+Evaluar solamente umbrales en cambios de clase:
+Ordenar los valores y solo evaluar umbrales en el cambio de clase
+                           12
+                           3
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                       48
+
+===== PAGINA 49 =====
+
+Ejemplo real árbol de decisión
+
+
+
+
+                                                ¿Opiniones?
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                 49
+
+===== PAGINA 50 =====
+
+¿Como evaluar el rendimiento?
+
+                                                1) Definir la métrica y calcular sobre el conjunto de
+                                                entrenamiento y validación.
+
+                                                2) Validación cruzada (cross-validation): Usarla para estimar
+                                                rendimiento más estable. (K-fold)
+
+                                                3) Gap de generalización: diferencia entre rendimiento en
+                                                entrenamiento y validación.
+                                                     -Gap grande indica sobreajuste
+                                                     -Gap pequeño pero baja precisión indica subajuste
+
+                                                4) Curvas de validación: Cómo varía el rendimiento al
+                                                cambiar un hiperparámetro*.
+                                                    *evaluar rendimiento vs complejidad (número de nodos,
+                                                    profundidad, min puntos por Split…).
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                   50
+
+===== PAGINA 51 =====
+
+Ajuste de hiperparámetros
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   51
+
+===== PAGINA 52 =====
+
+     ¿Y si queremos evaluar varios hiperparámetros?
+Grid Search (búsqueda de rejilla):
+
+1)      plotear un rango amplio del hiperparamentro por separado (como en esta
+        slide)
+2)      elegir un rango más acotado donde el hiperparámetro funciona bien, pero
+        darle margen!! Ya que lo que muestra overfitting en el hipermarámetro
+        individual podría ser compensado con los otros que pruebes!!!
+
+
+
+
+                                              2026
+     Aprendizaje Automático – ©Carlos Bibián, 2025                                52
+
+===== PAGINA 53 =====
+
+     ¿Y si queremos evaluar varios hiperparámetros?
+Grid Search (búsqueda de rejilla):
+
+1)      plotear un rango amplio del hiperparamentro por separado (como en esta
+        slide)
+2)      elegir un rango mas acotado donde el hiperparametro funciona bien, pero
+        darle margen!! Ya que lo que muestra overfitting en el hipermarametro
+        individual podría ser compensado con los otros que pruebes!!!
+
+
+
+
+                                              2026
+     Aprendizaje Automático – ©Carlos Bibián, 2025                                53
+
+===== PAGINA 54 =====
+
+Ejemplo
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   54
+
+===== PAGINA 55 =====
+
+Resumen DT
+ Un árbol de decisión es fácil de entender, pero también propenso a sobreajustar.
+
+
+ Aplicamos técnicas de pre-poda para limitar su complejidad,y reducir overfitting
+
+
+ Podemos optimizar varios de estos hiperparámetros para reducir overfitting sin bajar mucho la
+ precisión.
+
+ ….
+
+ ¿Podemos seguir mejorando estos métodos?
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                               55
+
+===== PAGINA 56 =====
+
+Bootstrap
+                                                   2) Cómo funciona:
+1) Definición:                                        • A partir de un conjunto de datos de tamaño n,
+       • Bootstrap es un método de muestreo con         se generan nuevas muestras también de
+         reemplazo.                                     tamaño n, seleccionando con reemplazo.
+                                                      • Algunos puntos aparecen varias veces, otros no
+                                                        aparecen.
+
+
+3) Aplicación en Machine Learning:
+       • Permite entrenar múltiples modelos
+         sobre datos distintos (aunque derivados
+         del mismo dataset).
+       • Base del bagging y los Random
+         Forests.
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                56
+
+===== PAGINA 57 =====
+
+¿Porqué Bootstrap mejoraría DT?
+
+• ¿Por qué usar bootstrap en árboles?
+      • Genera variedad entre árboles → ayuda a reducir la varianza del modelo.
+      • Hace que cada árbol "vea" una versión ligeramente distinta del problema.
+      • Mejora la generalización, modelo más estable y menos sensible a outliers o ruido.
+
+
+
+• Generalmente se extraen muestras es del mismo tamaño que el dataset original:
+      • En promedio, cada muestra bootstrap contiene aproximadamente el 63% de los datos únicos
+        originales.
+      • El resto (~37%) se puede usar como conjunto de validación interna (“out-of-bag”).
+
+
+• En datasets muy grandes, se reduce el tamaño de estas muestras (y
+  generalmente no se usa Bootstrap sino submuestreos aleatorios sin
+  remplazo)
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                     57
+
+===== PAGINA 58 =====
+
+Random Forests
+
+• Conjunto de árboles de decisión entrenados con
+  variaciones aleatorias
+
+• Promediar las predicciones de arboles
+  individualmente mas débiles, da una predicción
+  mas robusta
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025      58
+
+===== PAGINA 59 =====
+
+¿Cómo funciona un Random Forest?
+1) Se entrenan sobre subconjuntos aleatorios del dataset original
+      • Bootstrap: Muestreo con reemplazo (repite valores!) del conjunto de entrenamiento original.
+             • Cada árbol en Random Forest se entrena con una muestra del mismo tamaño que el dataset original.
+
+
+2) ¡No se evalúan los umbrales en todas las características!
+      • En cada división de nodo, se consideran solo un subconjunto aleatorio de variables
+
+3) Cada árbol clasifica el dato por separado, y vota. Al valor se le asigna la clase
+con mayor número de votos.
+*si queremos la probabilidad de cada clase en lugar de la clase,
+calculamos el % de árboles que ha votado esa clase, y esa será
+la p de esa clase
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                 59
+
+===== PAGINA 60 =====
+
+DT vs RFs
+
+
+
+
+                                   Decision Trees               Random Forests
+
+                                                                • Precisión y robustez
+                                                                • Puede manejar grandes volúmenes de
+      Ventajas                      • Interpretabilidad
+                                                                  datos y variables
+                                                                • Reduce overfitting
+                                                                • Mayor coste computacional
+                                    • Propenso al overfitting
+      Desventajas                                               • Menor interpretabilidad
+                                    • Muy sensible a datos
+                                                                • Posible overfitting en datasets pequeños
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                60
+
+===== PAGINA 61 =====
+
+¿Hiperparámetros de un Random Forest?
+Número de estimadores: número DTs a entrenar, más árboles, mejor
+estabilidad (hasta cierto punto)
+
+max_features: clave para evitar árboles muy parecidos → más diversidad.
+Cuanto menor, mas diversidad de DTs
+
+Ademas de todos los de los DTs: max_depth,
+min_samples_split, min_samples_leaf.
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                             61
+
+===== PAGINA 62 =====
+
+¿Introducir aleatoriedad reduce overfitting?
+
+• Rompe la homogeneidad entre árboles: cometen errores distintos.
+
+- Al combinarlos, los errores se atenúan y solo los patrones
+consistentes sobreviven → mejor generalización.
+
+
+
+
+• Caso extremo de ExtraTrees
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                       62
+
+===== PAGINA 63 =====
+
+Extra random Trees
+
+• Caso extremo de random forests, con mayor
+  aleatoreidad: Igual que RFs pero los umbrales a
+  evaluar también son aleatorios
+
+• Cada árbol es aún más débil individualmente
+
+• Promediar muchos árboles débiles (si errores no
+  correlados), los errores se diluyen y se mantiene
+  lo que consistentemente ayuda a separar las
+  clases
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025         63
+
+===== PAGINA 64 =====
+
+Comparación
+
+
+
+
+                                 Decision Tree           Random Forest           Extra Trees
+
+      Selección de               Todas las features      Subconjunto aleatorio   Subconjunto aleatorio de
+      feature                    disponibles             de features             features
+
+      Selección de                                                               Evalúa un umbral aleatorio
+                                 Mejor umbral (óptimo)   Mejor umbral (óptimo)
+      umbral                                                                     por cada feature
+
+                                                         Mejor split dentro de   Mejor split entre esos
+      ¿Qué optimiza?             Mejor split global
+                                                         features elegidas       candidatos aleatorios
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                             64
+
+===== PAGINA 65 =====
+
+Ejemplo
+
+
+
+
+                **Estamos usando solo dos características así que los random forests
+                pierden un poco de potencial en este ejemplo
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                          65
+
+===== PAGINA 66 =====
+
+Ejemplo
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   66
+
+===== PAGINA 67 =====
+
+Ejemplo
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   67
+
+===== PAGINA 68 =====
+
+¿Dudas finales?
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025   68
+
+===== PAGINA 69 =====
+
+¿Bagging aplicable a otros clasificadores?
+
+• En la práctica, los árboles de decisión son los más usados con
+  Bagging, porque son modelos de alta varianza (sensibles al dataset),
+  y Bagging reduce justo eso.
+• En cambio, modelos como regresión logística o SVM suelen tener baja
+  varianza y alto sesgo, así que Bagging no aporta tanto.
+• 👉 Por eso casi siempre se enseña Bagging con árboles: es donde
+  realmente brilla (Random Forest es el ejemplo más famoso).
+• Bagging con árboles (muy útil).
+• Bagging con modelos de baja varianza (menos útil).
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                        69
+
+===== PAGINA 70 =====
+
+Stacking (stacked generalization)
+
+• Versión estándar: el meta-modelo recibe solo los outputs de los
+  modelos base.
+• Versión extendida (a veces llamada stacking with passthrough): el
+  meta-modelo recibe tanto las predicciones de los modelos base
+  como las features originales.
+• → Esto permite que el meta-modelo “reconozca” en qué regiones
+  del espacio de entrada cada modelo funciona mejor.
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                     70
+
+===== PAGINA 71 =====
+
+Importancia de las features
+
+• Los DTs (y RFs) pueden también informarnos sobre qué variables
+  son mas importantes (viendo cuales son las que mas utiliza)
+
+• Calcular cuanta impureza reducen los nodos de cada feature:
+       • cada vez que se seleccione un umbral, sumar la reducción de impureza
+         que ese umbral produce y sumarlo a la reducción de esa variable.
+       • Al final tienes un vector de reducciones de impureza que te informan de
+         que variables son las mas informativa
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                      71
+
+===== PAGINA 72 =====
+
+Mejoras útiles para estos métodos
+• Selección de características (Feature Selection): Reducir el número de variables de entrada puede
+  eliminar ruido y reducir el sobreajuste.
+     • Importancia de features del propio RF (feature_importances_)
+     • Selección por varianza, correlación, discriminalidad (graficar las características para cada clase para
+       ver como de distintas son sus distribuciones -> que tan discriminante es esa variable
+                                                                                                                 valu
+     • Comprobar que variables están correladas entre ellas (correlation matrix) y quitar las que estén          e
+       correladas entre ellas (todas menos una…)
+
+
+• Blending con RF y KNN… interesante combinación ya que RF captura diferencias más globales
+  mientras que KNN más locales. Potencialmente cometerán distintos errores por lo que combinar sus
+  predicciones puede ser interesante
+                                                                                                                             feat
+     • Entrenar RF y KNN por separado sobre los datos de train, generando una probabilidad cada uno.
+     • Combinar sus predicciones para generar una nueva: por ejemplo con el promedio. O promedio
+       ponderado. O métodos mas complejos
+
+
+
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                                                                           72
+
+===== PAGINA 73 =====
+
+¿Gini o entropía para métodos avanzados?
+
+• Ninguna de las dos: Log-Loss
+
+
+
+• Ventajas:
+
+• Es derivable y por tanto permite cálculos de gradiente
+
+• Crece rápidamente cuando la predicción es muy mala (por ejemplo, p
+  estimada de 1 es 0 cuando la clase real es 1). Es muy sensible al
+  error con alta confianza.
+
+                                         2026
+Aprendizaje Automático – ©Carlos Bibián, 2025                          73
+

@@ -27,6 +27,12 @@ Ambas reglas aparecen en el material como criterios operativos, no como permiso 
 
 Las diferencias grandes de escala pueden afectar a algunos modelos. Min-max lleva los valores a un rango fijo y es sensible a outliers; z-score centra y escala con media y desvío, y el material lo presenta como opción predeterminada para muchos modelos. [T03, p. 40] [T03, p. 42] [T03, p. 43]
 
+Ejemplo: [las máquinas de vectores de soporte](svm.md) usan productos internos y distancias, así que una variable con valores grandes puede dominar la frontera si no se estandariza. [T08, p. 54] Lo mismo pasa con [kNN](aprendizaje-basado-en-instancias.md): las features de mayor magnitud dominan la distancia y tienen una influencia desproporcionada en la predicción. [T09, p. 32] Los árboles, en cambio, no necesitan normalización. [T07, p. 26]
+
+## Variables cíclicas
+
+Una variable cíclica como "día del año" puede codificarse con seno y coseno. Así, valores cercanos en el ciclo también quedan cercanos en distancia euclídea. [T09, p. 26] A veces no hace falta cambiar la distancia, sino usar una mejor representación de los datos. [T09, p. 26] **Inferencia:** con período `P`, se usa el par `(sin(2πt/P), cos(2πt/P))`. Con dos columnas, el 31 de diciembre y el 1 de enero quedan contiguos.
+
 ## Regla contra leakage
 
 Separar test antes de aprender decisiones de limpieza, imputación, codificación, escalado o selección. **Inferencia operativa:** esas transformaciones deben ajustarse con train y aplicarse, sin volver a ajustarlas, a dev y test. [T02, p. 94] [T02, p. 95] [T02, p. 96]

@@ -1,0 +1,898 @@
+FUENTE: T08
+TITULO: Máquinas de vectores de soporte (SVM)
+ORIGINAL: material/catedra/teoria/Clase 8. SVM.pptx.pdf
+PAGINAS: 56
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+Alexa Sessarego Aurich
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+
+
+
+
+                                                    … en la sesión anterior
+
+Plan de la sesión de hoy                            Decision Trees
+
+ -   SVM                                            Random Forest
+
+ -   One-Class SVM                                  Ensamble Methods
+
+ -
+
+                                                                              1
+
+===== PAGINA 2 =====
+
+Máquina de Vectores de Soporte (SVM)
+
+
+
+Francisco Pérez Sammartino,
+frperez@itba.edu.ar
+
+
+
+
+Instituto Tecnológico de Buenos Aires
+Centro de Inteligencia Computacional
+
+
+
+
+                                        2
+
+===== PAGINA 3 =====
+
+Un Problema
+
+
+
+
+              3
+
+===== PAGINA 4 =====
+
+Un problema
+
+Hallar la/una recta que separa las dos clases:
+
+
+
+
+ n=2                                             4
+
+===== PAGINA 5 =====
+
+Una recta de Separación
+
+
+
+
+                          5
+
+===== PAGINA 6 =====
+
+Hiperplano de Separación
+
+Introducción
+ ●   Podemos observar que podemos trazar una recta que
+     separa los puntos marcados con rojo de los puntos
+     marcados en negro.
+ ●   Si n = 3 (el espacio), entonces en vez de una recta sería
+     un plano de separación.
+ ●   Si los puntos pertenecieran a Rn, en vez de una recta
+     sería un hiperplano.
+
+
+
+
+                                                                 6
+
+===== PAGINA 7 =====
+
+La recta de Separación
+
+¿Cómo encontramos la recta (o el hiperplano)?
+
+
+ ●   Obteniendo, para cada clase, el convexo cerrado para todos los puntos de
+     la clase.
+ ●   Trazamos la recta más corta que une ambos convexos y la perpendicular,
+     que pase por el medio de la misma.
+
+
+
+
+                                                                                7
+
+===== PAGINA 8 =====
+
+La recta de Separación
+
+
+
+
+                         8
+
+===== PAGINA 9 =====
+
+SVM - Teoría
+
+
+
+
+               9
+
+===== PAGINA 10 =====
+
+Support Vector Machines (SVM)
+
+Es un algoritmo de aprendizaje supervisado utilizado tanto para
+problemas de clasiﬁcación como de regresión.
+
+
+
+                   Su principal objetivo es encontrar el hiperplano
+                   óptimo que mejor separa las clases.
+
+
+
+
+                                                                      10
+
+===== PAGINA 11 =====
+
+Concepto de hiperplano
+
+Ecuación de un hiperplano
+En un espacio p-dimensional un hiperplano está deﬁnido por
+                               b0 + b1x1 + b2x2 + .. + bpxp = 0
+
+
+
+Ecuación de un hiperplano en R2
+En R2, la recta queda deﬁnida por b0 + b1x1 + b2x2 = 0
+ ●   x = (x1, x2) → sobre la recta
+ ●   x′ = (x′1, x′2) tal que b0+ b1x′1+ b2x′2 > 0
+ ●   x′′ = (x′′1, x′′2) tal que b0+ b1x′′1+ b2x′′2 < 0
+
+                                                                  11
+
+===== PAGINA 12 =====
+
+Separabilidad lineal
+
+Supongamos que tenemos un conjunto de n ejemplos de p atributos xi y clase yi
+(1 ≤ i ≤ n):
+                                x1 = (x1,1, x1,2, .., x1,p), y1
+                                x2 = (x2,1, x2,2, .., x2,p), y2
+                                             ...
+                                xn = (xn,1, xn,2, .., xn,p), yn
+donde cada yi pertenece a {1, −1}.
+
+
+ El objetivo es encontrar un clasiﬁcador que clasiﬁque correctamente cada uno
+                     de estos ejemplos de acuerdo a su clase.
+                                                                                12
+
+===== PAGINA 13 =====
+
+Separabilidad lineal
+
+Hiperplano de Separación
+
+
+
+
+Si obtenemos un hiperplano de tal forma que todos
+los ejemplos cuya clase es -1 queden de un lado del
+  hiperplano y todos los ejemplos cuya clase es +1
+ queden del otro habremos alcanzado el objetivo.
+
+
+
+
+                                                      13
+
+===== PAGINA 14 =====
+
+Separabilidad lineal
+
+Entonces …
+
+
+Dado xi , i = 1, . . . n si ocurre que
+
+
+      b0 + b1xi,1 + b2xi,2 + · · · + bpxi,p > 0 cuando yi = 1
+y
+      b0 + b1xi,1 + b2xi,2 + · · · + bpxip < 0 cuando yi = −1
+
+
+entonces podemos garantizar que yi (b0 + b1xi,1 + b2xi,2 + · · · + bpxi,p) > 0
+
+                                                                                 14
+
+===== PAGINA 15 =====
+
+Separabilidad lineal
+
+
+yi (b0 + b1xi,1 + b2xi,2) > 0
+yi (-2 -4xi,1 + 3xi,2) > 0
+
+
+1 * (-2 -4*2 + 3*10) > 0
+1 * (20) > 0
+
+
+-1 * (-2 -4*6 + 3*4) > 0
+-1 * (-14) > 0
+
+
+                                15
+
+===== PAGINA 16 =====
+
+ Separabilidad lineal
+
+
+Dada una observación de test x′ con p atributos podemos clasiﬁcarla de acuerdo a:
+
+
+                    ●     x′ será de la clase 1 si b0 + b1 x′1 + b2 x′2 + · · · + bp x′p > 0
+
+
+                    ●     x′ será de la clase -1 si b0 + b1 x′1 + b2 x′2 + · · · + bp x′p <0
+
+
+                        Sea f (x′) = b0 + b1x′1 + b2x′2 + .. + bpx′p, además, podemos decir que el
+
+                        |f (x′)| (módulo) nos indica cercanía cercanía al hiperplano.
+                                                                                                     16
+
+===== PAGINA 17 =====
+
+Clasificador con vectores de soporte
+La distancia de una observación de test al hiperplano de
+separación óptimo nos da una idea de la conﬁanza que
+podemos tener en la clasiﬁcación.
+
+
+●   Si la distancia es grande tendremos más conﬁanza (la
+    observación está bastante adentro de la clase).
+
+
+
+● Si la distancia es pequeña, cerca a 0, tendremos menos
+    conﬁanza (la observación está cerca del límite de la clase y
+    por lo tanto cerca de la otra clase).
+                                                                   17
+
+===== PAGINA 18 =====
+
+¿Qué pasa si hay muchos hiperplanos?
+¿Cómo separamos las clases?
+
+
+Puede haber más de un hiperplano que los separe, en
+general, inﬁnitos planos que separan ambas clases.
+
+
+
+
+Sin embargo hay un hiperplano que posee una propiedad en particular.
+
+                                                                       18
+
+===== PAGINA 19 =====
+
+El clasificador de margen maximal
+Sea H un hiperplano que separa ambas clases, consideremos las distancias de cada
+uno de los ejemplos a H.
+
+Deﬁniremos margen como la distancia del ejemplo
+más cercano a H.
+
+
+
+
+                                                                                   19
+
+===== PAGINA 20 =====
+
+El clasificador de margen maximal
+
+
+
+
+                                    20
+
+===== PAGINA 21 =====
+
+El clasificador de margen maximal
+Nos interesa el hiperplano que posea margen máximo, es decir, Hiperplano de margen maximal
+o Hiperplano de separación óptimo.
+
+
+
+
+                                                                                        21
+
+===== PAGINA 22 =====
+
+El clasificador de margen maximal
+
+Si usamos el hiperplano de margen maximal para separar ambas clases, el clasiﬁcador se
+llama Clasiﬁcador de margen maximal.
+
+
+                                                                       H+
+Además quedan deﬁnidos dos hiperplanos
+más, equidistantes de H, H+ y H−.                                             H-
+
+
+
+
+La distancia entre H+ y H, y entre H− y H, es
+la misma: el margen.
+
+                                                                                         22
+
+===== PAGINA 23 =====
+
+ El clasificador de margen maximal
+
+Sobre H+ y H− se pueden observar ejemplos de
+ambas clases que están sobre ellos, se denominan   H+
+
+vectores de soporte (support vectors).
+                                                        H-
+
+
+
+
+El hiperplano de separación óptimo depende
+solamente de los vectores de soporte y no del
+resto de los ejemplos de las clases.
+
+                                                             23
+
+===== PAGINA 24 =====
+
+El clasificador de margen maximal
+
+Construcción del Clasiﬁcador de margen maximal
+
+
+Sea M el margen (el cual queremos maximizar) y dado que b deﬁne al
+hiperplano de separación óptimo entonces lo que queremos hacer es
+encontrar los valores de b tales que maximicen M sujeto a
+
+
+
+
+                                                                     24
+
+===== PAGINA 25 =====
+
+Concept Check: Vectores de Soporte
+
+
+
+
+  Situación
+  Supongamos que entrenamos un modelo de SVM con margen duro (Hard Margin) y obtenemos la solución
+  óptima. Si eliminamos del conjunto de entrenamiento el 80% de los datos que están muy alejados de la
+  frontera (fuera del margen) y volvemos a entrenar la SVM con el 20% restante. ¿qué le ocurre al hiperplano
+  separador?
+
+
+  Pregunta
+  ¿Qué le ocurre al hiperplano separador?
+
+===== PAGINA 26 =====
+
+¿Es óptimo siempre el hiperplano de separación óptimo?
+
+Supongamos dos clases que están bien separadas, es
+decir, tienen un margen considerable.
+
+
+
+Agregamos un ejemplo que hace que el margen se
+reduzca considerablemente.
+
+
+
+Ejemplos que con el hiperplano inicial hubieran sido
+clasiﬁcados   con   mayor    conﬁanza   ahora   estarán
+clasiﬁcados con menos conﬁanza.
+
+                                                          26
+
+===== PAGINA 27 =====
+
+¿Es óptimo siempre el hiperplano de separación óptimo?
+
+¿No valdría la pena usar el hiperplano inicial (el que no tenía en cuenta el ejemplo que
+hace el margen muy reducido) en vez de usar el nuevo hiperplano que divide pero
+acarrea un test menos conﬁable?
+
+
+
+
+                                                                                           27
+
+===== PAGINA 28 =====
+
+Clasificador con margen tolerante
+
+
+
+
+                                    28
+
+===== PAGINA 29 =====
+
+Clasificador con margen tolerante
+
+Objetivos:
+ ●   Que las observaciones individuales sean clasiﬁcadas con robustez (que la
+     distancia al hiperplano no sea crítica)
+
+
+ ●   Una mejor clasiﬁcación de la mayor ́ıa de los ejemplos de entrenamiento
+     (asumiendo clases no linealmente separables).
+
+
+
+
+                                                                                29
+
+===== PAGINA 30 =====
+
+ Clasificador con margen tolerante
+
+Encontrar los valores de b y ε1, .., εn tales que maximicen M sujeto a
+
+
+
+
+donde C es un parámetro de ajuste del método.
+
+
+Cada εi permite clasiﬁcar el ejemplo xi en un lugar erróneo si fuera necesario.
+Podría pasar por:
+ ●   estar dentro del margen de la clase
+ ●   estar del lado incorrecto del hiperplano.                                    30
+
+===== PAGINA 31 =====
+
+Clasificador con margen tolerante
+
+Dada una observación xi si
+
+
+
+
+se satisface para
+
+● εi = 0 ⇒ la observación está del lado correcto del margen
+
+
+● εi > 0 ⇒ la observación está del lado incorrecto del margen
+
+
+● εi > 1 ⇒ la observación está del lado incorrecto del
+  hiperplano
+                                                                31
+
+===== PAGINA 32 =====
+
+    Clasificador con margen tolerante
+    ●   Si C = 0, el Clasiﬁcador con margen tolerante se convierte en un Clasiﬁcador de margen
+        maximal.
+    ●   Una forma de encontrar C es con validación cruzada.
+
+.
+
+
+
+
+                                                                                                 32
+
+===== PAGINA 33 =====
+
+Clasificación con límites de decisión no lineales
+
+Lo que vimos hasta el momento es efectivo cuando la separación entre clases es
+lineal, pero no funciona bien en casos no lineales.
+
+
+
+
+                                                                                 33
+
+===== PAGINA 34 =====
+
+Clasificación con límites de decisión no lineales
+
+Consideremos un conjunto de entrenamiento donde
+sus ejemplos xi son de dimensión p = 2 y su clase es
+yi ∈ {−1, 1} (-1 en rojo y 1 en azul):
+X = {(−2, −2),(−2, 2),(2, −2),(2, 2),(−1, −1),(−1, 1),(1, −1),(1, 1)}
+Y = {−1, −1, −1, −1, 1, 1, 1, 1}
+donde no se puede establecer un hiperplano de
+separación lineal entre una clase y la otra.
+
+
+
+
+                                                                        34
+
+===== PAGINA 35 =====
+
+Clasificación con límites de decisión no lineales
+
+Pero si los ejemplos xi = (xi1, xi2) de X en vez de representarlos en R2 lo hacemos en R3
+como xi = (xi1, xi2, x2i1) con el mismo Y:
+X = {(−2, −2, 4),(−2, 2, 4),(2, −2, 4),(2, 2, 4),(−1, −1, 1),(−1, 1, 1),(1, −1, 1),(1, 1, 1)}
+Y = {−1, −1, −1, −1, 1, 1, 1, 1}
+
+
+
+
+    Donde sí existe un hiperplano de
+    separación entre ambas clases.
+
+
+                                                                                                35
+
+===== PAGINA 36 =====
+
+Clasificación con límites de decisión no lineales
+
+Por ejemplo
+Si tenemos ejemplos en una dimensión p xi1, xi2, .., xip podríamos
+representarlos en una dimensión 2p de acuerdo a
+xi1, x2i1 ,x i2,x2i2 , .., xip,x2ip donde podría haber un hiperplano de dimensión
+2p-1 que los separara.
+
+
+
+
+                                                                                    36
+
+===== PAGINA 37 =====
+
+Clasificación con límites de decisión no lineales
+
+En este caso, el problema a resolver es encontrar los valores de b = b0,
+b11, b12, .., bp1, bp2 y ε1, .., εn tales que maximicen M sujeto a
+
+
+
+
+donde C es un parámetro de ajuste del método.
+
+                                                                           37
+
+===== PAGINA 38 =====
+
+Clasificación con límites de decisión no lineales
+
+En el ejemplo, utilizamos x2ij, pero podríamos utilizar otro grado u otra
+función.
+
+
+La idea es obtener un espacio donde exista separabilidad lineal implica
+separabilidad no lineal en el espacio original de los ejemplos de
+dimensión p.
+
+
+                                             Multidimensionalidad!!!
+                                                                            38
+
+===== PAGINA 39 =====
+
+Clasificación con límites de decisión no lineales
+
+
+
+
+                                                    39
+
+===== PAGINA 40 =====
+
+ Máquina basada en vectores de soporte
+
+
+
+Esta propuesta es una generalización de la Clasiﬁcación con líımites de
+decisión no lineales y la forma de generalizar esta idea es mediante la
+introducción del concepto de Núcleo (Kernel).
+
+
+
+
+                                                                          40
+
+===== PAGINA 41 =====
+
+Máquina basada en vectores de soporte
+
+
+El clasiﬁcador del margen maximal solamente depende de los vectores
+soporte, entonces, ∃, α1, . . . , αk tal que:
+Dado una observación x′, si queremos saber a qué clase pertenece,
+calculamos f (x′) como:
+               f (x′) = b0 + ∑ki=1 αi ⟨x′, xi⟩
+
+
+donde los xi son los vectores de soporte.
+
+                                                                      41
+
+===== PAGINA 42 =====
+
+Máquina basada en vectores de soporte
+
+Podemos escribir a f (x) como:
+
+
+
+
+donde K(x, xi) = ⟨x, xi⟩ y a K se lo denomina Núcleo (Kernel).
+
+
+
+
+                                                                 42
+
+===== PAGINA 43 =====
+
+Máquina basada en vectores de soporte
+
+Núcleo lineal
+
+
+
+
+   f (x) = b0 + b1x1 + b2x2 + .. + bpxp
+
+
+
+
+                                          43
+
+===== PAGINA 44 =====
+
+Máquina basada en vectores de soporte
+
+Núcleo polinómico
+
+
+
+
+donde d es el grado del polinomio.
+
+
+A medida que d se incrementa habrá mayor ﬂexibilidad
+para   encontrar una separación lineal en el nuevo
+espacio de los ejemplos (el espacio ampliado).
+
+
+                                                       44
+
+===== PAGINA 45 =====
+
+Máquina basada en vectores de soporte
+
+Núcleo polinómico
+
+
+
+
+donde d es el grado del polinomio.
+
+
+A medida que d se incrementa habrá mayor ﬂexibilidad
+para   encontrar una separación lineal en el nuevo
+espacio de los ejemplos (el espacio ampliado).
+
+
+                                                       45
+
+===== PAGINA 46 =====
+
+Máquina basada en vectores de soporte
+
+Núcleo radial
+
+
+
+
+donde γ es una constante positiva.
+
+
+
+
+                                        46
+
+===== PAGINA 47 =====
+
+Máquina basada en vectores de soporte
+
+Núcleo radial
+
+
+
+
+donde γ es una constante positiva.
+
+
+
+
+                                        47
+
+===== PAGINA 48 =====
+
+Máquina basada en vectores de soporte
+
+
+
+
+                                        48
+
+===== PAGINA 49 =====
+
+Cómo actúan C y γ en un kernel RBF
+                           C
+                           Costo de violar el margen.
+
+                           Pequeño: más regularización.
+                           Grande: prioriza el ajuste.
+
+
+
+
+                           γ
+                           Alcance de cada observación.
+
+                           Pequeño: frontera suave.
+                           Grande: influencia local.
+
+
+                            Se ajustan conjuntamente mediante
+                                    validación cruzada.
+                                                                73
+
+===== PAGINA 50 =====
+
+Máquina basada en vectores de soporte
+
+Aunque cambiemos el Núcleo, la formulación para el problema no cambia.
+
+
+El cálculo de f(x) seguirá siendo:
+
+
+
+
+                                                                         50
+
+===== PAGINA 51 =====
+
+Support vector machine multiclase
+
+¿Qué ocurre cuando nuestro conjunto de entrenamiento tiene más de 2 clases?
+
+
+Hay dos abordajes:
+ ●   Uno contra uno
+ ●   Uno contra el resto
+
+
+
+
+                                                                              51
+
+===== PAGINA 52 =====
+
+Support vector machine multiclase
+
+      Uno contra uno
+Se construye un SVM para cada par distinto de
+clases (una clase se le asignar ́a +1 y a la otra -1).
+El resto de los ejemplos de las clases restantes
+se ignorará.
+
+
+
+Cuando se presente una nueva observación de
+cada SMV construido se obtiene una respuesta y
+se elige la clase más votada.
+
+
+
+                                                         52
+
+===== PAGINA 53 =====
+
+SVM - Support vector machine multiclase
+
+     Uno contra todos
+Se construye un SVM para cada clase (a los
+ejemplos de clase se le asignar ́a +1 y al resto
+de    los    ejemplos     del    conjunto    de
+entrenamiento se le asignar ́a -1).
+
+
+Cuando se presente una nueva observación
+de cada SMV construido se obtiene una
+respuesta y la clase resultante será la que
+corresponda al SVM cuyo f (x′) sea mayor.
+
+
+
+                                                   53
+
+===== PAGINA 54 =====
+
+Por qué hay que escalar los atributos
+                             SVM usa productos internos y
+                             distancias.
+                             Una variable con valores grandes
+                             puede dominar la frontera.
+
+
+
+
+                                 zⱼ = (xⱼ - μⱼ) σⱼ
+
+
+
+
+                                                                74
+
+===== PAGINA 55 =====
+
+  Proyecto final: MoodRec
+             Detección de siete emociones faciales en imágenes y videos
+    1                   2                    3                 4                     5                      6
+
+
+Detectar             Alinear            Preparar           Describir            Clasificar             Integrar
+             →                    →                    →                 →                     →
+cara y ROI          pose planar         gris + Sobel       vector HOG            SVM RBF             moda temporal
+
+
+
+
+    Datos y entrenamiento                                  Video y múltiples personas
+    KDEF: 4900 imágenes · 7 emociones                      BAUM1: 240 videos · seguimiento por centroides
+    GridSearchCV: C = 10, γ = 0.01                         La moda reduce predicciones instantáneas.
+
+
+
+                                                                                                                     81
+
+===== PAGINA 56 =====
+
+One-Class SVM: detección de anomalías
+
+
+
+
+                                        78
+
