@@ -99,3 +99,13 @@ Preguntas recuperables por tema. Mantener las respuestas separadas o plegadas cu
 66. ¿Cómo predice kNN como regresor? ¿Qué efecto tiene un `k` grande sobre los máximos de la función? [T09, p. 63] [T09, p. 65]
 67. ¿Por qué un ANN afecta más a la regresión que a la clasificación? [T09, p. 67]
 68. ¿Cómo predice un árbol de regresión y qué efecto tiene aumentar `max_depth`? Compará árbol y Random Forest como regresores. [T09, p. 69] [T09, p. 70] [T09, p. 71] [T09, p. 72]
+
+## Aplicación al TP2
+
+69. En Bank Marketing, ¿qué criterio usarías para decidir si una variable introduce leakage? Pensá en qué información está disponible antes de la llamada. [P02, p. 1]
+70. ¿Por qué el escalado y el encoding deben vivir dentro del pipeline que se valida con k-fold, y no aplicarse antes a todo train? [P02, p. 1] [P02, p. 2] [T02, p. 94] [T02, p. 96]
+71. Si el EDA muestra pocas respuestas `yes`, ¿qué problema tiene usar solo accuracy? ¿Qué dos métricas elegirías y cómo las justificarías por el costo de cada error? [P02, p. 2] [T04, p. 26] [T04, p. 41]
+72. ¿Qué modelos del TP2 necesitan escalado y cuál no? ¿Por qué? [T07, p. 26] [T08, p. 54] [T09, p. 32]
+73. ¿Qué supuesto de Naive Bayes se rompe si hay variables muy correlacionadas, y qué efecto puede tener en sus probabilidades? [P02, p. 2] [T06, p. 38]
+74. En una curva de validación de `k` para KNN, ¿dónde esperás sobreajuste y dónde subajuste? [P02, p. 2] [T09, p. 29] [T07, p. 50]
+75. ¿Con qué datos estimás el rendimiento del modelo final en datos nuevos, y por qué no podés usar ese resultado para cambiar de modelo? [P02, p. 2] [T02, p. 88] [T02, p. 89]

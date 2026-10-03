@@ -17,6 +17,7 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 - [EDA y selección de características](temas/eda-y-seleccion.md): exploración, dimensionalidad y familias de métodos de selección.
 - [Regularización](temas/regularizacion.md): L1, L2 y Elastic Net.
 - [TP1: regresión y evaluación](temas/tp1-regresion.md): mapa de la consigna, entregables y controles conceptuales.
+- [TP2: clasificación supervisada](temas/tp2-clasificacion.md): Bank Marketing, entregables, leakage, métricas y supuestos de Naive Bayes, SVM, KNN y RF.
 
 ### Clasificación
 
@@ -46,5 +47,6 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 | T07 | Árboles de decisión y Random Forest | Impureza, CART, poda, grid search, bootstrap y ensambles. |
 | T08 | Máquinas de vectores de soporte (SVM) | Margen maximal y tolerante, kernels, `C` y `γ`, multiclase, escalado y One-Class SVM. |
 | T09 | Aprendizaje basado en instancias | Repaso de árboles y RF, kNN, métricas de distancia, kNN ponderado, ANN (KD-Trees, LSH, ANNOY) y kNN, árboles y RF como regresores. |
+| P02 | TP2: Clasificación supervisada | Consigna práctica vigente del ciclo 2026: Bank Marketing con Naive Bayes, SVM, KNN y RF. |
 
 No existe T05 a propósito: en la fecha de la clase 5 no hubo material teórico nuevo. Los IDs de teoría conservan el número de clase.

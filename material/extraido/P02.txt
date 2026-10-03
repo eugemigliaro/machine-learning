@@ -1,0 +1,150 @@
+FUENTE: P02
+TITULO: TP2: Clasificación supervisada
+ORIGINAL: material/catedra/practica/TP2. Clasificación supervisada.pdf
+PAGINAS: 3
+
+===== PAGINA 1 =====
+
+Aprendizaje Automático. 2026 Q2.
+
+
+Trabajo Práctico 2: Clasificación supervisada
+Materia: 72.75 Aprendizaje Automático (Machine Learning)
+Fecha de defensa: 07/10/26
+
+
+
+En este trabajo práctico se implementarán modelos de regresión para predecir una variable
+numérica a partir de un conjunto de datos. El objetivo principal es aprender a entrenar y
+evaluar modelos utilizando validación cruzada.
+
+La presentación durará 10 minutos + 10 minutos de preguntas.
+*mandar la presentación y el código 24 horas antes de la clase en la que se presentará el TP
+
+0. Dataset.​
+Para este trabajo se utilizará el dataset Bank Marketing, basado en campañas telefónicas
+realizadas por una institución bancaria portuguesa. El objetivo es predecir si un cliente
+contratará o no un depósito a plazo fijo (y = yes/no) a partir de información demográfica,
+datos de campañas previas y variables del contexto económico. La problemática representa un
+caso típico de clasificación supervisada en datos tabulares: a partir de información disponible
+antes o durante una campaña comercial, se busca estimar qué clientes tienen mayor
+probabilidad de responder positivamente, permitiendo priorizar recursos de marketing.
+
+https://www.kaggle.com/datasets/henriqueyamahata/bank-marketing
+
+
+1. Preprocesamiento y análisis exploratorio
+
+Se espera que realicen un análisis exploratorio básico que les permita entender el dataset
+antes de entrenar los modelos. Este análisis debería incluir, por ejemplo, el balance de clases,
+la distribución de algunas variables relevantes, la relación entre variables predictoras y la
+variable objetivo, la presencia de valores faltantes o categorías poco frecuentes, y posibles
+diferencias entre clientes que aceptan y no aceptan la oferta.
+
+*El EDA no es solo una exploración de datos sino que debe utilizarse para tomar decisiones
+concretas sobre el pipeline de Machine Learning. Por ejemplo, pueden justificar la exclusión de
+alguna variable, decidir cómo tratar variables categóricas, aplicar escalado cuando
+corresponda, agrupar categorías poco frecuentes, crear nuevas variables si consideran que
+aportan información útil, o comparar el desempeño del modelo con y sin ciertas variables
+problemáticas. Dado que no es el foco principal del TP, no se espera un análisis exploratorio
+exhaustivo, pero sí que las observaciones realizadas durante el EDA tengan alguna
+consecuencia sobre el preprocesamiento, la selección de variables o la interpretación de
+los resultados.
+
+*Es importante analizar críticamente variables que puedan introducir data leakage si se
+interpreta como información que no debería estar disponible antes de realizar la llamada (y por
+tanto del momento en el que nuestro modelo operaría en la aplicación real).
+
+*Recuerden realizar la división entre entrenamiento y test antes de aplicar cualquier
+transformación que pueda producir data leakage. Las transformaciones aprendidas de los
+datos, como escalado, imputación o codificación, deben ajustarse utilizando únicamente los
+datos de entrenamiento dentro del pipeline correspondiente.
+
+                                               1
+
+===== PAGINA 2 =====
+
+Aprendizaje Automático. 2026 Q2.
+
+
+2. Clasificación
+
+2.1 Se deben implementar (usando Scikit-learn) los siguientes clasificadores:
+
+    -​   Naive-Bayes
+    -​   SVM
+    -​   KNN
+    -​   RF
+
+Si bien no se espera que describan todos los métodos en su presentación, es importante que
+cuando discutan los resultados, tengan en cuenta como funcionan estos métodos para
+entender mejor los resultados
+
+2.2 Validación cruzada. Para la evaluación de estos clasificadores, implementar un esquema
+de k-fold cross-validation utilizando únicamente el conjunto de entrenamiento (si no lo has
+hecho ya). Ojo con el data-leakage.
+
+2.3 Métricas: Selecciona dos métricas de las vistas en clase y justifica su elección. Utiliza estas
+métricas para evaluar los clasificadores y tomar decisiones sobre el modelo elegido.
+
+​
+3. Ajuste de hiperparámetros
+
+3.1 Para los siguientes modelos, evalúa al menos un hiperparámetro relevante:
+
+    -​   SVM (C o kernel)
+    -​   KNN (número de vecinos, ponderación…)
+    -​   RF (número de árboles, profundidad máxima del árbol…)
+
+Utiliza las curvas de validación para elegir el mejor valor de esos hiperparámetros. Discutir
+brevemente sobre overfitting y underfitting en alguna de ellas en la presentación.
+
+4. Modelo final. Elige el modelo que crees más adecuado para resolver este problema,
+entrénalo y estima cual es la performance (la/s métricas que hayas elegido) que esperas que
+vaya a tener en datos nuevos.
+
+5. Conclusiones
+
+Reflexionen sobre qué modelos funcionaron mejor y por qué, relacionando los resultados con el
+análisis exploratorio y con las características generales de cada algoritmo.
+
+Mencionen brevemente si los datos parecen adecuados para los supuestos de algunos
+modelos. Por ejemplo, si hay variables muy correlacionadas, distribuciones no gaussianas,
+diferencias de escala entre variables o relaciones no lineales, y cómo esto podría haber
+afectado a Naive Bayes, SVM, KNN o Random Forest.
+
+Finalmente, indiquen las principales limitaciones del sistema, qué errores consideran más
+relevantes para el problema y qué mejoras implementarían.
+
+
+
+
+Consejos prácticos vistos en el TP1:
+
+
+
+
+                                                2
+
+===== PAGINA 3 =====
+
+Aprendizaje Automático. 2026 Q2.
+
+
+Importante: Durante un proyecto de ML, y también durante este TP, es crítico tener claro qué
+datos se usan para cada etapa. En la presentación (así como durante la elaboración del TP),
+debéis ser claros sobre qué datos se están usando y porque, de esta forma evitaréis posibles
+errores.
+
+Mostrar resultados: Es mucho más efectivo mostrar los resultados con una gráfica que con
+una tabla de números, especialmente cuando hay muchas filas/columnas o números muy
+similares. Si además quieres que el valor concreto se muestre, puedes añadirlo a la gráfica.
+
+Presentación: Recuerden que la presentación debe durar 10 minutos, no más y que deben
+incluir los números en las slides.
+
+
+
+
+                                             3
+

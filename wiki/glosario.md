@@ -15,6 +15,7 @@ Definiciones breves y enlaces al apunte donde se desarrolla cada término. Toda 
 - **Conjunto de desarrollo / validación (dev):** partición usada para elegir modelos, hiperparámetros y decisiones del pipeline. [T03, p. 9]
 - **Conjunto de test:** partición independiente reservada para estimar el rendimiento del pipeline final en datos nuevos. [T03, p. 9]
 - **Data leakage:** uso, durante entrenamiento o decisiones de desarrollo, de información que pertenece a test; puede ocurrir al limpiar o imputar antes de separar los datos. [T02, p. 94]
+- **Curva de validación:** gráfico del rendimiento en train y validación en función de un hiperparámetro; el gap entre ambas curvas indica sobreajuste o subajuste. [T07, p. 50] Ver [Árboles de decisión](temas/arboles-de-decision.md).
 - **EDA:** proceso de examinar, resumir y visualizar un dataset para entender su estructura, calidad, distribuciones y relaciones. [T03, p. 32] [T03, p. 33]
 - **Feature selection:** conservación de un subconjunto de las variables originales. [T03, p. 61]
 - **Feature projection:** creación de variables nuevas y más compactas combinando las originales. [T03, p. 61]
