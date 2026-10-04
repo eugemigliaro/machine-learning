@@ -30,6 +30,25 @@ python3 -m nbconvert --to notebook --execute --inplace tp2_bank_marketing.ipynb
 
 El notebook fue verificado con Python 3.14.4, scikit-learn 1.7.2, pandas 2.3.3, matplotlib 3.10.7 y seaborn 0.13.2.
 
+## Presentación
+
+- `presentacion_tp2_bank_marketing.pptx`: presentación editable de 14 diapositivas. Las 11 primeras forman la exposición de 10 minutos y las 3 últimas son de respaldo.
+- `presentacion_tp2_bank_marketing.pdf`: copia lista para revisar o presentar.
+- `guion_defensa.md`: tiempos, relato sugerido y respuestas a preguntas probables.
+- `presentacion.md`: fuente editable de la presentación.
+- `plantilla_presentacion.pptx`: plantilla de pandoc con columnas 65/35 y fuentes más chicas. Se genera con `crear_plantilla_presentacion.py`.
+
+La consigna pide enviar la presentación y el código 24 horas antes de la clase de defensa (07/10/2026). [P02, p. 1]
+
+Los gráficos de la presentación salen de `resultados_presentacion.json`, que exporta la última sección del notebook. Para regenerar todo se necesitan `pandoc` y LibreOffice, además de las dependencias de Python:
+
+```bash
+python3 generar_graficos_presentacion.py
+python3 crear_plantilla_presentacion.py
+pandoc presentacion.md --to=pptx --slide-level=2 --reference-doc=plantilla_presentacion.pptx --output=presentacion_tp2_bank_marketing.pptx
+libreoffice --headless --convert-to pdf --outdir . presentacion_tp2_bank_marketing.pptx
+```
+
 ## Estado
 
 - Dataset obtenido y registrado como `[D02]`, con su descripción como `[D03]`.
@@ -45,6 +64,10 @@ El notebook fue verificado con Python 3.14.4, scikit-learn 1.7.2, pandas 2.3.3, 
 - Benchmark con `duration`: el AUC de RF sube de 0,766 a 0,938 por leakage.
 - Curvas de validación de KNN (`k`, ponderación), RF (`max_depth`, `n_estimators`) y SVM (`C`, balanceo, kernel).
 - Mejor modelo en validación: Random Forest con `max_depth = 10` y 400 árboles, AUC 0,798 y recall 0,690.
-- Pendiente: confirmar el modelo final y evaluarlo una única vez en test.
+- Modelo final: Random Forest con `max_depth = 10`, 400 árboles y umbral 0,084, reentrenado con todo desarrollo.
+- Evaluación única en test: AUC 0,809 (IC 95 % de 0,791 a 0,826) y recall 0,718 (de 0,691 a 0,746), llamando al 27 % de los clientes.
+- Experimento temporal: entrenado con 2008–2009, el AUC en 2010 baja a 0,678.
+- Conclusiones escritas en la sección 12 del notebook.
+- Presentación (11 diapositivas más 3 de respaldo) y guion de defensa generados.
 
 La primera ejecución completa tarda alrededor de una hora, sobre todo por SVM. Los resultados quedan en `cache/` y las ejecuciones siguientes tardan segundos.

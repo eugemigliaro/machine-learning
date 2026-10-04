@@ -156,3 +156,32 @@ Con el umbral elegido por CV, Random Forest llama al 26,8 % de los clientes de d
 ## Observación: predictores idénticos sin `duration`
 
 Sin `duration`, el 20,5 % de las filas de desarrollo comparte exactamente sus predictores con otra fila. Hay 1.067 filas en 414 grupos con predictores idénticos y distinta `y`. Es un error irreducible con la información disponible antes de la llamada. Por eso KNN con `k = 1` no llega a AUC 1 en train (0,968).
+
+## Modelo final
+
+- **Elegido:** Random Forest con `max_depth = 10` y 400 árboles, por tener el mayor AUC y el mayor recall de validación. [P02, p. 2]
+- **Umbral:** 0,084, el punto de la curva ROC *out-of-fold* de desarrollo más cercano a `(0, 1)`. [T04, p. 52] Se fijó antes de mirar test.
+- **Entrenamiento:** se reentrenó con las 32.940 filas de desarrollo [T02, p. 88] y se evaluó **una sola vez** en test.
+
+| Métrica | Desarrollo (CV out-of-fold) | Test | IC 95 % bootstrap en test |
+|---|---:|---:|---:|
+| AUC | 0,798 | **0,809** | 0,791 – 0,826 |
+| Recall | 0,690 | **0,718** | 0,691 – 0,746 |
+| Precisión | 0,290 | 0,300 | 0,281 – 0,317 |
+| Especificidad | 0,786 | 0,787 | — |
+| Clientes llamados | 26,8 % | 27,0 % | — |
+
+En test, el modelo llamaría a 2.221 de 8.236 clientes y encontraría a 666 de los 928 interesados. La tasa de éxito de las llamadas sería de 30,0 %, frente a 11,3 % llamando a todos. La matriz de confusión tiene 666 TP, 1.555 FP, 262 FN y 5.753 TN.
+
+**Importancias:** `euribor3m` (0,193), `nr.employed` (0,183) y `poutcome` (0,157) son las principales. Los índices macro y `month` suman el 59,1 % de la importancia. [T07, p. 71]
+
+## Experimento temporal
+
+Se entrenó el pipeline final con las filas de desarrollo de 2008–2009 (31.275 filas, 9,1 % de `yes`) y se evaluó con las de 2010 (1.665 filas, 51,9 % de `yes`). Test no intervino.
+
+| Escenario sobre las filas de 2010 | AUC | Clientes llamados con umbral 0,084 |
+|---|---:|---:|
+| CV aleatoria (el modelo vio otras filas de 2010) | 0,748 | 100 % |
+| Entrenado sólo con 2008–2009 | 0,678 | 100 % |
+
+El 100 % de las filas de 2010 tiene `nr.employed` por debajo del mínimo de 2008–2009, y el 30,9 % tiene `euribor3m` por debajo del mínimo. La estimación de test es válida para clientes parecidos a la mezcla de 2008 a 2010, pero es optimista para campañas futuras. Es la principal limitación del sistema.
