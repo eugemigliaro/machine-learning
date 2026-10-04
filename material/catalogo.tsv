@@ -10,3 +10,5 @@ T07	teoria	Árboles de decisión y Random Forest	material/catedra/teoria/Clase 7
 T08	teoria	Máquinas de vectores de soporte (SVM)	material/catedra/teoria/Clase 8. SVM.pptx.pdf	56	2026	vigente	Clase 8. SVM.pptx.pdf
 T09	teoria	Aprendizaje basado en instancias	material/catedra/teoria/Clase 9. Aprendizaje Basado en Instancias.pdf	72	2026	vigente	Clase 9. Aprendizaje Basado en Instancias.pdf
 P02	practica	TP2: Clasificación supervisada	material/catedra/practica/TP2. Clasificación supervisada.pdf	3	2026	vigente	TP2. Clasificación supervisada.pdf
+D02	dataset	Bank Marketing (bank-additional-full)	material/externo/datasets/bank-additional-full.csv			vigente	bank-additional-full.csv
+D03	documentacion	Bank Marketing: descripción de atributos	material/externo/datasets/bank-additional-names.txt			vigente	bank-additional-names.txt

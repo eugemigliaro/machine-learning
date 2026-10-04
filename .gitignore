@@ -17,3 +17,4 @@ laboratorio/**/.venv/
 laboratorio/**/node_modules/
 entregas/**/.venv/
 entregas/**/.ipynb_checkpoints/
+entregas/**/cache/
