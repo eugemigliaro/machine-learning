@@ -7,6 +7,7 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 - [Glosario](glosario.md)
 - [Dudas y conflictos](dudas-y-conflictos.md)
 - [Preguntas de repaso](repaso/preguntas.md)
+- [TP2 paso a paso](repaso/tp2-resolucion-paso-a-paso.md): guía de estudio de la resolución para preparar la defensa.
 
 ## Temas
 

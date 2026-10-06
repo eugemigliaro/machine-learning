@@ -15,7 +15,7 @@ Se usa el dataset **Bank Marketing**, de campañas telefónicas de un banco port
 
 El párrafo introductorio de la consigna habla de "modelos de regresión para predecir una variable numérica". El resto del documento describe un problema de clasificación binaria; ver [Dudas y conflictos](../dudas-y-conflictos.md). [P02, p. 1]
 
-El dataset no está en el repositorio: la consigna enlaza a su página de Kaggle. [P02, p. 1]
+La consigna enlaza a su página de Kaggle. [P02, p. 1] El archivo está registrado como D02 (`bank-additional-full.csv`) y su descripción de atributos como D03. La resolución está en `entregas/tp2-bank-marketing/`, y la [guía paso a paso](../repaso/tp2-resolucion-paso-a-paso.md) la explica junto con la teoría.
 
 ## Entregables por sección
 
@@ -39,7 +39,7 @@ No hace falta describir cada método en la presentación, pero sí usar su funci
 
 - Separar train y test **antes** de cualquier transformación aprendida de los datos. Escalado, imputación y codificación se ajustan solo con train, dentro del pipeline. [P02, p. 1] [T02, p. 94] [T02, p. 96]
 - **Inferencia operativa:** dentro de la validación cruzada, el preprocesamiento debe reajustarse en cada fold con su porción de entrenamiento. Por eso conviene que el escalado y el encoding formen parte del pipeline que se valida, y no un paso previo sobre todo train. [P02, p. 2] [T03, p. 12] [T03, p. 15]
-- La consigna pide analizar variables que serían información **no disponible antes de la llamada**, es decir, en el momento en que el modelo operaría. [P02, p. 1] **Conocimiento general, a verificar en la documentación del dataset:** la descripción original de Bank Marketing (UCI) advierte que `duration`, la duración de la llamada, se conoce recién al terminarla y que determina fuertemente `y`. La propia descripción recomienda descartarla en un modelo predictivo realista.
+- La consigna pide analizar variables que serían información **no disponible antes de la llamada**, es decir, en el momento en que el modelo operaría. [P02, p. 1] La documentación del dataset advierte que `duration`, la duración de la llamada, se conoce recién al terminarla y que determina fuertemente `y`. Recomienda descartarla en un modelo predictivo realista. [D03]
 - El test se usa una sola vez, para la estimación final del punto 4; nunca para elegir modelo ni hiperparámetros. [P02, p. 2] [T02, p. 89] Tras elegir, el material propone reentrenar con todos los datos de desarrollo y evaluar en test. [T02, p. 88]
 
 ### Métricas
