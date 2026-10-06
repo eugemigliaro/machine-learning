@@ -34,7 +34,7 @@ El notebook fue verificado con Python 3.14.4, scikit-learn 1.7.2, pandas 2.3.3, 
 
 - `presentacion_tp2_bank_marketing.pptx`: presentación editable de 14 diapositivas. Las 11 primeras forman la exposición de 10 minutos y las 3 últimas son de respaldo.
 - `presentacion_tp2_bank_marketing.pdf`: copia lista para revisar o presentar.
-- `guion_defensa.md`: tiempos, relato sugerido y respuestas a preguntas probables.
+- `guion_defensa.md`: reparto entre tres oradores, tiempos, relato sugerido con frases de pase y respuestas a preguntas probables.
 - `presentacion.md`: fuente editable de la presentación.
 - `plantilla_presentacion.pptx`: plantilla de pandoc con columnas 65/35 y fuentes más chicas. Se genera con `crear_plantilla_presentacion.py`.
 
