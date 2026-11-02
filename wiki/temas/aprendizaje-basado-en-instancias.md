@@ -170,6 +170,13 @@ ANNOY (*Approximate Nearest Neighbors Oh Yeah*) se creó para un contexto muy co
 
 **Conocimiento general:** ANNOY construye un bosque de árboles de proyecciones aleatorias, que parten el espacio con hiperplanos, y combina la búsqueda en varios árboles. En la biblioteca pública, una vez construido el índice no se le pueden agregar ítems: hay que reconstruirlo.
 
+La clase 12 repasa kNN, sus dos limitaciones, LSH y ANNOY con el mismo contenido de la clase 9, y agrega dos métodos ANN. [T12, p. 12] [T12, p. 13] [T12, p. 14] [T12, p. 17]
+
+### HNSW y FAISS
+
+- **HNSW (Hierarchical Navigable Small World):** uno de los métodos ANN más usados hoy. Construye un grafo que conecta puntos similares, con varios niveles: los altos permiten saltos largos y los bajos refinan la búsqueda local. La búsqueda navega el grafo hacia regiones cada vez más cercanas. Logra muy buena precisión con latencia extremadamente baja. [T12, p. 15]
+- **FAISS (Facebook AI Similarity Search):** biblioteca de Meta para búsqueda eficiente de similitud sobre millones o miles de millones de *embeddings*. Un embedding representa un objeto complejo como un vector denso, en el que la cercanía geométrica implica similitud semántica: dos canciones cercanas "suenan parecidas". ANN hace posible buscar rápido en esos espacios. Hoy es infraestructura estándar de *retrieval*: buscadores y recomendadores de productos similares. [T12, p. 16]
+
 ## kNN como regresor
 
 - **Clasificador:** asigna la clase más votada entre los `k` vecinos más cercanos.

@@ -1,0 +1,49 @@
+FUENTE: P04
+TITULO: TP3: anuncio de la competencia (Campus)
+ORIGINAL: material/catedra/practica/consignacompeticioncampus.html
+NOTA: derivado de texto plano del HTML original; énfasis y formato descartados.
+
+Entregables: Deben ser mandados, como siempre, el día anterior a la defensa del TP3 de cada grupo.
+Cada equipo deberá enviar:
+- Función predictor, que se utilizará para evaluar el modelo en la competencia (debe poder correr independientemente y recibir el vector de x de las dimensiones del datset y generar un output y de predicción).
+- Notebook con el código y presentación, siguiendo el formato habitual de los TPs.
+
+Fechas de submisión adicionales del predictor (para la competición)
+Tendrán tres oportunidades de entrega, con actualización del leaderboard después de cada una:
+- 04/11, 11/11 y 18/11, siempre antes de las 16:00 h.
+Cada grupo puede submitir en una sola (la de su defensa) o en las 3 si así lo quisiese. Se utilizará para la competición la última de las submisiones.
+
+Puntaje final
+Competition Score = 90% × Model Score (submission del 18/11) + 10% × Nota de presentación.
+
+Premios
+Quedarán eximidos del examen final de diciembre:
+- TOP 1 – Model Score: equipo con el mejor rendimiento predictivo.
+- TOP 4 – Competition Score: los cuatro equipos con mayor puntaje combinado.
+Los equipos premiados deberán realizar una breve presentación final el 25/11, último día de clase, incluyendo una explicación técnica y otra no técnica de su solución.
+Cualquier pregunta, no duden en escribirnos
+¡Éxitos con la competencia!
+Carlos
+
+----
+
+The TP3 guidelines are now availab le in the TPs folder, and the dataset can be found on Campus in the Competición folder.
+We explained the TP3 Machine Learning competition in class the other day, so you can check the recording for more details. In any case, here is a summary of the most important information:
+Deliverables
+As usual, all deliverables must be submitted the day before each group's TP3 presentation.
+Each team must submit:
+- Predictor function, which will be used to evaluate the model in the competition. It must run independently, take an input feature vector (X) with the expected dataset dimensions, and return the predicted output (y).
+- Notebook and presentation (PPT), following the usual TP format.
+Additional predictor submission dates (for the competition)
+There will be three submission opportunities, with the leaderboard updated after each deadline:
+- November 4, 11 and 18, always before 4:00 PM.
+Each team may submit only once (on the date corresponding to their TP3 presentation) or on all three dates if they wish. The latest submission will be used for the competition.
+Final Score
+Competition Score = 90% × Model Score (November 18 submission) + 10% × Presentation Grade
+Prizes
+The following teams will be exempt from the December final exam:
+- TOP 1 – Model Score: The team with the highest predictive performance.
+- TOP 4 – Competition Score: The four highest-ranked teams based on the combined score.
+As a condition, the winning teams must give a short final presentation on November 25, our last class, including both a technical and a non-technical explanation of their solution.
+If you have any questions, feel free to contact us.
+Good luck with the competition!

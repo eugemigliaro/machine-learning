@@ -1,0 +1,1686 @@
+FUENTE: T11
+TITULO: Diagnóstico de ML
+ORIGINAL: material/catedra/teoria/Clase 11. Diagnóstico de ML.pdf
+PAGINAS: 83
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Alexa Sessarego Aurich
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+                                                    … en la sesión anterior
+
+                                                    -     TP2 -> clasiﬁcación supervisada
+Plan de la sesión de hoy
+-   Validación cruzada avanzada
+-   ML diagnostics
+-   Data-Centered Design
+-   Análisis de Errores
+
+===== PAGINA 2 =====
+
+De dónde venimos
+Where are we coming from
+
+Ya entrené, hice cross-validation, elegí modelo e hiperparámetros… pero el rendimiento es
+insuﬁciente. ¿Dónde invierto ahora el esfuerzo?
+
+
+They do NOT build an explicit model from the training data.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                             2
+
+===== PAGINA 3 =====
+
+Métodos avanzados de Validación Cruzada
+Advanced Cross-Validation methods
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 4 =====
+
+El reto tras la selección de modelo
+The challenge after model selection
+
+Dos clasiﬁcadores pueden obtener exactamente el mismo F1 y requerir intervenciones completamente
+diferentes.
+
+Uno puede estar limitado porque no tiene capacidad suﬁciente para representar la relación (X\rightarrow Y).
+
+Otro puede aprender perfectamente training pero generalizar mal.
+
+Otro puede discriminar muy bien positivos de negativos pero estar utilizando un threshold inadecuado.
+
+Otro puede tener una excelente performance global pero fallar sistemáticamente en un determinado tipo de
+observaciones.
+
+
+Por eso, la métrica ﬁnal detecta que existe un problema; no identiﬁca cuál es el problema.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                               4
+
+===== PAGINA 5 =====
+
+¿Qué está limitando mi performance?
+What is currently limiting performance?
+
+El training set es sólo una muestra ﬁnita de esa distribución. Esto introduce tres fuentes
+conceptualmente distintas de error:
+
+  -    error asociado al hecho de aprender a partir de una muestra ﬁnita (variance, cambia para otra
+       muestra)
+  -    error asociado al modelo o hipótesis elegida (bias)
+
+  -    error inherente al problema/datos (error no explicable/reducible a partir de X)
+
+
+Necesitamos un primer diagnóstico para ver qué tipo de error domina
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                        5
+
+===== PAGINA 6 =====
+
+¿Qué está limitando mi performance?
+What is currently limiting performance?
+
+El training set es sólo una muestra ﬁnita de esa distribución. Esto introduce tres fuentes
+conceptualmente distintas de error:
+
+  -    error asociado al hecho de aprender a partir de una muestra ﬁnita (variance, cambia para otra
+       muestra)
+  -    error asociado al modelo o hipótesis elegida (bias)
+
+  -    error inherente al problema/datos (error no explicable/reducible a partir de X)
+
+
+Necesitamos un primer diagnóstico para ver qué tipo de error domina
+
+
+                   ¿Alguna idea?
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                        6
+
+===== PAGINA 7 =====
+
+Underﬁtting - high bias
+Are we, at least, learning well enough the training set?
+
+No es nuestro objetivo último, pero es un buen primer paso
+Si la performance en train no es buena, aquí tenemos la primera limitación
+-> Apunta a una situación de high bias (underﬁtting):
+la combinación de feats + clasiﬁcadores evaluados + optimización de hiperparámetros es incapaz extraer
+suﬁciente información de los datos
+
+¿Posibles causas?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          7
+
+===== PAGINA 8 =====
+
+Underﬁtting - high bias
+Are we, at least, learning well enough the training set?
+
+No es nuestro objetivo último, pero es un buen primer paso
+Si la performance en train no es buena, aquí tenemos la primera limitación
+-> Apunta a una situación de high bias (underﬁtting):
+la combinación de feats + clasiﬁcadores evaluados + optimización de hiperparámetros es incapaz extraer
+suﬁciente información de los datos
+
+Posibles causas:
+
+
+Capacidad insuﬁciente para extraer la información            Información insuﬁciente en X para predecir Y al nivel
+disponible en X                                              deseado
+- modelo demasiado simple/inadecuado                         - features poco informativas
+ - regularización excesiva/hiperparámetros demasiado         - demasiado ruido respecto a la señal/información (en
+restrictivos                                                 X o en Y!!)
+- optimización insuﬁciente (NeuralNets))                     - límite intrínseco del problema
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  8
+
+===== PAGINA 9 =====
+
+Overﬁtting - high bias
+Are we generalizing to new data?
+
+Si tenemos diferencia entre train y validation -> Generalization Gap
+
+El modelo es capaz de extraer la información para explicar los datos de training
+… pero parte de esa información que utiliza no está en los datos de validación (aprende algo de ruido)
+
+Esta es una situación de high variance / overﬁtting (si repetimos esto para varios subconjuntos de datos, el
+error variará mucho)
+
+¿Posibles causas?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                9
+
+===== PAGINA 10 =====
+
+Overﬁtting - high bias
+Are we generalizing to new data?
+
+Si tenemos diferencia entre train y validation -> Generalization Gap
+
+El modelo es capaz de extraer la información para explicar los datos de training
+… pero parte de esa información que utiliza no está en los datos de validación (aprende algo de ruido)
+
+Esta es una situación de high variance / overﬁtting (si repetimos esto para varios subconjuntos de datos, el
+error variará mucho)
+
+Posibles causas:
+
+
+ El modelo aprende ruido                                     Aprende información real, pero que no generaliza
+  - modelo demasiado ﬂexible/complejo                        - distribution shift
+  - alta dimensionalidad ->relacion nfeats vs ndatos         - leakage
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                 10
+
+===== PAGINA 11 =====
+
+Diagnóstico de modelos - Resumen
+Model Diagnostics - Summary
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   11
+
+===== PAGINA 12 =====
+
+¿Aprendemos, al menos, el training set?
+Are we, at least, learning the training set?
+
+No es nuestro objetivo último, pero es un buen primer paso
+Si la performance en train no es buena, aquí tenemos la primera limitación
+-> Apunta a una situación de High Bias (underﬁtting):
+la combinación de feats + clasiﬁcadores evaluados + optimización de hiperparámetros es incapaz extraer
+suﬁciente información de los datos
+
+Posibles causas:
+
+- modelo demasiado simple
+- regularización excesiva / hiperparámetros demasiado restrictivos
+- representación de entrada insuﬁciente / features poco informativas
+- optimización incorrecta
+
+Es decir: o falta información (X, features), o falta capacidad para extraerla
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                         12
+
+===== PAGINA 13 =====
+
+Diagnóstico de ML
+ML Diagnostics
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 14 =====
+
+El error de validación no es el ﬁnal del proyecto
+Deﬁnir baseline performance
+
+Una buena práctica al principio del proyecto es saber cual es el Human Level Performance (HLP)
+
+
+Esto nos sirve para decidir dónde centrar nuestros esfuerzos, que performance es más mejorable
+
+
+¿cuando es útil HLP?
+
+
+Unstructured data: Imágenes, Audio, Texto… en este tipo de datos, los humanos somos muy buenos, HLP es
+una buena forma de baseline performance
+
+
+Structured data: tabla con datos de usuario o productos
+aquí los humanos no somos tan buenos, así que HLP no va a ser tan útil
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          14
+
+===== PAGINA 15 =====
+
+Human Level Performance (HLP)
+
+Cómo calcular el HLP:
+
+
+Buscar en la literatura o internet/open source
+-con esto además podríamos tener una primera versión (algoritmo/modelo open source) rápidamente para
+tener como referencia
+Si no, podemos usar una performance de una versión previa (si la tenemos)
+
+
+En algunos casos, estas performance (HLP por ejemplo) nos da una idea del error irreducible.
+-> Nos ayuda a decidir en qué parte del modelo o de los datos enfocarnos para reducir error
+
+
+Plantear un problema y exigir un 90% de performance no es la mejor idea:
+Primero es recomendable conocer un baseline y donde está el estado del arte o el HLP, y a partir de allí deﬁnir
+el “objetivo”
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                   15
+
+===== PAGINA 16 =====
+
+¿Cómo continuamos?
+Imaginemos que hemos recolectado unos datos, seleccionado unas características e implementado
+un algoritmo pero no estamos satisfechos con el desempeño: ¿Cómo continuamos?
+
+
+Generalmente se suelen seguir una de estas estrategias:
+-Conseguir más datos
+-Probar un número menor de características
+-Probar a añadir características (o variaciones de ellas)
+-Cambiar hiperparámetros para que sean menos (o más) restrictivos
+
+
+Pero... ¿Cuál es la mejor en nuestro caso? ¿cómo elegimos?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 16
+
+===== PAGINA 17 =====
+
+Diagnóstico de un modelo de ML
+ML Diagnostics
+Una serie de tests para entender que está (y no está) funcionando en nuestro modelo y ayudarnos a tomar
+decisiones sobre cómo seguir en el proyecto
+
+
+Lleva tiempo ya que es un poco más “artesanal” pero es una herramienta útil y con un impacto importante en
+el funcionamiento ﬁnal del modelo
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              17
+
+===== PAGINA 18 =====
+
+Diagnóstico de un modelo de ML
+Generalización
+El factor crítico de nuestro modelo va a ser su capacidad para generalizar a
+datos nuevos
+High Bias (sesgo) -> el modelo genera predicciones con un error elevado y
+consistente (underﬁtting)
+High Variance (varianza) -> el modelo es demasido sensible a los datos de
+entrenamiento y genera predicciones ruidosas (overﬁtting)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                18
+
+===== PAGINA 19 =====
+
+Bias vs Varianza
+Generalización
+                                                 La precisión en el entrenamiento
+                                                 siempre se reduce cuando se
+                                                 aumenta la capacidad de un
+                                                 algoritmo para aprender fronteras
+                                                 complejas
+
+
+                                                 La de validación es distinta
+                                                 ->empieza a bajar cuando el
+                                                 modelo está sobreajustando los
+                                                 datos de entrenamiento
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                  19
+
+===== PAGINA 20 =====
+
+Bias vs Varianza
+Generalización
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   20
+
+===== PAGINA 21 =====
+
+Curvas de aprendizaje
+Learning Curves
+Es una gráﬁca útil para entender cómo cambia la performance en función del tamaño del dataset
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 21
+
+===== PAGINA 22 =====
+
+Curvas de aprendizaje
+Learning Curves
+Es una gráﬁca útil para entender cómo cambia la performance en función del tamaño del dataset
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 22
+
+===== PAGINA 23 =====
+
+Curvas de aprendizaje
+Learning Curves
+Es una gráﬁca útil para entender cómo cambia la performance en función del tamaño del dataset
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 23
+
+===== PAGINA 24 =====
+
+Siguientes pasos
+
+Una vez diagnosticado si estamos en una situación de high bias (underﬁtting) o high variance (overﬁtting),
+podemos elegir (y descartar) algunas de las opciones que hemos visto antes:
+
+
+  -    Conseguir más datos de entrenamiento ->La curva de aprendizaje muestra que train y validación
+       están lejos todavía (overﬁtting) y pero siguen cambiando al aumentar datos.
+
+  -    Usar menos features -> Si vemos signos de overﬁtting, es una buena estrategia. Quitar features reduce
+       la posibilidad del modelo de encontrar patrones que sobreajusten
+
+  -    Añadir features ->Si hay underﬁtting, añadir features es una buena opción de dar más opciones al
+       modelo de aprender
+
+  -    Combinaciones de features ->Si hay underﬁtting, combinar features es una buena opción de dar más
+       opciones al modelo de aprender
+
+  -    Hiperparámetros más restrictivos -> Si hay overﬁtting, unos hiperparámetros más estrictos pueden
+       solucionar el problema
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              24
+
+===== PAGINA 25 =====
+
+Siguientes pasos
+
+Una vez diagnosticado si estamos en una situación de high bias (underﬁtting) o high variance (overﬁtting),
+podemos elegir (y descartar) algunas de las opciones que hemos visto antes:
+
+
+  -    Conseguir más datos de entrenamiento ->La curva de aprendizaje muestra que train y validación
+       están lejos todavía (overﬁtting) y pero siguen cambiando al aumentar datos.
+
+  -    Usar menos features -> Si vemos signos de overﬁtting, es una buena estrategia. Quitar features reduce
+       la posibilidad del modelo de encontrar patrones que sobreajusten
+
+  -    Añadir features ->Si hay underﬁtting, añadir features es una buena opción de dar más opciones al
+       modelo de aprender
+
+  -    Combinaciones de features ->Si hay underﬁtting, combinar features es una buena opción de dar más
+       opciones al modelo de aprender
+
+  -    Hiperparámetros más restrictivos -> Si hay overﬁtting, unos hiperparámetros más estrictos pueden
+       solucionar el problema
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              25
+
+===== PAGINA 26 =====
+
+Siguientes pasos
+
+Una vez diagnosticado si estamos en una situación de high bias (underﬁtting) o high variance (overﬁtting),
+podemos elegir (y descartar) algunas de las opciones que hemos visto antes:
+
+
+  -    Conseguir más datos de entrenamiento ->La curva de aprendizaje muestra que train y validación
+       están lejos todavía (overﬁtting) y pero siguen cambiando al aumentar datos.
+
+  -    Usar menos features -> Si vemos signos de overﬁtting, es una buena estrategia. Quitar features reduce
+       la posibilidad del modelo de encontrar patrones que sobreajusten
+
+  -    Añadir features ->Si hay underﬁtting, añadir features es una buena opción de dar más opciones al
+       modelo de aprender
+
+  -    Combinaciones de features ->Si hay underﬁtting, combinar features es una buena opción de dar más
+       opciones al modelo de aprender
+
+  -    Hiperparámetros más restrictivos -> Si hay overﬁtting, unos hiperparámetros más estrictos pueden
+       solucionar el problema
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              26
+
+===== PAGINA 27 =====
+
+Siguientes pasos
+
+Una vez diagnosticado si estamos en una situación de high bias (underﬁtting) o high variance (overﬁtting),
+podemos elegir (y descartar) algunas de las opciones que hemos visto antes:
+
+
+  -    Conseguir más datos de entrenamiento ->La curva de aprendizaje muestra que train y validación
+       están lejos todavía (overﬁtting) y pero siguen cambiando al aumentar datos.
+
+  -    Usar menos features -> Si vemos signos de overﬁtting, es una buena estrategia. Quitar features reduce
+       la posibilidad del modelo de encontrar patrones que sobreajusten
+
+  -    Añadir features ->Si hay underﬁtting, añadir features es una buena opción de dar más opciones al
+       modelo de aprender
+
+  -    Combinaciones de features ->Si hay underﬁtting, combinar features es una buena opción de dar más
+       opciones al modelo de aprender
+
+  -    Hiperparámetros más restrictivos -> Si hay overﬁtting, unos hiperparámetros más estrictos pueden
+       solucionar el problema
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              27
+
+===== PAGINA 28 =====
+
+Siguientes pasos
+
+Una vez diagnosticado si estamos en una situación de high bias (underﬁtting) o high variance (overﬁtting),
+podemos elegir (y descartar) algunas de las opciones que hemos visto antes:
+
+
+  -    Conseguir más datos de entrenamiento ->La curva de aprendizaje muestra que train y validación
+       están lejos todavía (overﬁtting) y pero siguen cambiando al aumentar datos.
+
+  -    Usar menos features -> Si vemos signos de overﬁtting, es una buena estrategia. Quitar features reduce
+       la posibilidad del modelo de encontrar patrones que sobreajusten
+
+  -    Añadir features ->Si hay underﬁtting, añadir features es una buena opción de dar más opciones al
+       modelo de aprender
+
+  -    Combinaciones de features ->Si hay underﬁtting, combinar features es una buena opción de dar más
+       opciones al modelo de aprender
+
+  -    Hiperparámetros más restrictivos -> Si hay overﬁtting, unos hiperparámetros más estrictos pueden
+       solucionar el problema
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              28
+
+===== PAGINA 29 =====
+
+Siguientes pasos
+
+Una vez diagnosticado si estamos en una situación de high bias (underﬁtting) o high variance (overﬁtting),
+podemos elegir (y descartar) algunas de las opciones que hemos visto antes:
+
+
+  -    Conseguir más datos de entrenamiento ->La curva de aprendizaje muestra que train y validación
+       están lejos todavía (overﬁtting) y pero siguen cambiando al aumentar datos.
+
+  -    Usar menos features -> Si vemos signos de overﬁtting, es una buena estrategia. Quitar features reduce
+       la posibilidad del modelo de encontrar patrones que sobreajusten
+
+  -    Añadir features ->Si hay underﬁtting, añadir features es una buena opción de dar más opciones al
+       modelo de aprender
+
+  -    Combinaciones de features ->Si hay underﬁtting, combinar features es una buena opción de dar más
+       opciones al modelo de aprender
+
+  -    Hiperparámetros más restrictivos -> Si hay overﬁtting, unos hiperparámetros más estrictos pueden
+       solucionar el problema
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              29
+
+===== PAGINA 30 =====
+
+Desarrollo de ML centrado en los datos
+Data-centric ML development
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 31 =====
+
+Diseño centrado en Modelo vs Datos
+Model vs Data-centric design
+Model-centric:
+  -    dados unos datos, encontrar el modelo (y set de hiperparametros) que mejor funcionan.
+  -    mantener los datos ﬁjos e iterativamente mejorar el modelo
+
+
+Data-centric:
+  -    implementamos un modelo que sabemos que funciona razonablemente bien y lo dejamos ﬁjo
+  -    Aplicamos distintos métodos para aumentar la calidad (o cantidad) de los datos (añadir feats tb!)
+  -    Esto repercutirá en mejor performance del modelo.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            31
+
+===== PAGINA 32 =====
+
+Análisis de Errores
+Error Analysis
+El objetivo es entender qué tipo de errores comete el modelo y qué tienen en común
+
+
+Sería ir un paso (o varios) más allá de la matriz de confusión
+
+
+Ya que si encontramos un patrón, podremos intentar mejorar el funcionamiento del modelo en ese aspecto
+concreto.
+Se puede hacer manualmente, viendo los errores (predicciones incorrectas) y viendo cómo son los datos y
+anotando tags (aspectos que pueden ocurrir)
+
+
+Objetivo: ver cómo son los errores cometidos e identiﬁcar algún patrón o motivo por el que no están siendo
+bien clasiﬁcados
+
+
+Primer paso: elegir qué factores (tags) se van a analizar
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              32
+
+===== PAGINA 33 =====
+
+Análisis de Errores
+Elección de tags (factores)
+Inspección Visual:
+Clase especíﬁca: hay más errores en una clase que en otra - matriz de confusión
+Propiedades de la imagen: borrosa, oscura, reﬂejos…
+Metadatos: modelo de cámara/celular, empresa, tipo de usuario…
+Errores en un tipo concreto de datos: recomendaciones a jóvenes, u otro tipo de x
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                     33
+
+===== PAGINA 34 =====
+
+Análisis de Errores
+Elección de tags (factores)
+Inspección Visual:
+Clase especíﬁca: hay más errores en una clase que en otra - matriz de confusión
+Propiedades de la imagen: borrosa, oscura, reﬂejos…
+Metadatos: modelo de cámara/celular, empresa, tipo de usuario…
+Errores en un tipo concreto de datos: recomendaciones a jóvenes, u otro tipo de x
+
+
+Una vez elegidos los tags
+¿qué porcentaje de errores tienen este tag? - esto nos dice cuánto mejoramos la perf si solucionásemos ese
+error
+Es decir, de todos los datos de ese tag, ¿cuantos están mal clasiﬁcados? si esto es alto, indica que no está
+funcionando muy bien (se puede comparar con los que no tengan ese tag)
+– con este análisis podemos ver que tipo de datos priorizar al mejorar nuestro modelo/datos.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                34
+
+===== PAGINA 35 =====
+
+Análisis de errores
+Impacto de cada Tag
+¿Cómo elegir en qué Tag trabajar?
+
+
+          Tipo de imagen                      Accuracy   Human level   Gap to   % de    Contribución al
+                                                         performance     HLP    datos              gap
+
+      Imagen limpia                               96%           97%       1%     50%              0.5%
+
+      Bajo contraste                              88%           94%       6%     20%              1.2%
+
+      Artefacto de                                82%           90%       8%     15%              1.2%
+      movimiento
+
+      Dispositivo distinto                        85%           92%       7%     10%              0.7%
+
+      Imagen                                      70%           80%      10%      5%              0.5%
+      recortada/parcial
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           35
+
+===== PAGINA 36 =====
+
+Análisis de errores
+Impacto de cada Tag
+¿Cómo elegir en qué Tag trabajar?
+
+
+          Tipo de imagen                      Accuracy   Human level   Gap to   % de    Contribución al
+                                                         performance     HLP    datos              gap
+
+      Imagen limpia                               96%           97%       1%     50%              0.5%
+
+      Bajo contraste                              88%           94%       6%     20%              1.2%
+
+      Artefacto de                                82%           90%       8%     15%              1.2%
+      movimiento
+
+      Dispositivo distinto                        85%           92%       7%     10%              0.7%
+
+      Imagen                                      70%           80%      10%      5%              0.5%
+      recortada/parcial
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           36
+
+===== PAGINA 37 =====
+
+Análisis de errores
+Impacto de cada Tag
+¿Cómo elegir en qué Tag trabajar?
+
+
+          Tipo de imagen                      Accuracy   Human level   Gap to   % de    Contribución al
+                                                         performance     HLP    datos              gap
+
+      Imagen limpia                               96%           97%       1%     50%              0.5%
+
+      Bajo contraste                              88%           94%       6%     20%              1.2%
+
+      Artefacto de                                82%           90%       8%     15%              1.2%
+      movimiento
+
+      Dispositivo distinto                        85%           92%       7%     10%              0.7%
+
+      Imagen                                      70%           80%      10%      5%              0.5%
+      recortada/parcial
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           37
+
+===== PAGINA 38 =====
+
+Análisis de errores
+Impacto de cada Tag
+¿Cómo elegir en qué Tag trabajar?
+
+
+          Tipo de imagen                      Accuracy   Human level   Gap to   % de    Contribución al
+                                                         performance     HLP    datos              gap
+
+      Imagen limpia                               96%           97%       1%     50%              0.5%
+
+      Bajo contraste                              88%           94%       6%     20%              1.2%
+
+      Artefacto de                                82%           90%       8%     15%              1.2%
+      movimiento
+
+      Dispositivo distinto                        85%           92%       7%     10%              0.7%
+
+      Imagen                                      70%           80%      10%      5%              0.5%
+      recortada/parcial
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           38
+
+===== PAGINA 39 =====
+
+Análisis de errores
+Cómo decidir el siguiente paso
+¿Cómo elegir en qué trabajar?
+
+
+Cuánto margen de mejora hay
+Cual es la frecuencia de aparición de esa categoría
+Cómo de fácil es mejorar la accuracy en esa categoría (quizás añadir una feature especíﬁca ayude)
+Cómo de importante es mejorar esa categoría (si es muy importante podemos incluso añadir una métrica
+especíﬁca para eso en la selección de modelo)
+
+
+Cuando elegimos una categoría para “mejorar” la performance en ella tenemos varias opciones:
+  -    Grabar más datos de ese tipo
+  -    Usar data augmentation
+  -    Mejorar la calidad de las etiquetas/datos de esa categoría
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                        39
+
+===== PAGINA 40 =====
+
+Análisis de errores
+Cómo decidir el siguiente paso
+¿Cómo elegir en qué trabajar?
+
+
+Cuánto margen de mejora hay
+Cual es la frecuencia de aparición de esa categoría
+Cómo de fácil es mejorar la accuracy en esa categoría (quizás añadir una feature especíﬁca ayude)
+Cómo de importante es mejorar esa categoría (si es muy importante podemos incluso añadir una métrica
+especíﬁca para eso en la selección de modelo)
+
+
+Cuando elegimos una categoría para “mejorar” la performance en ella tenemos varias opciones:
+  -    Mejorar la calidad de las etiquetas/datos de esa categoría
+  -    Grabar más datos de ese tipo
+  -    Usar data augmentation
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                        40
+
+===== PAGINA 41 =====
+
+Data-centric approach
+Ejemplo de análisis de errores previo
+
+Podemos ver cómo de efectivo el modelo es en datos de cada tipo de ruido y también ver el HLP para cada
+tipo de ruido
+En este análisis vemos que tipos de datos representan una oportunidad de mejora más grande!
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           41
+
+===== PAGINA 42 =====
+
+Data-centric approach
+Ejemplo de análisis de errores previo
+
+Podemos ver cómo de efectivo el modelo es en datos de cada tipo de ruido y también ver el HLP para cada
+tipo de ruido
+En este análisis vemos que tipos de datos representan una oportunidad de mejora más grande!
+
+
+
+
+                                                                           Si conseguimos más datos de distintos
+                                                                           dispositivos, mejorará el error.
+
+
+                                                                           A veces también hay relaciones entre
+                                                                           “tags vecinos” que hacen que al mejorar
+                                                                           uno mejore otro
+                                                                             -   Quizás artefacto movimiento e
+                                                                                 imagen desenfocada o imagen
+                                                                                 recortada
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                            42
+
+===== PAGINA 43 =====
+
+Bucle de iteración de diseño
+Añadir Datos
+
+En el diseño centrado en el modelo:                        En el diseño centrado en los Datos:
+1- Entreno modelo                                          1- Entreno modelo
+2- Evalúo                                                  2- Evalúo - Error Análisis
+3- Aplico cambios                                          3- Añado/Mejoro/Modiﬁco los datos
+4- Vuelvo al 1…                                            4- Vuelvo al 1…
+
+  Para muchas aplicaciones, este data iteration loop es más efectivo y mejora más rápido que el
+  model iteration approach (siempre con un hiperparameters search y clasiﬁcador robusto!!)
+
+
+  El análisis de errores es más difícil si no tenemos acceso a calcular HLP
+  Podemos mirar papers o problemas similares para encontrar features útiles para nosotros!
+  -> Añadir features tambien es añadir datos!
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   43
+
+===== PAGINA 44 =====
+
+Bucle de iteración de diseño
+Añadir Datos
+
+En el diseño centrado en el modelo:                        En el diseño centrado en los Datos:
+1- Entreno modelo                                          1- Entreno modelo
+2- Evalúo                                                  2- Evalúo - Error Análisis
+3- Aplico cambios                                          3- Añado/Mejoro/Modiﬁco los datos
+4- Vuelvo al 1…                                            4- Vuelvo al 1…
+
+  Para muchas aplicaciones, este data iteration loop es más efectivo y mejora más rápido que el
+  model iteration approach (siempre con un hiperparameters search y clasiﬁcador robusto!!)
+
+
+  El análisis de errores es más difícil si no tenemos acceso a calcular HLP
+  Podemos mirar papers o problemas similares para encontrar features útiles para nosotros!
+  -> Añadir features tambien es añadir datos!
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   44
+
+===== PAGINA 45 =====
+
+Bucle de iteración de diseño
+Añadir Datos
+
+En el diseño centrado en el modelo:                        En el diseño centrado en los Datos:
+1- Entreno modelo                                          1- Entreno modelo
+2- Evalúo                                                  2- Evalúo - Error Análisis
+3- Aplico cambios                                          3- Añado/Mejoro/Modiﬁco los datos
+4- Vuelvo al 1…                                            4- Vuelvo al 1…
+
+  Para muchas aplicaciones, este data iteration loop es más efectivo y mejora más rápido que el
+  model iteration approach (siempre con un hiperparameters search y clasiﬁcador robusto!!)
+
+
+  El análisis de errores es más difícil si no tenemos acceso a calcular HLP
+  Podemos mirar papers o problemas similares para encontrar features útiles para nosotros!
+  -> Añadir features tambien es añadir datos!
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                   45
+
+===== PAGINA 46 =====
+
+Bucle de iteración de diseño
+Añadir Datos
+
+En el diseño centrado en el modelo:                          En el diseño centrado en los Datos:
+1- Entreno modelo                                            1- Entreno modelo
+2- Evalúo                                                    2- Evalúo - Error Análisis
+3- Aplico cambios                                            3- Añado/Mejoro/Modiﬁco los datos
+4- Vuelvo al 1…                                              4- Vuelvo al 1…
+  Sin embargo, no siempre es posible conseguir nuevos datos…
+  Para muchas aplicaciones, este data iteration loop es más efectivo y mejora más rápido que el model
+                      -> Data Augmentation
+  iteration approach (siempre con un hiperparameters search y clasiﬁcador robusto!!)
+
+
+  El análisis de errores es más difícil si no tenemos acceso a calcular HLP
+  Podemos mirar papers o problemas similares para encontrar features útiles para nosotros!
+  -> Añadir features tambien es añadir datos!
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                        46
+
+===== PAGINA 47 =====
+
+Aumentación de Datos
+Data Augmentation
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 48 =====
+
+Aumentación de datos
+Deﬁnición
+Herramienta muy efectiva para conseguir más datos, especialmente en unstructured data (no tabular)
+Consiste en crear datos sintéticos juntando señal y ruido (obtenidos por separado)
+
+
+Es recomendable comprobar primero:
+Si el dato sintético es realista (imagen, audio,,,)
+Si un humano puede hacer esa tarea? x->y mapping existe
+
+
+También, en el análisis de errores, si funciona el algoritmo mal ahora en ese tipo de dato?, sino no hace falta
+
+
+
+En campos como medicina, problemas industriales y datasets pequeños/medianos, suele ser extremadamente
+útil!
+
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                  48
+
+===== PAGINA 49 =====
+
+Data Augmentation
+Ejemplos de uso según los datos
+
+  Audio:
+      a partir de un audio, generamos varios audios distintos añadiendo distintos niveles o tipos de ruido,
+recortar un segmento (windowing)
+
+
+  Imagen:
+       rotar, cambiar brillo, enfoque (blur) o recortar un trozo (crop), añadir ruido
+
+
+  NLP:
+     reemplazar palabras por sinónimos, borrar algunas palabras aleatoriamente, paragraasear el texto
+usando LLM….
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                               49
+
+===== PAGINA 50 =====
+
+Data Augmentation
+Ejemplos de uso según los datos
+
+  Audio:
+      a partir de un audio, generamos varios audios distintos añadiendo distintos niveles o tipos de ruido,
+recortar un segmento (windowing)
+
+
+  Imagen:
+       rotar, cambiar brillo, enfoque (blur) o recortar un trozo (crop), añadir ruido
+
+
+  NLP:
+     reemplazar palabras por sinónimos, borrar algunas palabras aleatoriamente, paragraasear el texto
+usando LLM….
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                               50
+
+===== PAGINA 51 =====
+
+Data Augmentation
+Ejemplos de uso según los datos
+
+  Audio:
+      a partir de un audio, generamos varios audios distintos añadiendo distintos niveles o tipos de ruido,
+recortar un segmento (windowing)
+
+
+  Imagen:
+       rotar, cambiar brillo, enfoque (blur) o recortar un trozo (crop), añadir ruido
+
+
+  NLP:
+     reemplazar palabras por sinónimos, borrar algunas palabras aleatoriamente, paragraasear el texto
+usando LLM….
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                               51
+
+===== PAGINA 52 =====
+
+Data Augmentation
+Restricciones
+La idea clave es que los nuevos datos deben:
+
+
+  -    preservar la etiqueta (y)
+  -    respetar la ﬁsiología/física del problema
+  -    no cambiar la distribución esperada del problema
+
+
+Importante, como en los ejemplos vistos anteriormente, que no cambien el signiﬁcado físico/semántico de los
+datos
+
+
+Por eso se aplica principalmente a nivel de datos (unstructured data), una vez que tenemos una “tabla de
+números” es mucho más complicado aplicarlo, ya que se pueden generar relaciones extrañas entre
+variables/datos
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                               52
+
+===== PAGINA 53 =====
+
+Data Augmentation
+Riesgos
+
+
+
+ Garbage in, garbage out                         Leakage                                  Cambio de distribución
+
+
+ Ocurre cuando aumentación no                    1) Utilizamos los datos de un paciente   Si se aplica en exceso (en
+ simula datos reales y confunde al               para generar más datos                   cantidad o tamaño de las
+ algoritmo                                                                                perturbaciones)
+                                                 2) mezclamos entre train y validation
+                                                 datos del mismo paciente…                ->puede cambiar la distribución
+                                                                                          de los datos, y alejarse del
+ por ejemplo, rotar dígitos 180                                                           escenario real del problema
+ puede hacer que confundamos
+                                                 Corremos el riesgo de que el
+ un 6 y un 9
+                                                 algoritmo “aprenda” el paciente
+                                                 (similar al caso de group CV o LOGO)
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                         53
+
+===== PAGINA 54 =====
+
+Data Augmentation
+Riesgos
+
+
+
+ Garbage in, garbage out                         Leakage                                  Cambio de distribución
+
+
+ Ocurre cuando aumentación no                    1) Utilizamos los datos de un paciente   Si se aplica en exceso (en
+ simula datos reales y confunde al               para generar más datos                   cantidad o tamaño de las
+ algoritmo                                                                                perturbaciones)
+                                                 2) mezclamos entre train y validation
+                                                 datos del mismo paciente…                ->puede cambiar la distribución
+                                                                                          de los datos, y alejarse del
+ por ejemplo, rotar dígitos 180                                                           escenario real del problema
+ puede hacer que confundamos
+                                                 Corremos el riesgo de que el
+ un 6 y un 9
+                                                 algoritmo “aprenda” el paciente
+                                                 (similar al caso de group CV o LOGO)
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                         54
+
+===== PAGINA 55 =====
+
+Data Augmentation
+Riesgos
+
+
+
+ Garbage in, garbage out                         Leakage                                  Cambio de distribución
+
+
+ Ocurre cuando aumentación no                    1) Utilizamos los datos de un paciente   Si se aplica en exceso (en
+ simula datos reales y confunde al               para generar más datos                   cantidad o tamaño de las
+ algoritmo                                                                                perturbaciones)
+                                                 2) mezclamos entre train y validation
+                                                 datos del mismo paciente…                ->puede cambiar la distribución
+                                                                                          de los datos, y alejarse del
+ por ejemplo, rotar dígitos 180                                                           escenario real del problema
+ puede hacer que confundamos
+                                                 Corremos el riesgo de que el
+ un 6 y un 9
+                                                 algoritmo “aprenda” el paciente
+                                                 (similar al caso de group CV o LOGO)
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                         55
+
+===== PAGINA 56 =====
+
+Data Augmentation
+Datos Tabulares
+Por eso se aplica principalmente a nivel de datos, una vez que tenemos una “tabla de números” es mucho mas
+complicado aplicarlo, ya que se pueden generar relaciones extrañas entre variables/datos
+
+
+En estos casos, es más interesante el feature engineering
+
+
+Para datos tabulares, hay métodos como SMOTE o GANs, que generas datos interpolando vecinos
+
+
+Funcionan bien, pero debemos tener en cuenta que pueden generar estas datos imposibles y hacer que el
+modelo generalice peor
+
+
+Por ejemplo, en EEG:
+  -    si hacemos augmentation después de calcular potencia de cada banda de frecuencia, perdemos
+       coherencia ﬁsiológica de los datos
+  -    es mucho más aconsejable hacer augmentation en la señal cruda
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          56
+
+===== PAGINA 57 =====
+
+Data Augmentation
+¿Afecta al Split de alguna forma?
+
+¿Como haríamos el data augmentation, en que momento de nuestro pipeline?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                            57
+
+===== PAGINA 58 =====
+
+Data Augmentation
+¿Afecta al Split de alguna forma?
+
+¿Como haríamos el data augmentation, en que momento de nuestro pipeline?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                            58
+
+===== PAGINA 59 =====
+
+Data Augmentation
+¿Afecta al Split de alguna forma?
+                                                                           ¡Así no! se produciría leakage
+                                                                           entre train y validación si hay
+                                                                           datos sintéticos en validación
+                                                                           creados a partir de un dato real
+¿Como haríamos el data augmentation, en que momento de nuestro pipeline?   que está en train (o datos
+                                                                           sintéticos “hijos” del mismo dato
+                                                                           en train y validación)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                       59
+
+===== PAGINA 60 =====
+
+Data Augmentation
+Implementación correcta
+
+Es importante que la validación (y test) no contengan datos aumentados, ya que no son reales y pueden sesgar
+la estimación de la capacidad de generalización
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                           60
+
+===== PAGINA 61 =====
+
+Data Augmentation
+Implementación correcta
+
+Es importante utilizar data augmentation sólo en datos de train y dejar validación y test con datos
+“reales”
+
+
+Si no lo hacemos, podemos obtener una estimación sesgada de cómo de bien generaliza el modelo.
+       Esto ocurre con frecuencia en algunos papers…
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                       61
+
+===== PAGINA 62 =====
+
+Data Augmentation
+Test-time augmentation (TTA)
+
+ Un caso especial de esto es utilizar las aumentaciones (modiﬁcaciones) de la imagen o dato original para
+ hacer varias predicciones y luego promediarlas/combinarlas
+
+
+
+
+ En lugar de predecir sobre un dato, predices sobre ese dato y sus variaciones y luego combinas esas
+ predicciones
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                              62
+
+===== PAGINA 63 =====
+
+Data Augmentation
+Cuando utilizarlo
+
+ Es especialmente útil cuando:
+      Hay pocos datos
+      Hay riesgo de overﬁtting
+      Recolectar datos es caro (ej, Neurociencia, medicina…)
+
+
+ Es menos útil cuando el dataset es grande o los datos son tabulares y/o con features abstractas
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                     63
+
+===== PAGINA 64 =====
+
+Data Augmentation
+Conclusiones
+
+ La data augmentation puede mejorar generalización y reducir overﬁtting.
+
+
+ Debe aplicarse sólo sobre el conjunto de entrenamiento.
+
+
+ La validación y el test deben realizarse sobre datos reales no aumentados.
+
+
+ Las transformaciones deben respetar la semántica y la ﬁsiología del problema.
+
+
+ Una augmentation incorrecta puede introducir data leakage y métricas artiﬁcialmente inﬂadas.
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                  64
+
+===== PAGINA 65 =====
+
+Muchos vs Buenos Datos
+From Big Data to Good Data
+Big Data siempre ayuda (si tenemos los recursos para procesarlo y un algoritmo para ello), pero no siempre es posible
+
+
+Tener buenos datos, nos ayuda siempre y es más sencillo de conseguir!
+
+
+-> Un algoritmo correcto, con buenos datos va a funcionar mucho mejor que un muy buen algoritmo con datos no tan
+buenos. -
+> No obsesionarse con el modelo al principio, porque poder empezar a iterar en el loop nos va a permitir mejorar mas
+rápido y entender mejor nuestros datos
+
+
+¿Cómo podemos deﬁnir “buenos datos”?
+La relación x->y es consistente (HLP>random)
+Cubre casos importantes de uso (tipos de clientes etc)
+Tiene un tamaño razonable
+Relación train-validation y train-test y train-deployment se mantiene
+        (data drift y concept drift, siguiente clase)
+
+
+
+   Aprendizaje Automático – ©Carlos Bibián, 2026                                                                        65
+
+===== PAGINA 66 =====
+
+Métodos avanzados de Validación Cruzada
+Advanced Cross-Validation methods
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 67 =====
+
+¿Porque necesitamos Validación?
+Resumen
+ Medir/testear la capacidad de generalización
+
+
+ ¿Cómo se va a comportar mi modelo en datos nuevos?
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026        67
+
+===== PAGINA 68 =====
+
+¿Cómo utilizamos la Validación?
+Resumen Cross Validation
+ Cross validation:
+
+
+
+
+ Evaluamos (y elegimos) modelos, no fronteras de decisión.
+ Ej: un RF con estas features generaliza lo suﬁcientemente bien? esa es la pregunta que responde validación.
+ La validación no es para deﬁnir la frontera de decisión, sino el modelo (feats+algoritmo) que usaré para
+ encontrar esa frontera
+ Una vez respondida esa pregunta, entremanos el algoritmo elegido con esas features en TODOS los datos
+ (menos los de test), y ese será mi modelo ﬁnal para deploy
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                 68
+
+===== PAGINA 69 =====
+
+¿Como debe ser la Validación?
+Resumen
+ Train - Validation y Test deben ser iguales:
+
+
+ Deben mostrar los mismos datos, para que lo que se aprenda en Train pueda ser aplicado en Validación y
+ Test
+
+
+
+
+ Hasta ahora, enfoque más simple,
+-     separar los datos aleatoriamente
+-     hacerlo de forma sucesiva para que todos los datos se usen una vez en Validación (Cross-Validation)
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                              69
+
+===== PAGINA 70 =====
+
+¿Como debe ser la Validación?
+Resumen
+  Train - Validation y Test deben ser iguales:
+
+
+  Deben mostrar los mismos datos, para que lo que se aprenda en Train pueda ser aplicado en Validación y
+  Test
+
+
+
+
+  Hasta ahora, enfoque más simple,
+  -    separar los datos aleatoriamente
+  -    hacerlo de forma sucesiva para que todos los datos se usen una vez en Validación (Cross-Validation)
+
+
+Más avanzado: stratiﬁed Cross-Validation -> mantiene la proporción de clases en train-valdation-test
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              70
+
+===== PAGINA 71 =====
+
+¿Como debe ser la Validación?
+Resumen
+ Train - Validation y Test deben ser iguales:
+
+
+ Deben mostrar los mismos datos, para que lo que se aprenda en Train pueda ser aplicado en Validación y
+ Test
+
+
+En otras palabras:
+
+
+
+
+                La relación Train-Validation debe ser la misma que habrá entre Train-Test
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                            71
+
+===== PAGINA 72 =====
+
+Elegir el tipo Split
+
+                La relación Train-Validation debe ser la misma que habrá entre Train-Test
+
+
+
+
+                         La selección del Split deﬁne el uso que le vamos a dar al modelo
+                                                        ó
+                         El uso que le vayamos a dar al modelo, deﬁne el Split que debemos usar
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                    72
+
+===== PAGINA 73 =====
+
+k-fold Validación Cruzada aleatoria
+Random k-fold Cross-Validation
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   73
+
+===== PAGINA 74 =====
+
+k-fold Validación Cruzada Estratiﬁcada
+Stratiﬁed k-fold Cross-Validation
+Problema del random split
+La proporción de clases puede según la seed, especialmente en datasets pequeños o desbalanceados.
+Ejemplo:
+Fold A → 5% positivos
+Fold B → 20% positivos
+
+
+Stratiﬁed-CV -> mantiene la proporción de clases en train-validation-test
+
+
+Es recomendable usarlo siempre, especialmente en datasets pequeños/medianos (donde el riesgo de que al
+hacerlo aleatoriamente se desbalanceen es más grande)
+
+
+Recomendable en datasets pequeños o desbalanceados (medicina, fraude, diagnosis….)
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          74
+
+===== PAGINA 75 =====
+
+Grupos/Cohortes
+Groups/Cohorts
+En ocasiones, las muestras no son independientes
+
+
+Pueden existir grupos/cohortes/estructuras compartidas que introduzcan relaciones entre las muestras
+
+
+Por ejemplo:
+Hospitales
+Escuelas
+Países
+Dispositivos
+
+                                      La relación Train-Validation debe ser la misma que habrá entre
+                                     Train-Test
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                        75
+
+===== PAGINA 76 =====
+
+Grupos/Cohortes
+Groups/Cohorts
+Estos grupos comparten sesgos, correlaciones, cambios de distribución….
+
+
+si no se tiene en cuenta, se puede producir leakage indirecto:
+
+
+El modelo aprende el hospital o el scanner o el país, en lugar de aprender el problema real
+
+
+¿Es esto un problema?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               76
+
+===== PAGINA 77 =====
+
+Grupos/Cohortes
+Groups/Cohorts
+Estos grupos comparten sesgos, correlaciones, cambios de distribución….
+
+
+si no se tiene en cuenta, se puede producir leakage indirecto:
+
+
+El modelo aprende el hospital o el scanner o el país, en lugar de aprender el problema real
+
+
+¿Es esto un problema?
+
+
+Si, si no se mantiene la relación Train-Validation en Train-Test/Deployment
+Es un problema ya que el sistema puede usar información que luego no tendrá en su aplicación ﬁnal!
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                      77
+
+===== PAGINA 78 =====
+
+Validación Cruzada por Grupos
+Group Cross-Validation
+Métodos como:
+
+
+-Group K-Fold (cada fold es un grupo)             -Leave-One-Group-Out (LOGO) - El conjunto de validación
+                                                  serán los datos de un grupo en cada iteración del CV
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                         78
+
+===== PAGINA 79 =====
+
+Grupos/Cohortes
+Ejemplo
+Tenemos información de 5 escuelas distintas en nuestro dataset
+
+
+El sistema queremos utilizarlo en otras escuelas, no incluidas en el dataset:
+
+
+Debemos mantener en Train-Validation esa relación entre train-deployment, por lo que debemos usar un Group
+K-fold Cross-Validation
+
+
+Sino, corremos el riesgo de que aprenda a funcionar en esos 5 hospitales pero no en otros, debemos validar
+también esa capacidad de aprender de unos hospitales y generalizar a otros, que es el uso ﬁnal que va a tener
+el sistema
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                             79
+
+===== PAGINA 80 =====
+
+Cohortes Temporales
+Temporal Cohorts
+Si el factor tiempo es relevante, debemos saber si nuestro sistema es capaz de generalizar a datos nuevos “del
+futuro”
+
+
+¿Cómo hacemos eso?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              80
+
+===== PAGINA 81 =====
+
+Cohortes Temporales
+Temporal Cohorts
+Si el factor tiempo es relevante, debemos saber si nuestro sistema es capaz de generalizar a datos nuevos “del
+futuro”
+
+
+¿Cómo hacemos eso?                  La Validación contiene siempre datos posteriores al Train, siempre!
+
+
+Time-Series Cross-Validation
+
+
+Walk-Forward Validation
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                              81
+
+===== PAGINA 82 =====
+
+¿Cómo elegir Split?
+
+Por ejemplo, ¿Cómo elegimos el Split cuando hay varios niveles de Cohortes?
+
+
+Siempre responder la pregunta: ¿A qué queremos que generalice el sistema cuando se use?
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                           82
+
+===== PAGINA 83 =====
+
+¿Cómo elegir Split?
+
+Por ejemplo, ¿Cómo elegimos el Split cuando hay varios niveles de Cohortes?
+
+
+Siempre responder la pregunta: ¿A qué queremos que generalice el sistema cuando se use?
+
+
+
+
+¡En ocasiones, elegir el Split correcto tiene un impacto mayor a elegir uno u otro modelo!
+
+
+No existe un Split universalmente correcto:
+                                    depende del uso que se le vaya a dar al sistema/Deployment
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                  83
+

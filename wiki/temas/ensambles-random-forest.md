@@ -78,7 +78,9 @@ Ver [Árboles de regresión](arboles-de-decision.md#árboles-de-regresión) y [k
 - **Stacking:** un meta-modelo recibe las salidas de los modelos base. En la versión *con passthrough* recibe también las features originales, y así puede reconocer en qué regiones funciona mejor cada modelo. [T07, p. 70]
 - **Blending RF + KNN:** RF capta diferencias más globales y KNN más locales, así que probablemente cometan errores distintos. Se entrena cada uno por separado y se combinan sus probabilidades con un promedio simple o ponderado. [T07, p. 72] kNN se desarrolla en [Aprendizaje basado en instancias](aprendizaje-basado-en-instancias.md).
 
-**Inferencia operativa:** los pesos del blending o el meta-modelo del stacking son decisiones del pipeline. Deben ajustarse con predicciones que no provengan de los mismos datos con que se entrenaron los modelos base (por ejemplo, fuera de fold) y nunca con test. [T02, p. 94] [T03, p. 9]
+**Inferencia operativa:** los pesos del blending o el meta-modelo del stacking son decisiones del pipeline. Deben ajustarse con predicciones que no provengan de los mismos datos con que se entrenaron los modelos base (por ejemplo, fuera de fold) y nunca con test. [T02, p. 94] [T03, p. 9] La clase 12 lo confirma: el meta-modelo se entrena con las predicciones out-of-fold de la cross-validation. [T12, p. 24] [T12, p. 25]
+
+La clase 12 desarrolla gradient boosting (XGBoost, LightGBM, CatBoost), la arquitectura del stacking y otra definición de blending: stacking con una sola partición en lugar de CV. [T12, p. 4] [T12, p. 27] Ver [Gradient boosting y combinación de modelos](gradient-boosting-y-combinacion.md).
 
 ## Mejoras de selección de características
 
@@ -87,5 +89,6 @@ Reducir variables puede eliminar ruido y sobreajuste. Algunas opciones: la impor
 ## Conexiones
 
 - [Árboles de decisión](arboles-de-decision.md)
+- [Gradient boosting y combinación de modelos](gradient-boosting-y-combinacion.md): boosting reduce sesgo; bagging, varianza. [T12, p. 20] [T12, p. 21]
 - [Regresión, complejidad y generalización](regresion-y-generalizacion.md): el ensamble reduce varianza.
 - [Evaluación y validación](evaluacion-y-validacion.md)

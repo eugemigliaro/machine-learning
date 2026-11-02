@@ -24,6 +24,8 @@ Ver [kNN como regresor](aprendizaje-basado-en-instancias.md#knn-como-regresor) y
 
 El error de train, por sí solo, no estima la generalización. Si el modelo aprende ruido particular de train, aparece una brecha respecto del error en datos independientes. [T02, p. 76] [T02, p. 77]
 
+La clase 11 convierte esta idea en un procedimiento de diagnóstico: primero mirar si el modelo aprende train y después si generaliza, con curvas de validación y de aprendizaje. [T11, p. 11] Ver [Diagnóstico de modelos](diagnostico-de-ml.md).
+
 ## Controles de complejidad
 
 El material propone aumentar datos cuando sea posible, reducir características, regularizar y evaluar con particiones independientes. [T02, p. 57] [T02, p. 64] La selección de características reduce grados de libertad; la regularización penaliza coeficientes; dev permite elegir estas decisiones sin contaminar test. [T03, p. 9] [T03, p. 61] [T03, p. 85]

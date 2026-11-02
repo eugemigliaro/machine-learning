@@ -1,0 +1,1222 @@
+FUENTE: T12
+TITULO: Algoritmos avanzados y MLOps
+ORIGINAL: material/catedra/teoria/Clase 12. Algoritmos Avanzados y MLOps.pdf
+PAGINAS: 58
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Horario: Miércoles 16-19h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+Alexa Sessarego Aurich
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+
+
+
+
+                                                    … en la sesión anterior
+Plan de la sesión de hoy
+                                                    -   Validación cruzada avanzada
+-    Algoritmos avanzados
+-    MLOps                                          -   ML diagnostics
+-    Deploy                                         -    Data-Centered Design
+-    Mantenimiento y Monitoreo
+                                                    -    Análisis de Errores
+-    TP3
+
+===== PAGINA 2 =====
+
+TP3 y ML competition
+Reglas y evaluación
+ Entregables
+
+ Cada equipo deberá entregar:
+
+ Función predictor, que se utilizará para evaluar el modelo en la competición.
+
+ Notebook y presentación (PPT), siguiendo el formato habitual de los trabajos prácticos.
+
+ Fechas de submission
+
+ Cada equipo tendrá tres oportunidades de submission, con actualización del leaderboard en ambas fechas: 04/11, 11/11 y 18/11 (antes de las 16:00 h)
+
+
+ Competition Score: La clasiﬁcación ﬁnal se calculará como:
+
+ Competition Score = 90% × Score (submission del 18/11) + 10% × Nota de presentación
+
+ Premios
+
+ Los equipos que alcancen las siguientes posiciones quedarán eximidos del examen ﬁnal de diciembre:
+
+ TOP 1 – Model Score: Equipo con el mejor rendimiento predictivo.
+
+ TOP 4 – Competition Score: Los cuatro equipos mejor clasiﬁcados según el puntaje combinado.
+
+ Condición: Los equipos premiados deberán realizar una breve presentación ﬁnal el 25/11, último día de clase (técnica + no técnica).
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                         2
+
+===== PAGINA 3 =====
+
+Gradient Boosting
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 4 =====
+
+Gradient Boosting
+Idea principal
+
+  Los árboles no se entrenan de forma independiente sino que lo hacen de forma secuencial
+
+
+  Cada uno, corrige errores del anterior: El modelo aprende iterativamente sobre los residuos
+
+
+  Por eso se llama Gradient Boosting, ya que reduce progresivamente el error
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                  4
+
+===== PAGINA 5 =====
+
+Gradient Boosting
+Funcionamiento
+
+ 1- Entrena el primer árbol, que genera una predicción inicial sobre los datos
+
+
+ 2- Entrena un segundo árbol sobre los errores del anterior
+
+
+ 3- Se entrena un tercer árbol sobre los errores del ensemble 1-2
+
+
+ 4- Repite este proceso sucesivamente
+
+
+ - De esta forma el ensemble se vuelve cada vez más preciso
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                   5
+
+===== PAGINA 6 =====
+
+Gradient Boosting
+Mejora con respecto a RF
+
+ Los árboles ahora interactúan en lugar de ser independientes
+
+
+ El modelo se enfoca explícitamente en ejemplos difíciles
+
+
+ Logra mejores precisiones con menos árboles (y por tanto es más rápido y eﬁciente)
+
+
+ Especialmente potentes en datasets tabulares (igual que RF), ya que se maneja muy bien con
+ datasets de variables heterogéneas
+    -      ya que cada variable se mira por separado en un DT
+
+
+ Reduce el sesgo más que RF. En RF al añadir árboles reducimos la varianza, pero no tanto el
+ sesgo.
+ Gradient Boosting, al enfocarse sucesivamente en errores, ataca el sesgo.
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                 6
+
+===== PAGINA 7 =====
+
+Ejemplos de Gradient Boosting
+XGBoost
+
+ Mejora el gradient boosting clásico agregando regularización explícita para evitar overﬁtting.
+    -      Penaliza árboles demasiado complejos (muchas hojas)
+    -      Minimiza no solo el error de predicción, sino también la complejidad del modelo
+
+
+
+ Cada nuevo árbol corrige los errores del ensemble previo minimizando una función de pérdida
+ diferenciable - lo que facilita la optimización
+
+
+ Introduce optimizaciones de cómputo como: paralelización, manejo eﬁciente de memoria y tratamiento
+ automático de missing values.
+
+
+ Es un estándar en la industria en ML tabular porque logra alta precisión con relativamente poco
+ tuning y datasets medianos.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                        7
+
+===== PAGINA 8 =====
+
+Ejemplos de Gradient Boosting
+LightGBM
+
+ Desarrollado por Microsoft para entrenar boosting sobre datasets extremadamente grandes.
+
+
+ Prioriza la velocidad de cómputo y escalabilidad:
+ En lugar de evaluar todos los posibles splits, agrupa valores en histogramas, acelerando mucho el
+ entrenamiento.
+
+
+ Usa crecimiento leaf-wise: expande primero las hojas con mayor reducción de error en vez de
+ crecer el árbol de forma balanceada.
+    -      no entrena cada nivel de profundidad por separado, sino que profundiza en las ramas más
+           prometedoras primero
+
+
+ Esto suele mejorar precisión y velocidad, aunque puede aumentar riesgo de overﬁtting si no se
+ regulariza bien. (cuidado al usarlo en datasets pequeños!)
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                       8
+
+===== PAGINA 9 =====
+
+Ejemplos de Gradient Boosting
+CatBoost
+
+ Desarrollado por Yandex para manejar variables categóricas de forma más robusta.
+
+
+
+ Fue diseñado para evitar problemas al codiﬁcar categorías
+
+ CatBoost utiliza ordered boosting y codiﬁcaciones estadísticas controladas para evitar usar
+ información futura durante entrenamiento.
+
+ Esto permite trabajar directamente con muchas variables categóricas reduciendo preprocessing
+ manual y mejorando estabilidad.
+
+
+
+ Por eso CatBoost suele funcionar muy bien en datasets empresariales/tabulares reales.
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                  9
+
+===== PAGINA 10 =====
+
+Gradient Boosting en Scikit-Learn
+
+
+ Scikit-learn sí tiene boosting clásico:
+
+    ●      GradientBoostingClassiﬁer
+    ●      GradientBoostingRegressor
+    ●      HistGradientBoosting
+
+ Este último (HistGradientBoosting) está bastante inspirado en ideas modernas tipo LightGBM:
+
+    ●      histogram bins,
+    ●      entrenamiento más rápido,
+    ●      mejor escalabilidad.
+
+
+
+ Pero XGBoost, LightGBM y CatBoost no estana incluidos y deben ser instalados aparte si se quieren
+ usar
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                       10
+
+===== PAGINA 11 =====
+
+Métodos avanzados basados en vecinos
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 12 =====
+
+k-vecinos más cercanos (knn)
+k-nearest neighbours (knn)
+● Algoritmo más característicos de esta familia
+
+
+● Dada una nueva instancia, identiﬁca los k vecinos más cercanos en el conjunto
+  de entrenamiento, y le asigna la clase más frecuente de esos vecinos.
+
+
+● K es el numero de vecinos a considerar (hiperparámetro!)- cuantos vecinos mirar
+
+
+● Simple pero muy competitivo y capaz de captar estructuras complejas.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                   12
+
+===== PAGINA 13 =====
+
+Métodos basados en vecinos
+Limitaciones
+
+
+Coste computacional elevado (y en el momento de la predicción!)
+ ●     Debe calcular las distancias de cada punto a estimar/clasiﬁcar con TODOS los puntos del
+       dataset
+
+
+La comparación de distancias no es tan efectiva en espacios de alta dimensionalidad (todas
+las dimensiones tienen la misma importancia, por lo que la información se diluye)
+ ●     Este factor afecta mucho menos a los métodos basados en árboles, ya que aqui cada
+       feature se evalúa por separado en cada nodo
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                              13
+
+===== PAGINA 14 =====
+
+Vecinos más cercanos approximados (ANN)
+Approximate Nearest Neighbors (ANN)
+LSH: Locality-Sensitive Hashing                            (hashing: picar/dividir en trozos)
+Busca una división (hashing) del espacio donde la cercanía (locality) se mantenga
+
+
+Pasos:
+ 1. Generamos k hiperplanos aleatorios y vemos cada punto a que lado de cada
+     hiperplano está, obteniendo un vector hash para cada punto
+          -> h(x) = (1,0,0,0,1,0)
+ 2.    Cuando tenemos que clasiﬁcar un punto, calculamos a qué bucket pertenece: puntos
+       que compartan el mismo h(x).
+ 3.    Podemos crear varios (L) proyecciones a h(x) con distintos gruposde planos aleatorios,
+       en ese caso, calcularemos los buckets a los que pertenece el punto en cada espacio
+       hash distinto y “marcaremos” los puntos están en el mismo bucket al menos una vez.
+4.     Sobre esos puntos, calculamos la distancia (en el espacio original de features, no en
+       el hash!) y aplicamos knn
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 14
+
+===== PAGINA 15 =====
+
+Hierarchical Navigable Small World (HNSW)
+
+
+Es uno de los métodos ANN más usados actualmente.
+
+
+Construye un grafo donde puntos similares quedan conectados.
+Utiliza distintos niveles de grafos, de forma que los niveles más altos permiten saltos largos y
+los más bajos reﬁnan la búsqueda localmente
+
+
+La búsqueda navega el grafo hacia regiones cada vez más cercanas.
+
+
+Logra muy buena precisión con latencia extremadamente baja.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                    15
+
+===== PAGINA 16 =====
+
+Facebook AI Similarity Search (FAISS)
+
+
+Desarrollado por Meta para búsqueda eﬁciente de similitud.
+Permite manejar millones o billones de embeddings con optimizaciones de cómputo sobre ANN
+
+
+Embeddings: Objetos complejos se representan como vectores densos.
+En ese espacio, similaridad geométrica implica similaridad semántica: Dos canciones cercanas
+en el espacio vectorial “suenan parecidas”.
+ANN hace posible buscar rápidamente en esos espacios.
+Hoy es infraestructura estándar en sistemas de retrieval - recuperar información relevante
+(buscadores, sistemas de recomendación de productos similares…)
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                              16
+
+===== PAGINA 17 =====
+
+Ejemplo Spotify - ANNOY
+Approximate Nearest Neighbors Oh Yeah
+
+Se crea para un contexto muy concreto: recomendar canciones similares de una base de
+datos de millones de canciones a millones de usuarios y en tiempo real
+
+Implicaciones:
+
+        • Miles de búsquedas por segundo
+
+        • Construcción razonablemente rápida (se actualiza frecuentemente)
+
+        • Indexar nuevos ítems sin rehacer todo (cada nuevo usuario reentrenar todo?!?)
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                           17
+
+===== PAGINA 18 =====
+
+Combinación de modelos
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 19 =====
+
+Combinación de modelos
+Idea principal
+
+Distintos algoritmos capturan distintos patrones en los datos.
+
+
+Un modelo puede cometer errores que otro no comete y clasiﬁcar correctamente los errores del
+otro
+
+
+Combinar modelos suele mejorar robustez y precisión.
+
+
+Esta idea es la base de los ensembles modernos.
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                           19
+
+===== PAGINA 20 =====
+
+Bagging
+
+
+Reducir varianza promediando outputs de modelos algo distintos
+
+
+ 1.    El modelo se entrena varias veces sobre subconjuntos de los datos (vía bootstrapping)
+
+
+ 2.    Se combinan sus predicciones (max voting, averaging…)
+
+
+Es la técnica usada para pasar de DT a RF
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                20
+
+===== PAGINA 21 =====
+
+Boosting
+
+
+Reducir Sesgo
+
+
+ 1.    El modelo se entrena varias veces de forma secuencial sobre subconjuntos de datos (por
+       ejemplo sobre los mal clasiﬁcados en la iteración anterior)
+
+
+2.     Se combinan sus predicciones (weighted averaging…)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 21
+
+===== PAGINA 22 =====
+
+Stacking
+
+
+Genera un meta-modelo mediante la combinación de distintos modelos
+
+
+ 1.    Los modelos “base” generan predicciones
+
+
+ 2.    Se entrena un modelo a partir de esas predicciones (las y de los modelo base son las x del
+       meta-modelo)
+       *predicciones probabilísticas: en vez de y = 0, y = 0.31, donde y es la probabilidad de
+       pertenecer a clase 1
+
+
+Con este enfoque podemos explotar las fortalezas de cada modelo
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                  22
+
+===== PAGINA 23 =====
+
+Stacking
+Arquitectura tipo
+
+Nivel 1:
+
+ ●     LDA
+ ●     XGBoost
+ ●     SVM
+ ●     ANN, etc.
+
+Nivel 2 (meta-modelo)
+
+ ●     modelo simple (ej. regresión logística, Ridge regression, Gradient Boosting suave).
+
+Entrada del meta-modelo: predicciones de los modelos base.
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                              23
+
+===== PAGINA 24 =====
+
+Stacking
+Overﬁtting y leakage
+
+Stacking requiere utilizar la validación cruzada de forma correcta
+
+
+Si entrenamos el meta-modelo sobre predicciones del training original:
+ ●     aparece overﬁtting severo.
+*Las predicciones sobre el training set tienen ya cierto sesgo, si entrenamos el metamodelo
+sobre eso, se producirá overﬁtting
+
+
+Por eso el metamodelo se debe entrenar sobre las predicciones de los modelos en los datos de
+validation:
+1- entrenamos modelos en train y predecimos en validación
+2- entrenamos metamodelos en esas predicciones
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                               24
+
+===== PAGINA 25 =====
+
+Train-Dev-Test para Stacking
+
+              Entrenamiento (Train)                        Model selec. (Dev)                Evaluación (Test)
+
+
+
+Ajuste de hiperparametros y selección del mejor modelo
+Entrenamiento meta-model, con los ejemplos out-of-fold
+(OOF) del Cross-Validation (CV) -> Validation Set
+
+
+Validation/Dev set, son para seleccionar modelo o hiperparámetro
+
+La predicción de algo entrenado en train sobre train, tiene sesgo
+
+Entrenamos el meta-modelo en la predicción (insesgada) sobre validación de los modelos (OOF de cada iteración del CV)
+
+No vamos a poder ajustar mucho el meta-modelo ya que no tenemos más validación, así que esa parte la optimizamos
+menos o nada. (o usamos un nested-CV)
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                          25
+
+===== PAGINA 26 =====
+
+Elección de modelos para Stacking/Blending
+
+En el cross-validation de Train:
+
+
+1- Buscar los mejores hiperparametros para cada modelo (como hemos hecho hasta ahora)
+
+
+2- Calcular cómo de parecidos son los errores que comete cada modelo
+       correlación entre outputs por ejemplo:
+          -      si dos modelos tienen una predicción con mucha correlación, aporta poco
+                 mezclados
+          -      Si dos modelos tienen performance alta y están poco correlados, es una situación
+                 muy prometedora para stacking/blending
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                     26
+
+===== PAGINA 27 =====
+
+Variación del Stacking: Blending
+Blending
+
+Una simpliﬁcación del Stacking:
+
+
+Igual que el Stacking pero sin Cross-Validation. Únicamente una división de datos
+
+
+Usarlo cuando se quiera una implementación rápida, sino, usar Stacking
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                     27
+
+===== PAGINA 28 =====
+
+Ejemplo de Stacking/Blending
+
+Netﬂix Prize: Competición de tres años, 1 millones de dólares al ganador
+
+
+El ganador (BellKor’s Pragmatic Chaos), superó en un 10% al método anterior
+
+
+La solución ﬁnal era un modelo de Blending/Stacking sobre varios modelos (kNN, Matrix
+Factorization…)
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                         28
+
+===== PAGINA 29 =====
+
+Dudas?
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   29
+
+===== PAGINA 30 =====
+
+    Proyecto de ML
+    Pipeline clásico de un proyecto
+                                                                                                                5. EDA (Exploratory
+1. Deﬁnición del          2. Recolección de                                                                     Data Analysis)
+                                                                                    4. Limpieza de datos
+problema                  datos                                                                                   - Distribuciones
+                                                                                      - Missing values
+                                                                                      - Outliers                  - Correlaciones
+                                                                                      - Inconsistencias           - Insights iniciales
+
+                                                    3. Data Splitting
+                                                                                                                                         6. Feature
+                                                      - Train / Validation
+                                                                                                                                         Engineering /
+                                                    / Test
+                                                                                                                                         Selection
+                                                                                                                                           - Transformaciones
+                                                                                                                                           - Selección de
+                                                                                                                                         variables
+
+
+
+                                            10. Iteración / Mejora
+
+ 11. Selección del modelo                                                    9. Evaluación (en Dev)        8. Regularización             7. Modelado
+ y Evaluación ﬁnal en                                     no                   - Métricas (accuracy,         - Control de overﬁtting
+ Test                                          si                            precision, recall, etc.)
+   - Métricas (accuracy,
+ precision, recall, etc.)
+                                                    ¿Resultado ok?
+
+        Aprendizaje Automático – ©Carlos Bibián, 2026                                                                                                  30
+
+===== PAGINA 31 =====
+
+MLOps
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 32 =====
+
+MLOps
+Deﬁnición
+ ML Operations - nueva disciplina que incluye herramientas y conceptos que ayudan durante el ciclo de
+ vida de un proyecto de ML.
+
+
+ Especialmente en deployment/modeling/data steps
+
+
+ Establece formas sistemáticos para plantear data/modeling y deployment
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                          32
+
+===== PAGINA 33 =====
+
+Motivación
+Datos
+  Una skill muy importante en entrevistas del campo : ¿has desplegado alguna vez un algoritmo de ML en
+  producción?
+
+
+  Objetivo: no sólo entrenar el algoritmo, sino también:
+  -    ponerlo en producción,
+  -    monitorearlo
+  -    mantenerlo funcionando
+
+
+En resumen, haber hecho un deploy nos permite entender todo el ciclo de vida de un proyecto de ML
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                          33
+
+===== PAGINA 34 =====
+
+¿Que rodea a nuestro algoritmo de ML?
+Paisaje completo de un proyecto ML
+
+
+                                                 El código de ML es un
+                                                 porcentaje bajo del código
+                                                 de toda la aplicación ﬁnal
+
+
+                                                 Ese proof of concept que
+                                                 tenemos en el notebook,
+                                                 todavía    necesita mucho
+                                                 codigo alrededor hasta ser
+                                                 implementado/desplegado en
+                                                 producción
+                                                 POC to Production Gap
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                           34
+
+===== PAGINA 35 =====
+
+Ciclo de vida de un proyecto ML
+The ML project lifecycle
+ Model-centered design
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   35
+
+===== PAGINA 36 =====
+
+Ciclo de vida de un proyecto ML
+The ML project lifecycle
+ Data-centered design
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026   36
+
+===== PAGINA 37 =====
+
+Paso a paso de un proyecto de ML
+Datos
+                                           Scoping:
+                                           -Deﬁnir el proyecto, objetivos, alcance, etapas,
+                                           -Prioridades, errores que no cometer,
+                                           -Cómo interactuará con otros sistemas, que datos verá el sistema ﬁnal…
+
+
+
+
+                                           Data:
+                                           - Datos y etiquetas consistentes,
+                                           - En dataset online, muchas veces los datos están ya listos para ser usados. En
+                                           la realidad, hay un trabajo importante para mejorar la calidad de los datos (o al
+                                           menos chequear),
+                                           Ejemplo: audios de speech recognition, vamos a normalizar volumen de audios?
+                                           o brillo de imágenes etc.
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                             37
+
+===== PAGINA 38 =====
+
+Paso a paso de un proyecto de ML
+
+Modeling
+Modelo+hiperparámetros+Datos-> sistema ML
+  - En academia/research: se suele centrar en modelos y ajuste de
+  hiperparametros y no tocar los datos (muchas veces utiliza
+  datasets predeﬁnidos y estandarizados) - Model-Centric
+  -En producción/Deploy: suele ser más efectivo dejar el modelo
+  ﬁjo y centrarse en optimizar los datos y los hiperparametros -
+  Data-Centric
+
+
+Análisis de Errores
+¿donde falla mi modelo?
+  -Esto me puede decir como puedo mejorar los datos, lo que nos
+  puede dar un resultado de mejora grande del modelo.
+  -También informarte de qué tipo de datos necesitas si vas a
+  grabar más, no solo grabar igual que lo que tienes, sino
+  orientarlo mejor.
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                     38
+
+===== PAGINA 39 =====
+
+Paso a paso de un proyecto de ML
+
+Deploy
+  Implementar el modelo para que funcione en tiempo real,
+  software, transformación de los datos…
+  Comprobar que los datos son comparables a aquellos con los que
+  creamos el sistema -> Concept drift y Data drift
+
+
+Monitoreo y Mantenimiento
+¿Funciona mi modelo igual que durante el diseño y el deploy?
+  -Evaluar periódicamente varias métricas y aspectos para ver si el
+  modelo funciona bien y poder detectar errores inesperados en el
+  sistema
+
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                       39
+
+===== PAGINA 40 =====
+
+Concept and Data drift
+Data Drift
+ Data drift: cambio en los datos que hace que el sistema esté viendo datos distintos a los que esperábamos
+ (Cambia la x)
+
+
+ Ejemplo:
+ -    Cambios de iluminación en fotos de usuarios
+
+
+ -    Speech recognition: quizás cambia el lenguaje un poco (lento), o calidad de los micrófonos de los
+      smartphones de los usuarios
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                            40
+
+===== PAGINA 41 =====
+
+Concept and Data drift
+Concept Drift
+ Concept drift: cambia el comportamiento que queremos modelar con el sistema
+ (Cambia la relación x-y)
+
+
+ Ejemplo:
+
+
+ -    Covid 19: gente que no compraba online nunca, empezó a comprar mucho, y el muchos sistemas
+      antifraude empezaron a detectar muchos fraudes (erróneamente).
+ -> Los sistemas tuvieron que ser reentrenados para funcionar en este nuevo ambiente
+
+
+
+
+ Tenemos que ser capaces de controlar ambos durante y después del deploy
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                     41
+
+===== PAGINA 42 =====
+
+Despliegue
+Deployment
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 43 =====
+
+First deployment vs maintenance
+Datos
+ Deploying son 2 tareas:
+
+
+
+
+1)    Software para el deploy
+
+
+2)    Mantenimiento y monitoreo (para comprobar data y concept drifts)
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                           43
+
+===== PAGINA 44 =====
+
+Deployment patterns
+Algunos casos típicos
+ 1. Producto/servicio nuevo: en este caso, lo ideal es empezar con poco tráﬁco
+
+
+ 2. Automatizar/asistir en una tarea manual: veremos que aqui shadow mode deployment va perfecto
+
+
+ 3. Reemplazar un sistema de ML anterior
+
+
+ Ideas claves que comparten:
+ Crecimiento gradual de tráﬁco con monitoreo
+ Rollback: si vemos que no funciona como esperamos, podemos volver al modelo anterior
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                     44
+
+===== PAGINA 45 =====
+
+Tipos de Deployment
+Shadow mode deployment
+Shadow mode deployment
+
+
+ El sistema ML corre en paralelo con el trabajo del humano (shadow)
+
+
+ La salida del sistema ML no se usa para ninguna decisión en esta etapa temprana
+
+
+ Podemos veriﬁcar si estaría funcionando bien y decidir si implementamos el algoritmo para tomar
+ decisiones de forma independiente o no
+
+
+ Es ideal para tareas donde queremos asistir/automatizar una tarea humana
+
+
+ Ejemplo: detección de piezas defectuosas
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                    45
+
+===== PAGINA 46 =====
+
+Tipos de deployment
+Canary deployment
+
+
+
+Canary deployment:
+ 1)    Usar solo una fracción pequeña del tráﬁco (por ejemplo 5%)
+
+
+ 2)    Monitorea y ve incrementando gradualmente. De esta forma, si hubiese algún error minimizamos el
+       impacto en el proceso, y las pérdidas.
+
+
+  Cuando estamos listos para que el algoritmo tome decisiones de forma independiente, el canary
+  deployment es el approach correcto
+
+            El nombre del método se debe a que los mineros llevaban consigo un canario para detectar fugas de gas (moría
+            primero) y así saber cuándo tenían que salir rápido. el canario sería ese 5%...
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                            46
+
+===== PAGINA 47 =====
+
+Tipos de deployment
+Blue green deployment
+Blue green deployment
+
+
+  Las inputs se mandan a la nueva o la vieja versión de forma aleatoria.
+
+
+  blue hace referencia a la versión anterior del sistema ML
+  green a la nueva versión
+
+
+  Ventajas:
+
+
+ -     Permite evaluar fácilmente la mejora de la nueva versión
+ -     Hacer fácilmente un rollback a la version vieja (blue), si la nueva no funcionase bien
+ -     Podemos aumentar desde aquí gradualmente cuanto se envia al green version si va bien
+
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                 47
+
+===== PAGINA 48 =====
+
+Deployment patterns
+Grados de automatización
+Como vemos el deployment no es un proceso 0 a 1, sino que es gradual
+
+
+
+
+  Esto no quiere decir que haya que llegar a full automation siempre, se puede dejar el sistema en cualquier
+  punto de Human in the loop (AI assistance o Partial automation).
+
+
+  Aprendizaje Automático – ©Carlos Bibián, 2026                                                                48
+
+===== PAGINA 49 =====
+
+Deployment
+De Entrenamiento a Deploy
+ Hasta ahora hemos entrenado nuestros modelos y los hemos evaluado en nuestros notebooks.
+
+
+ Ahora vamos a simular un escenario más cercano a producción -> generando un código que vaya a ser
+ corrido externamente
+
+
+                                                 La función debe:
+                                                         .Recibir los datos
+                                                         .Aplicar el preprocessing (p.ej escalado con mean y std de
+         def predictor(X):                               train)
+            ...                                          .Contener el modelo entrenado
+            return y_pred                                .Producir predicciones
+                                                         .Funcionar de forma independiente (sin acceso al
+                                                         notebook)
+                                                         .No usar Labels, ni reentrenar el modelo dentro ni utilizar
+                                                         variables globales del notebook…
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                         49
+
+===== PAGINA 50 =====
+
+Deployment
+De Entrenamiento a Deploy
+ En ML real, el entrenamiento y la inferencia son dos etapas muy diferenciadas
+
+
+ El entrenamiento ocurre una vez*
+
+
+ La inferencia ocurre de forma continua y sobre datos nuevos en un entorno externo
+
+
+ El modelo solo es útil si generaliza correctamente y puede ejecutarse externamente e integrarse en un
+ pipeline real.
+
+
+
+
+                                                                 Lo importante ocurre fuera del notebook
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                           50
+
+===== PAGINA 51 =====
+
+Monitoreo y Mantenimiento
+Monitoring and Maintenance
+
+
+
+Carlos Bibián Nogueras, PhD
+cbibian@itba.edu.ar |
+
+
+Instituto Tecnológico de Buenos Aires
+
+===== PAGINA 52 =====
+
+Monitoring
+Dashboards y métricas
+ Primer paso: Brainstorm de métricas importantes que necesitas monitorear para ver cómo funciona el
+ sistema
+ Una forma de encontrar/deﬁnir estas métricas sería:
+ 1. Qué cosas pueden salir mal?
+ 2. Qué estadísticas/métricas me ayudarían a detectar ese problema
+
+
+ Las métricas son bastante especíﬁcas del problema a resolver así que es un proceso al que debemos
+ dedicar tiempo
+
+
+ No hay problema en empezar con una cantidad elevada de métricas y gradualmente ir quitando las que
+ no nos resulten útiles
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                        52
+
+===== PAGINA 53 =====
+
+Monitoring
+Ejemplos de métricas
+ Métricas de Software:
+                   Memoria, Latencia, Server load…
+
+
+ Métricas de ML performance:
+
+
+ Input metrics: Avg input length/volumen (speech recognition)
+      x               Avg image brightness
+                      Número de missing values
+
+
+ Output metrics: #veces que modelo devuelve null
+      y                  #veces que user repite la búsqueda (no está satisfecho)
+                         #veces que el usuario pasa de usar el speech recognition y usa typing para la misma query
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                   53
+
+===== PAGINA 54 =====
+
+Monitoring
+Tholds para alarmas
+ Otra herramienta que tenemos es utilizar umbrales y alarmas o ﬂags:
+
+
+ Podemos reducir alguna métrica únicamente a un umbral que nos avise si se han cruzado, pero esa
+ métrica no mirarla tanto y centrarnos en otras métricas más informativas para el diagnóstico
+
+
+ Umbral tanto superior como inferior como ambos!
+
+
+ Esos umbrales podrían tener que ser adaptados con el tiempo!
+
+
+ p ej: software load is too high o accuracy of ML is too low
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                     54
+
+===== PAGINA 55 =====
+
+Mantenimiento del Modelo
+Manual: un equipo de ML engineers reentrenan el modelo para solucionar los problemas que estaban
+produciendo ese problema
+-> generalmente este es el método más utilizado
+
+
+Automático: a partir de error análisis, automatizar un reentrenamiento del modelo que ataque las
+debilidades del sistema y los data drifts (obviamente con ﬂags que nos avisen en casos más
+extremos/importantes)
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                     55
+
+===== PAGINA 56 =====
+
+Monitoring pipeline
+Ejemplo de dos sistemas en serie
+
+ A veces tenemos dos sistemas de ML trabajando en serie (un detector de voz primero y luego un reconocimiento de
+ speech).
+ Los cambios en el primero producen cambios en lo que le llega al segundo
+
+
+
+
+ user data (clickstream) -> user proﬁle -> recommender systems -> recommendations
+
+
+
+
+ Si cambia el user data (x), hay un efecto cascada en user proﬁle y por tanto en el recommender system.
+
+
+ Aquí las métricas bien elegidas son aún más importantes para detectar qué está pasando y dónde
+
+
+ Como hemos visto antes: software metrics, input metrics, output metrics y las intermedias entre sistemas
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                                     56
+
+===== PAGINA 57 =====
+
+Métricas a través del tiempo
+
+ ¿Cómo de rápido cambian los valores de las métricas?
+
+
+
+
+ Dos situaciones:
+
+
+ Los datos de usuario suelen cambiar lento, los patrones de compra o de preferencias no suelen cambiar de
+ un dia para otro (excepciones: covid)
+ - suma agregada de decisiones individuales no suele cambiar bruscamente
+
+
+ En algunos aspectos de los negocios, los datos pueden cambiar más rápido, porque las empresas toman
+ decisiones sobre hacer un teléfono u otro, un software u otro, y esto sí que pueden cambiar bruscamente
+
+
+
+
+ Aprendizaje Automático – ©Carlos Bibián, 2026                                                             57
+
+===== PAGINA 58 =====
+
+Reflexión final
+Mensaje principal: Construir un modelo no es lo mismo que crear un producto
+
+
+
+
+Los sistemas de IA reales tienen éxito cuando modelos, datos, infraestructura, deployment, monitoreo y trabajo humano
+se diseñan en conjunto
+
+
+
+
+ML no es solo un conjunto de modelos, sino también todo lo que los rodea!
+

@@ -14,11 +14,12 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 - [Fundamentos del aprendizaje automático](temas/fundamentos.md): definición, paradigmas y estructura general de un proyecto.
 - [Datos y preprocesamiento](temas/datos-y-preprocesamiento.md): tipos de variables, codificación, limpieza, outliers y escalado.
 - [Regresión, complejidad y generalización](temas/regresion-y-generalizacion.md): regresión lineal y polinómica, underfitting y overfitting.
-- [Evaluación y validación](temas/evaluacion-y-validacion.md): train/dev/test, validación cruzada, leakage y métricas de regresión.
+- [Evaluación y validación](temas/evaluacion-y-validacion.md): train/dev/test, validación cruzada (estratificada, por grupos y temporal), leakage y métricas de regresión.
 - [EDA y selección de características](temas/eda-y-seleccion.md): exploración, dimensionalidad y familias de métodos de selección.
 - [Regularización](temas/regularizacion.md): L1, L2 y Elastic Net.
 - [TP1: regresión y evaluación](temas/tp1-regresion.md): mapa de la consigna, entregables y controles conceptuales.
 - [TP2: clasificación supervisada](temas/tp2-clasificacion.md): Bank Marketing, entregables, leakage, métricas y supuestos de Naive Bayes, SVM, KNN y RF.
+- [TP3: optimización de modelos y competencia](temas/tp3-optimizacion.md): reservas GPU, reglas de la competencia, perfil del dataset, columnas con leakage, entregables y predictor.
 
 ### Clasificación
 
@@ -29,10 +30,18 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 - [Árboles de decisión](temas/arboles-de-decision.md): impureza, Gini, entropía, CART, poda e hiperparámetros.
 - [Ensambles y Random Forest](temas/ensambles-random-forest.md): bootstrap, Random Forest, Extra Trees, bagging y stacking.
 - [Máquinas de vectores de soporte (SVM)](temas/svm.md): margen maximal, margen tolerante, kernels, multiclase y One-Class SVM.
+- [Gradient boosting y combinación de modelos](temas/gradient-boosting-y-combinacion.md): gradient boosting, XGBoost, LightGBM, CatBoost, bagging frente a boosting, stacking con predicciones out-of-fold y blending.
 
 ### Métodos basados en vecinos
 
-- [Aprendizaje basado en instancias (kNN)](temas/aprendizaje-basado-en-instancias.md): lazy learning, distancias, elección de `k`, kNN ponderado, KD-Trees, LSH y kNN, árboles y Random Forest como regresores.
+- [Aprendizaje basado en instancias (kNN)](temas/aprendizaje-basado-en-instancias.md): lazy learning, distancias, elección de `k`, kNN ponderado, KD-Trees, LSH, HNSW, FAISS y kNN, árboles y Random Forest como regresores.
+
+### Diagnóstico, datos y producción
+
+- [Diagnóstico de modelos](temas/diagnostico-de-ml.md): fuentes de error, HLP, árbol de diagnóstico, curvas de validación y de aprendizaje, y qué hacer en cada caso.
+- [Diseño centrado en datos y análisis de errores](temas/data-centric-y-analisis-de-errores.md): model-centric frente a data-centric, tags, priorización, data augmentation y buenos datos.
+- [MLOps, despliegue y monitoreo](temas/mlops-y-despliegue.md): ciclo de vida, data y concept drift, patrones de despliegue, función predictora y monitoreo.
+- La validación cruzada estratificada, por grupos y temporal está en [Evaluación y validación](temas/evaluacion-y-validacion.md#validación-cruzada-avanzada).
 
 ## Fuentes incorporadas
 
@@ -49,5 +58,10 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 | T08 | Máquinas de vectores de soporte (SVM) | Margen maximal y tolerante, kernels, `C` y `γ`, multiclase, escalado y One-Class SVM. |
 | T09 | Aprendizaje basado en instancias | Repaso de árboles y RF, kNN, métricas de distancia, kNN ponderado, ANN (KD-Trees, LSH, ANNOY) y kNN, árboles y RF como regresores. |
 | P02 | TP2: Clasificación supervisada | Consigna práctica vigente del ciclo 2026: Bank Marketing con Naive Bayes, SVM, KNN y RF. |
+| T11 | Diagnóstico de ML | Sesgo, varianza y error irreducible, HLP, curvas de aprendizaje, diseño centrado en datos, análisis de errores, data augmentation y validación cruzada estratificada, por grupos y temporal. |
+| T12 | Algoritmos avanzados y MLOps | Reglas de la competencia del TP3, gradient boosting, ANN (HNSW, FAISS), bagging, boosting, stacking y blending, MLOps, despliegue, monitoreo y mantenimiento. |
+| P03 | TP3: Optimización de modelos de Machine Learning | Consigna del ciclo 2026: clasificación de cancelaciones de reservas GPU, análisis de errores, enfoque data-centered, optimización y predictor. |
+| P04 | TP3: anuncio de la competencia (Campus) | Anuncio en HTML de la cátedra: entregables, fechas de submission, Competition Score y premios. El texto buscable está en `material/extraido/P04.txt`. |
+| D04 | GPU Resource Reservations | Dataset de la competencia del TP3, provisto por la cátedra (`material/catedra/datasets/`). |
 
-No existe T05 a propósito: en la fecha de la clase 5 no hubo material teórico nuevo. Los IDs de teoría conservan el número de clase.
+No existe T05 a propósito: en la fecha de la clase 5 no hubo material teórico nuevo. Tampoco existe T10: la clase 11 indica que la sesión anterior fue el TP2 [T11, p. 1] y no se recibió material teórico con número 10. Los IDs de teoría conservan el número de clase.

@@ -109,3 +109,52 @@ Preguntas recuperables por tema. Mantener las respuestas separadas o plegadas cu
 73. ¿Qué supuesto de Naive Bayes se rompe si hay variables muy correlacionadas, y qué efecto puede tener en sus probabilidades? [P02, p. 2] [T06, p. 38]
 74. En una curva de validación de `k` para KNN, ¿dónde esperás sobreajuste y dónde subajuste? [P02, p. 2] [T09, p. 29] [T07, p. 50]
 75. ¿Con qué datos estimás el rendimiento del modelo final en datos nuevos, y por qué no podés usar ese resultado para cambiar de modelo? [P02, p. 2] [T02, p. 88] [T02, p. 89]
+
+## Diagnóstico y diseño centrado en datos
+
+76. Dos modelos tienen el mismo F1. Nombrá cuatro motivos distintos por los que cada uno podría estar limitado. ¿Por qué la métrica final no alcanza para elegir la intervención? [T11, p. 4]
+77. ¿Cuáles son las tres fuentes de error y cuál de ellas no se puede reducir mejorando el modelo? [T11, p. 5]
+78. ¿Para qué sirve el HLP? ¿Por qué es más útil en imágenes o audio que en datos tabulares? [T11, p. 14] [T11, p. 15]
+79. Recorré el árbol de diagnóstico: con rendimiento bajo en validación, ¿qué preguntás primero? Para cada una de las cuatro causas, ¿con qué lo evaluás y qué hacés? [T11, p. 11]
+80. Dibujá las curvas de aprendizaje de un modelo con underfitting y de uno con overfitting. ¿En cuál ayuda conseguir más datos? [T11, p. 21] [T11, p. 22] [T11, p. 23] [T11, p. 24]
+81. ¿Qué acción elegirías para cada diagnóstico: más datos, menos features, más features, combinar features o hiperparámetros más restrictivos? [T11, p. 24]
+82. ¿En qué se diferencian los bucles model-centric y data-centric? ¿Qué condición pone la cátedra para que el data-centric sea más efectivo? [T11, p. 31] [T11, p. 43]
+83. En el análisis de errores, ¿qué te dice el porcentaje de errores con un tag y qué te dice la tasa de error dentro del tag? [T11, p. 34]
+84. Con la tabla de tipos de imagen, ¿cómo se calcula la contribución al gap y por qué las imágenes recortadas, con el mayor gap, no son prioritarias? [T11, p. 35] [T11, p. 39]
+85. ¿Qué tres condiciones deben cumplir los datos aumentados? Dá un ejemplo de augmentation que rompa la etiqueta. [T11, p. 52] [T11, p. 53]
+86. ¿Por qué aumentar todo el dataset antes de la cross-validation produce leakage? ¿Cuál es el orden correcto? [T11, p. 59] [T11, p. 60] [T11, p. 61]
+87. ¿Por qué la augmentation es menos útil en datos tabulares y qué riesgo tiene SMOTE? [T11, p. 56] [T11, p. 63]
+
+## Validación avanzada
+
+88. ¿Qué elige la cross-validation: una frontera de decisión o un modelo? ¿Qué se hace después de elegir? [T11, p. 68]
+89. Enunciá la regla del split de la clase 11. ¿Por qué el uso del modelo define el split? [T11, p. 71] [T11, p. 72]
+90. ¿Qué problema resuelve la k-fold estratificada y cuándo es más importante? [T11, p. 74]
+91. Tenés datos de 5 escuelas y el sistema se usará en escuelas nuevas. ¿Qué validación usás y qué leakage evitás? ¿Qué diferencia hay entre Group K-Fold y LOGO? [T11, p. 76] [T11, p. 78] [T11, p. 79]
+92. ¿Qué condición cumple siempre una validación temporal? ¿Por qué una k-fold aleatoria sobreestimaría el rendimiento si el modelo se usará en el futuro? [T11, p. 81]
+
+## Boosting y combinación de modelos
+
+93. ¿En qué se diferencia el entrenamiento de gradient boosting del de Random Forest? ¿Cuál reduce más el sesgo y cuál la varianza? [T12, p. 4] [T12, p. 6] [T12, p. 20] [T12, p. 21]
+94. Compará XGBoost, LightGBM y CatBoost. ¿Por qué hay que tener cuidado con LightGBM en datasets chicos? [T12, p. 7] [T12, p. 8] [T12, p. 9]
+95. ¿Qué ofrece scikit-learn para boosting y a qué biblioteca se parece `HistGradientBoosting`? [T12, p. 10]
+96. ¿Por qué el meta-modelo del stacking no se entrena con predicciones sobre el training? ¿Qué son las predicciones out-of-fold? [T12, p. 24] [T12, p. 25]
+97. ¿Cómo elegirías los modelos base de un stacking? ¿Qué indica una correlación alta entre sus salidas? [T12, p. 26]
+98. ¿Qué diferencia hay entre stacking y blending según la clase 12? ¿Y según la clase 7? [T12, p. 27] [T07, p. 72]
+
+## MLOps y despliegue
+
+99. ¿Qué es el POC to Production Gap? [T12, p. 34]
+100. Diferenciá data drift y concept drift con un ejemplo de cada uno. [T12, p. 40] [T12, p. 41]
+101. ¿Cuándo usarías shadow mode, canary y blue-green? ¿Qué dos ideas comparten los patrones de despliegue? [T12, p. 44] [T12, p. 45] [T12, p. 46] [T12, p. 47]
+102. Nombrá los cinco grados de automatización. ¿Hay que llegar siempre a la automatización total? [T12, p. 48]
+103. ¿Qué requisitos tiene que cumplir la función `predictor(X)`? ¿Por qué no puede reentrenar ni usar variables del notebook? [T12, p. 49] [T12, p. 50]
+104. Dá ejemplos de métricas de software, de entrada y de salida para monitorear un sistema. ¿Para qué sirven los umbrales con alarmas? [T12, p. 53] [T12, p. 54]
+
+## Aplicación al TP3
+
+105. ¿Qué columnas del CSV del TP3 no deberían usarse para predecir una cancelación antes de la ejecución? ¿Cómo lo comprobás con los datos? [P03, p. 1] [D04]
+106. ¿Qué cohortes pide analizar la consigna y cómo priorizarías una para la estrategia data-centered? [P03, p. 2] [P03, p. 3] [T11, p. 39]
+107. ¿Qué split de validación imita mejor la evaluación de la competencia? ¿Qué información te falta para decidirlo? [T11, p. 72] [T11, p. 82] [P04]
+108. ¿Cómo se calcula el Competition Score y qué condiciones dan la eximición del final? [P04] [T12, p. 2]
+109. Si aplicás SMOTE o un stacking en el TP3, ¿en qué punto del pipeline van para no producir leakage? [T11, p. 60] [T12, p. 25]
