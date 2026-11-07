@@ -107,7 +107,7 @@ Reducir dimensiones baja el costo y además hace más informativo el cálculo de
 
 - estudiar cuánta separabilidad entre clases aporta cada feature y quedarse con las de mayor valor;
 - evaluar la correlación entre features;
-- proyectar a un espacio nuevo con PCA o autoencoders.
+- proyectar a un espacio nuevo con PCA o autoencoders. PCA se desarrolla en [Reducción de dimensionalidad](reduccion-de-dimensionalidad.md). [T14, p. 45]
 
 Ver [EDA y selección de características](eda-y-seleccion.md).
 

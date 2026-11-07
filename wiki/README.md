@@ -43,6 +43,11 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 - [MLOps, despliegue y monitoreo](temas/mlops-y-despliegue.md): ciclo de vida, data y concept drift, patrones de despliegue, función predictora y monitoreo.
 - La validación cruzada estratificada, por grupos y temporal está en [Evaluación y validación](temas/evaluacion-y-validacion.md#validación-cruzada-avanzada).
 
+### Aprendizaje no supervisado
+
+- [Clustering: K-means y DBSCAN](temas/clustering.md): supervisado frente a no supervisado, aplicaciones, familias de métodos, WCSS, inicialización, codo y silhouette, puntos núcleo, frontera y ruido.
+- [Reducción de dimensionalidad: PCA y t-SNE](temas/reduccion-de-dimensionalidad.md): maldición de la dimensionalidad, componentes principales, varianza explicada, perplejidad y cuándo usar cada método.
+
 ## Fuentes incorporadas
 
 | ID | Fuente | Alcance |
@@ -63,5 +68,6 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 | P03 | TP3: Optimización de modelos de Machine Learning | Consigna del ciclo 2026: clasificación de cancelaciones de reservas GPU, análisis de errores, enfoque data-centered, optimización y predictor. |
 | P04 | TP3: anuncio de la competencia (Campus) | Anuncio en HTML de la cátedra: entregables, fechas de submission, Competition Score y premios. El texto buscable está en `material/extraido/P04.txt`. |
 | D04 | GPU Resource Reservations | Dataset de la competencia del TP3, provisto por la cátedra (`material/catedra/datasets/`). |
+| T14 | Aprendizaje no supervisado | Aplicaciones, clustering particional, K-means (WCSS, inicialización, codo y silhouette), DBSCAN, PCA y t-SNE. |
 
-No existe T05 a propósito: en la fecha de la clase 5 no hubo material teórico nuevo. Tampoco existe T10: la clase 11 indica que la sesión anterior fue el TP2 [T11, p. 1] y no se recibió material teórico con número 10. Los IDs de teoría conservan el número de clase.
+No existe T05 a propósito: en la fecha de la clase 5 no hubo material teórico nuevo. Tampoco existe T10: la clase 11 indica que la sesión anterior fue el TP2 [T11, p. 1] y no se recibió material teórico con número 10. Tampoco existe T13: el repaso de la clase 14 remite a temas de las clases 11 y 12 [T14, p. 1] y no se recibió material teórico con número 13. Los IDs de teoría conservan el número de clase.

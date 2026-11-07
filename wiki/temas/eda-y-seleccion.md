@@ -19,6 +19,8 @@ Dos respuestas diferentes:
 
 LDA ofrece una proyección *supervisada*: busca la dirección que maximiza la separación entre clases, mientras que PCA maximiza la varianza total sin usar etiquetas. [T06, p. 27] [T06, p. 28] Ver [GDA y Naive Bayes](gda-y-naive-bayes.md).
 
+La clase 14 desarrolla dos métodos de proyección no supervisados: PCA, lineal y útil como preprocesamiento, y t-SNE, no lineal y pensado para visualizar. [T14, p. 45] [T14, p. 48] [T14, p. 50] Ver [Reducción de dimensionalidad](reduccion-de-dimensionalidad.md).
+
 ## Familias de selección
 
 | Familia | Idea | Ventaja | Límite | Ejemplos |

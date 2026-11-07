@@ -117,3 +117,20 @@ Definiciones breves y enlaces al apunte donde se desarrolla cada término. Toda 
 - **Shadow mode / canary / blue-green:** patrones de despliegue: en paralelo sin decidir, con una fracción chica del tráfico que crece, o repartiendo al azar entre la versión vieja y la nueva. [T12, p. 45] [T12, p. 46] [T12, p. 47]
 - **Rollback:** volver al modelo anterior si el nuevo no funciona como se esperaba. [T12, p. 44]
 - **Human in the loop:** grado de automatización intermedio (asistencia o automatización parcial) en el que una persona sigue participando de la decisión. [T12, p. 48]
+- **Clustering / agrupamiento:** agrupar observaciones sin etiquetas para que las de un mismo cluster sean similares (distancia intra-cluster mínima) y las de clusters distintos no lo sean (distancia inter-cluster máxima). [T14, p. 6] [T14, p. 7] Ver [Clustering](temas/clustering.md).
+- **Reglas de asociación / Apriori:** uso no supervisado que busca reglas del tipo si/entonces; la clase solo lo nombra. [T14, p. 5]
+- **Clustering particional / jerárquico:** el particional divide el espacio y encuentra todos los clusters a la vez; el jerárquico genera clusters anidados. [T14, p. 11]
+- **Centroide:** promedio de los puntos de un cluster; es el prototipo de K-means con atributos continuos. [T14, p. 12] [T14, p. 14]
+- **K-means:** método que particiona `n` observaciones en `k` grupos, con `k` fijado a priori, minimizando la suma de cuadrados dentro de los clusters. [T14, p. 14] [T14, p. 21]
+- **WCSS / variación W(C_k):** suma de cuadrados dentro de los clusters; mide la compacidad del agrupamiento y es el objetivo de K-means. [T14, p. 19] [T14, p. 21]
+- **Método del codo:** elegir `k`, o la cantidad de componentes de PCA, donde la curva de WCSS o de varianza explicada deja de bajar fuerte. [T14, p. 29] [T14, p. 47]
+- **Coeficiente de silhouette:** `s(i) = (b(i) − a(i)) / max(a(i), b(i))`; se usa para elegir `k`. [T14, p. 30] La clase no define `a(i)` ni `b(i)`: por conocimiento general, son la distancia media de `i` a su propio cluster y al cluster vecino más cercano.
+- **DBSCAN:** clustering basado en densidad; agrupa puntos con suficientes vecinos cercanos y marca los aislados como ruido. [T14, p. 35] [T14, p. 36]
+- **`ε` y `minPts`:** hiperparámetros de DBSCAN: el radio de vecindad y la cantidad mínima de vecinos para que un punto sea núcleo. [T14, p. 37]
+- **Punto núcleo / frontera / ruido:** en DBSCAN, el núcleo tiene al menos `minPts` puntos en su radio `ε`; el frontera está en el radio de un núcleo sin serlo; el ruido no está cerca de ningún núcleo. [T14, p. 38]
+- **PCA (análisis de componentes principales):** método lineal y no supervisado que transforma los datos en componentes ortogonales ordenadas por la varianza que explican. [T14, p. 45] Ver [Reducción de dimensionalidad](temas/reduccion-de-dimensionalidad.md).
+- **Varianza explicada / scree plot:** proporción de la varianza total que aporta cada componente principal, y el gráfico que la muestra por componente. [T14, p. 47]
+- **Loading:** peso de cada variable original en una componente principal; vuelve interpretables los resultados de PCA. [T14, p. 48] La definición es conocimiento general.
+- **t-SNE:** método no lineal para visualizar datos de alta dimensión en 2D o 3D, que preserva las vecindades locales. [T14, p. 50]
+- **Divergencia de Kullback-Leibler:** costo que minimiza t-SNE entre la distribución de vecindad original y la proyectada. [T14, p. 50] [T14, p. 51]
+- **Perplejidad:** hiperparámetro de t-SNE que indica, informalmente, cuántos vecinos considera cada punto; los valores típicos van de 5 a 50. [T14, p. 52]

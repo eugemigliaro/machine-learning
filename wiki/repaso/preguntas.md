@@ -158,3 +158,31 @@ Preguntas recuperables por tema. Mantener las respuestas separadas o plegadas cu
 107. ¿Qué split de validación imita mejor la evaluación de la competencia? ¿Qué información te falta para decidirlo? [T11, p. 72] [T11, p. 82] [P04]
 108. ¿Cómo se calcula el Competition Score y qué condiciones dan la eximición del final? [P04] [T12, p. 2]
 109. Si aplicás SMOTE o un stacking en el TP3, ¿en qué punto del pipeline van para no producir leakage? [T11, p. 60] [T12, p. 25]
+
+## Clustering
+
+110. ¿Qué diferencia al aprendizaje no supervisado del supervisado? Nombrá tres aplicaciones y tres usos del no supervisado. [T14, p. 3] [T14, p. 4] [T14, p. 5]
+111. ¿Por qué no hay una única forma correcta de agrupar? Usá el ejemplo de la clase. [T14, p. 8] [T14, p. 9] [T14, p. 10]
+112. Diferenciá clustering particional y jerárquico, y clusters basados en prototipos y en densidad. ¿Qué prototipo se usa con atributos categóricos? [T14, p. 11] [T14, p. 12]
+113. Escribí la función objetivo de K-means. ¿Por qué la versión por pares de `W(C_k)` y la versión por distancia al centroide tienen el mismo minimizador? [T14, p. 15] [T14, p. 19] [T14, p. 21]
+114. Describí los pasos de K-means. ¿Por qué siempre converge y por qué no garantiza el óptimo global? [T14, p. 22] [T14, p. 24]
+115. En la figura de seis inicializaciones, ¿qué valores toma el objetivo y cuál elegirías? ¿Cómo se mitiga la dependencia de la inicialización? [T14, p. 26] [T14, p. 27]
+116. ¿Por qué no se puede elegir `k` minimizando la WCSS? Explicá el método del codo y el coeficiente de silhouette. [T14, p. 28] [T14, p. 29] [T14, p. 30]
+117. En el ejemplo de las medias lunas, K-means tiene mayor silhouette que DBSCAN. ¿Cuál agrupa mejor y qué dice eso del silhouette? [T14, p. 31]
+118. Nombrá ventajas y desventajas de K-means. ¿Por qué es sensible a outliers y por qué conviene escalar las variables? [T14, p. 32] [T09, p. 32]
+119. ¿Cómo se usa K-means para comprimir una imagen? [T14, p. 33]
+120. Definí `ε`, `minPts` y los tres tipos de puntos de DBSCAN. [T14, p. 37] [T14, p. 38]
+121. Recorré el algoritmo de DBSCAN. ¿Por qué un punto marcado como ruido lo es solo "por ahora"? [T14, p. 39]
+122. Compará K-means y DBSCAN en hiperparámetros, forma de los clusters, outliers y densidades distintas. [T14, p. 31] [T14, p. 32] [T14, p. 41]
+
+## Reducción de dimensionalidad
+
+123. ¿Qué problemas trae la alta dimensionalidad? ¿Cuáles son los dos objetivos de reducirla? [T14, p. 44]
+124. Enumerá las propiedades y los pasos de PCA. ¿Por qué hay que estandarizar primero? [T14, p. 45] [T14, p. 46] [T14, p. 48]
+125. ¿Cómo elegís la cantidad de componentes? Con el scree plot de la clase, ¿cuántas hacen falta para explicar el 90 % de la varianza? [T14, p. 47]
+126. PCA figura como interpretable y como difícil de interpretar. ¿Cómo se concilian las dos afirmaciones? [T14, p. 47] [T14, p. 48]
+127. Si usás PCA antes de un clasificador, ¿dónde lo ajustás para evitar leakage? [T14, p. 48]
+128. Compará PCA y LDA como proyecciones. [T14, p. 45] [T06, p. 27] [T06, p. 28]
+129. Explicá los tres pasos de t-SNE. ¿Qué distribución usa en cada espacio y qué costo minimiza? [T14, p. 50] [T14, p. 51]
+130. ¿Qué controla la perplejidad y qué pasa con valores bajos y altos? ¿Qué no se puede interpretar en un gráfico de t-SNE? [T14, p. 52]
+131. ¿Por qué en MNIST t-SNE separa los dígitos y PCA a 2D no? ¿Usarías t-SNE como preprocesamiento de un modelo? [T14, p. 53] [T14, p. 54] [T14, p. 50]

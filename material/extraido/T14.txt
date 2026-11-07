@@ -1,0 +1,725 @@
+FUENTE: T14
+TITULO: Aprendizaje no supervisado
+ORIGINAL: material/catedra/teoria/Clase 14. Aprendizaje No Supervisado.pptx (2).pdf
+PAGINAS: 54
+
+===== PAGINA 1 =====
+
+72.75: Aprendizaje Automático (Machine Learning)
+Aprendizaje No Supervisado
+Horario: Miércoles 18-21h- virtual sincrónico
+
+
+Profesorado de la asignatura:
+Carlos Bibián Nogueras, PhD | cbibian@itba.edu.ar
+Francisco Sammartino, Ing. | frperez@itba.edu.ar
+
+
+
+
+                                      Plan de la sesión de hoy
+en sesión anterior…                    - Introducción a aprendizaje no supervisado
+                                       - K-means (k medias)
+                                       - DBSCAN
+-   Model vs Data-centric Design
+-   Aprendizaje avanzado y MLops      - Reducción de Dimensionalidad (PCA y t-SNE)
+-
+
+===== PAGINA 2 =====
+
+Aprendizaje No Supervisado
+
+
+
+Francisco Pérez Sammartino,
+frperez@itba.edu.ar
+
+
+
+
+Instituto Tecnológico de Buenos Aires
+Centro de Inteligencia Computacional
+
+
+
+
+                                        2
+
+===== PAGINA 3 =====
+
+Aprendizaje Supervisado vs. No Supervisado
+
+Supervisado: Modelos de predicción basados en la variable Respuesta conocida.
+
+
+No supervisado: Modelos de predicción cuando la variable Respuesta es
+desconocida, se basa en relaciones entre variables observadas sin datos anotados.
+
+===== PAGINA 4 =====
+
+Métodos No Supervisados - Aplicaciones
+
+ ●   Segmentación de usuarios
+     ○   ej.: usuarios en compras online para
+         campañas de marketing.
+ ●   Sistemas de recomendación
+     ○   ej.:Plataformas de streaming.
+ ●   Detección de anomalías
+
+===== PAGINA 5 =====
+
+Métodos No Supervisados
+
+Algunos usos comunes de aprendizaje no supervisado son:
+
+
+                                                      Reglas del tipo
+
+                                                      si/entonces
+
+
+                                                       Asociación
+
+
+                                                       Algoritmo Apriori
+
+===== PAGINA 6 =====
+
+Clustering o Agrupamiento
+Se agrupan las observaciones de acuerdo a algún criterio con el objetivo de
+encontrar subgrupos (clusters) en los datos.
+
+
+
+
+¿Que hacen?
+Agrupan objetos en clusters de forma tal que el
+grado de asociación o similitud entre miembros
+del mismo cluster sea lo más fuerte posible
+
+===== PAGINA 7 =====
+
+        Clustering o Agrupamiento
+        Se agrupan las observaciones de acuerdo a algún criterio con el objetivo de
+        encontrar subgrupos (clusters) en los datos.
+
+
+
+        Minimizar distancia intra-cluster                 Maximizar distancia inter-cluster
+
+
+
+
+Observaciones dentro de un cluster similares
+Observaciones entre clusters no similares
+
+===== PAGINA 8 =====
+
+Clustering - Agrupación los datos
+
+
+
+
+         Niños                 Adultos
+
+===== PAGINA 9 =====
+
+Clustering - Agrupación los datos
+
+
+
+
+          No van a la primaria   Van a la primaria
+
+===== PAGINA 10 =====
+
+Clustering - Agrupación los datos
+
+
+
+
+  No hay una única forma de agrupar los datos, la mejor elección de
+  grupos depende de cuál sea nuestro objetivo.
+
+===== PAGINA 11 =====
+
+Clustering - Métodos
+Hay muchos métodos de clusterización y distintos criterios de división.
+
+
+                                             Partición                   Jerárquico
+
+
+
+
+                                         -particiona el espacio     -genera una jerarquía
+                                         -encuentra todos los       de clusters anidados
+                                         clusters simultáneamente
+
+===== PAGINA 12 =====
+
+Cluster basados en prototipos
+
+Un cluster es un conjunto de objetos en el cual cada objeto está
+más cerca (o es más similar) al prototipo que deﬁne al cluster que
+al prototipo que deﬁne cualquier otro cluster.
+
+
+●   Atributos continuos: el prototipo de un cluster puede ser el
+    centroide.
+●   Atributos categóricos: el prototipo es el objeto más representativo
+    del cluster.
+
+===== PAGINA 13 =====
+
+K-means
+
+
+
+          13
+
+===== PAGINA 14 =====
+
+¿Qué es la agrupación de k-medias?
+
+Tiene como objetivo generar una partición de un conjunto de n observaciones en k
+grupos. Cada grupo está representado por el promedio de los puntos que lo
+componen, denominado centroide.
+
+
+
+
+                                El valor de k representa el número de clusters
+                                o grupos en los que se dividirán los datos, es un
+                                parámetro que se debe ﬁjar a priori.
+
+===== PAGINA 15 =====
+
+Algoritmo K-medias
+Dado un conjunto de observaciones {x1, x2, . . . xn}, donde xi ∈ Rp .
+El algoritmo K-medias construye una partición de las observaciones en K
+conjuntos (K≤n) que minimiza la distancia de los elementos dentro de cada
+grupo: S = {S1,S2,...,Sk}
+
+
+
+
+donde 𝜇i es la media o centroide de puntos en Si
+
+===== PAGINA 16 =====
+
+Algoritmo K-medias
+
+Agrupa el conjunto de datos en K conjuntos no solapados:
+● Deﬁnir K
+● n observaciones
+● p variables
+● {C1,C2,...,Ck} son los conjuntos donde están los índices de las observaciones tal que
+     ○   Cada observación pertenece a uno de los K conjuntos
+
+
+     ○   Estos conjuntos representan la partición de las observaciones
+
+===== PAGINA 17 =====
+
+¿Se usó k-means?
+
+si es una partición
+
+
+
+
+                      no es una partición
+
+===== PAGINA 18 =====
+
+La idea de K-medias
+
+Un buen agrupamiento es aquel que la variación dentro de un mismo cluster
+es pequeña.
+
+
+
+
+Pero...
+¿Cómo medimos la variación?
+
+
+
+
+                                      Baja variación dentro de un mismo cluster
+
+===== PAGINA 19 =====
+
+Medida la variación W
+La idea es establecer los clústeres de manera que se minimice la variabilidad
+dentro de cada clúster. Esta se mide como la suma de las distancias euclidianas
+al cuadrado entre los elementos y su respectivo centroide.
+
+
+
+
+●   |Ck | el número de elementos de la clase k.
+●   p es la cantidad de variables.
+
+===== PAGINA 20 =====
+
+WSSC (Within-Cluster Sum of Squares)
+
+
+Donde:
+● Ck representa el cluster k
+● ∣Ck∣ es la cantidad de puntos de datos en el cluster Ck
+
+● La primera sumatoria, ∑        , recorre todos los pares de puntos i y j dentro del cluster Ck
+                         i,j ∈ Ck
+                         p
+● La segunda sumatoria, ∑     , recorre todas las dimensiones l (siendo p el número de
+                          i= 1
+   dimensiones de los datos).
+● xil y xjl son las coordenadas en la dimensión l para los puntos iy j, respectivamente
+
+===== PAGINA 21 =====
+
+Medida la variación W
+
+Queremos minimizar la variación total dentro del cluster:
+
+
+
+
+                                                                 distancia euclídea al
+                                                               cuadrado es lo más usual
+
+
+La suma total de cuadrados dentro del cluster mide la compacidad de la
+agrupación y queremos que sea lo más pequeña posible.
+K-means es un algoritmo de optimización de esta función objetivo
+
+===== PAGINA 22 =====
+
+El Algoritmo - Paso a Paso
+Dado K
+1.   Asignar aleatoriamente un número de 1 a K a cada una de las observaciones
+2.   Realizar los siguientes pasos hasta que la asignación de clusters se mantenga
+     estable de una iteración a otra.
+     a.   Para cada clase i, calcular el centroide ci= (ci1,ci2, , cip) donde
+
+
+
+
+     b.   Asignar cada observación al cluster cuyo centroide está más cerca en
+          distancia euclídea
+
+===== PAGINA 23 =====
+
+El Algoritmo
+
+
+1.1.
+  1. Inicialización
+      Inicialización
+      Inicialización
+      Inicialización
+
+2.
+2.
+ 2. Asignación
+    Asignación
+    Asignación
+
+3.3. Actualizar
+     Actualizar
+      Actualizar
+
+4.4.
+ 4. Repetir
+     Repetir
+     Repetir
+
+
+
+
+                       23
+
+===== PAGINA 24 =====
+
+El Algoritmo
+
+Observaciones:
+●   Cuando de un paso a otro no hay modiﬁcaciones, signiﬁca que se
+    está en presencia de un mínimo local.
+●   El método modiﬁca la clasiﬁcación si existe una mejoría, por lo
+    tanto siempre converge a una clasiﬁcación mejorada.
+
+===== PAGINA 25 =====
+
+K-means: Gif
+
+===== PAGINA 26 =====
+
+El Algoritmo
+
+Inconveniente
+El resultado ﬁnal de la clasiﬁcación depende fuertemente de la asignación
+de clases que se haya utilizado en el primer paso del algoritmo.
+
+                                           distancia euclídea al
+                                           cuadrado - lo más usual
+
+
+
+
+ Distintas inicializaciones del mismo modelo con los mismos datos
+
+===== PAGINA 27 =====
+
+El Algoritmo
+
+Para solucionarlo
+●   Aplicar el método varias veces.
+●   Elegir agrupamiento que minimiza
+
+===== PAGINA 28 =====
+
+K-means: Elección de k
+
+Al aumentar K, disminuye la variabilidad dentro de los clústeres, pero también se
+corre el riesgo de segmentar en exceso los datos. Por esto, es importante elegir k
+de manera de encontrar un equilibrio para obtener una segmentación útil y
+representativa sin caer en el extremo de la sobre segmentación..
+
+===== PAGINA 29 =====
+
+Método del codo
+
+                  Para determinar el número
+                  óptimo de clusters,
+                  encuentra el "codo" donde
+                  la disminución de
+                  variabilidad se estabiliza.
+
+
+
+
+                                           29
+
+===== PAGINA 30 =====
+
+K-means: Elección de k
+No es trivial elegir k en la mayoría de los dataset reales y no existe algún método que
+funcione siempre.
+       “Método del codo”                                   “coeﬁciente de Silhouette”
+
+===== PAGINA 31 =====
+
+Limitaciones
+K-Means asume clústeres con forma esférica y densidad uniforme, lo que puede
+llevar a tener diﬁcultades para identiﬁcar adecuadamente estos grupos con
+densidades diferentes en diferentes partes de la media luna.
+
+
+
+
+                                                                               31
+
+===== PAGINA 32 =====
+
+ K-means: Pros y Cons
+
+
++ Simple y Fácil de implementar
++ Orden del algoritmo es lineal
+
+- Depende de la inicialización
+- Tiende a caer en un mínimo local
+- Sensible a outliers
+- Los clusters tienen que tener forma esférica
+- No se puede aplicar a data categórica
+
+===== PAGINA 33 =====
+
+Usos de K-medias
+
+Reducir el tamaño del archivo de una imagen sin reducir signiﬁcativamente su calidad.
+
+
+
+
+                   Reduciendo de 16,77 millones de colores a 16 colores
+
+===== PAGINA 34 =====
+
+Usos de K-medias
+
+
+
+
+                   34
+
+===== PAGINA 35 =====
+
+     DBSCAN
+  Density-Based Spatial
+Clustering of Applications
+        with Noise
+
+
+
+                             35
+
+===== PAGINA 36 =====
+
+¿Qué es la agrupación de DBSCAN?
+
+Tiene como objetivo agrupar puntos en función de su densidad local. Los puntos que
+tienen suﬁcientes vecinos cercanos forman un grupo, mientras que los que están
+aislados se consideran ruido o anomalías.
+
+===== PAGINA 37 =====
+
+   Algoritmo DBSCAN - Hiper parámetros
+
+● ε (epsilon): radio de vecindad — deﬁne
+  qué tan cerca deben estar dos puntos
+  para considerarse vecinos.
+
+● minPts: número mínimo de vecinos
+  dentro del radio ε para que un punto
+  sea considerado un punto núcleo
+  (core point).
+
+===== PAGINA 38 =====
+
+   Algoritmo DBSCAN - Tipos de Puntos
+
+● Punto núcleo: tiene al menos minPts puntos
+  (incluyéndose a sí mismo) dentro del radio ε.
+
+● Punto alcanzable (border point): está dentro
+  del radio ε de un punto núcleo, pero no tiene
+  suﬁcientes vecinos para ser núcleo.
+
+● Punto ruido: no pertenece a ningún grupo ni
+  está cerca de un punto núcleo.
+
+===== PAGINA 39 =====
+
+    Algoritmo DBSCAN - Paso a Paso
+● Inicialización:
+                                                        ●    Expansión del cluster:
+        ○    Marcar todos los puntos como no
+                                                               ○  Agregar todos los vecinos de p (los
+             visitados.
+                                                                  llamamos q) al cluster formado.
+        ○    Crear una lista vacía de clusters.
+                                                               ○  Para cada punto vecino q:
+● Selección del punto:
+                                                                     ■   Si q no fue visitado, marcarlo como
+        ○    Elegir un punto p no visitado y marcarlo
+                                                                         visitado.
+             como visitado.
+                                                                     ■   Si q tiene al menos minPts vecinos,
+● Búsqueda de vecinos:
+                                                                         agregar esos vecinos al conjunto
+        ○    Encontrar todos los puntos dentro del
+                                                                         del cluster (de forma recursiva).
+             radio ε de p.
+                                                                     ■   Si q no tiene menos de minPts
+        ○    Si el número de vecinos < minPts, marcar
+                                                                         vecinos se marca como punto
+             p como ruido (por ahora)
+                                                                         frontera y detiene la expansión.
+        ○    Si el número de vecinos ≥ minPts, crear
+             un nuevo cluster con p.
+                                                        ● Repetir:
+                                                             ○     Continuar hasta que todos los puntos
+                                                                   hayan sido visitados.
+
+===== PAGINA 40 =====
+
+Algoritmo DBSCAN - Una imagen vale más que
+1000 palabras
+
+===== PAGINA 41 =====
+
+     Algoritmo DBSCAN - Conclusiones
+Ventajas:
+ ●   No requiere número de grupos como hiperparámetro.
+ ●   Identiﬁca outliers.
+ ●   Identiﬁca clusters con formas variadas
+
+
+Desventajas:
+ ●   La deﬁnición de ε (epsilon) y minPts
+ ●   No es resistente a grupos con distintas densidades.
+ ●   Menos eﬁciente en datasets grandes o de alta dimensionalidad.
+
+===== PAGINA 42 =====
+
+Preguntas…
+
+===== PAGINA 43 =====
+
+Reducción de
+Dimensionalidad
+PCA y t-SNE
+
+===== PAGINA 44 =====
+
+Reducción de Dimensionalidad
+¿Por qué reducir dimensiones?
+
+En datasets reales los datos tienen muchas variables (features):
+
+● Maldición de la dimensionalidad: a mayor dimensión, el espacio crece
+exponencialmente y los puntos se vuelven escasos.
+● Ruido y redundancia: muchas variables correlacionadas no agregan información real.
+● Costo computacional: más dimensiones → más tiempo de entrenamiento
+● Diﬁcultad de visualización: los humanos solo podemos visualizar 2D o 3D.
+
+Dos objetivos distintos: comprimir y visualizar datos.
+
+===== PAGINA 45 =====
+
+PCA — Análisis de Componentes Principales
+¿Qué es PCA?
+
+PCA es un método lineal de reducción de dimensionalidad que transforma los datos
+originales en un nuevo conjunto de variables llamadas componentes principales,
+ordenadas por la cantidad de varianza que explican.
+
+Propiedades clave:
+ ✦ Las componentes son ortogonales entre sí (no están correlacionadas).
+ ✦ La primera componente captura la mayor varianza posible.
+ ✦ Cada componente siguiente captura la mayor varianza restante.
+ ✦ Es un método no supervisado: no usa etiquetas.
+
+===== PAGINA 46 =====
+
+PCA — Idea Geométrica
+Intuición geométrica
+
+PCA busca los ejes (componentes) en los que los datos tienen mayor dispersión
+(varianza). Proyectar sobre esos ejes conserva la mayor cantidad de información posible.
+
+Pasos del algoritmo:
+1. Estandarizar los datos
+2. Calcular la matriz de covarianza.
+3. Obtener los autovectores y autovalores de la covarianza.
+4. Ordenar los autovectores por autovalor descendente → componentes principales.
+5. Proyectar los datos sobre las primeras k componentes.
+                                                          El resultado es un cambio de base:
+                                                          de p variables originales a k
+                                                          componentes (k ≤ p).
+
+===== PAGINA 47 =====
+
+      PCA — Varianza Explicada
+¿Cuántas componentes elegir?
+
+Cada componente principal tiene asociada una
+proporción de la varianza total de los datos,
+llamada varianza explicada.
+
+Criterios comunes:
+  ● Umbral de varianza acumulada: elegir k tal que
+las primeras k componentes expliquen el x % de la
+varianza.
+  ● Gráﬁco de codo (scree plot): graﬁcar varianza
+explicada por componente y encontrar el "codo" —
+análogo al método del codo en K-means.
+
+Nota: no existe un criterio universal — la elección
+depende del problema y del objetivo.
+
+===== PAGINA 48 =====
+
+ PCA — Pros y Cons
++ Ventajas                                 - Limitaciones
++ Reduce dimensionalidad manteniendo la    - Solo captura relaciones lineales.
+mayor varianza posible.                    - Las componentes pueden ser difíciles de
++ Elimina correlaciones entre variables.   interpretar.
++ Útil como preprocesamiento para otros    - Sensible a la escala de las variables
+algoritmos de ML.                          (requiere estandarización).
++ Resultados interpretables (loading de    - No preserva estructuras no lineales
+variables).                                (clusters curvos, etc.).
++ Computacionalmente eﬁciente.
+
+===== PAGINA 49 =====
+
+t-SNE
+t-distributed Stochastic Neighbor Embedding
+
+===== PAGINA 50 =====
+
+t-SNE — ¿Qué es?
+¿Qué problema resuelve?
+
+t-SNE es un método no lineal diseñado especíﬁcamente para explorar y visualizar
+datos de alta dimensión en 2D o 3D.
+
+Idea central:
+ t-SNE preserva las relaciones de vecindad local: puntos que eran cercanos en el espacio
+original tienden a quedar cercanos en la proyección 2D.
+
+
+
+
+                                     Divergencia                  Dimensión resultante
+Dimensión original
+                                     Kullback-Leibler             (t-student)
+(gaussiana)
+
+===== PAGINA 51 =====
+
+      t-SNE — Cómo funciona
+Algoritmo
+
+ Paso 1: Para cada par de puntos en el espacio
+original, calcular una probabilidad de que sean
+"vecinos" usando una distribución gaussiana.
+Puntos cercanos → probabilidad alta.
+
+ Paso 2: En el espacio de baja dimensión (2D),
+inicializar los puntos aleatoriamente y calcular
+probabilidades de vecindad usando una
+distribución t de Student .
+
+  Paso 3: Optimizar iterativamente la posición de
+los puntos en 2D para que las distribuciones de
+vecindad se parezcan lo más posible (minimiza
+KL-divergence).
+.
+
+===== PAGINA 52 =====
+
+t-SNE — Hiperparámetro: Perplejidad
+Perplejidad (perplexity)
+
+La perplejidad controla el balance entre estructura local y global. Informalmente, indica
+cuántos vecinos cercanos considera cada punto al calcular sus probabilidades de
+vecindad.
+
+Valores típicos: entre 5 y 50 (default = 30).
+
+ ● Perplejidad baja (5–10): captura estructuras muy locales; puede fragmentar clusters reales.
+ ● Perplejidad media (30): balance recomendado para la mayoría de los datasets.
+ ● Perplejidad alta (50+): captura más estructura global; clusters pueden solaparse más.
+
+⚠ Las distancias ENTRE clusters en un plot de t-SNE NO son interpretables. Solo es
+signiﬁcativa la cohesión interna de cada grupo.
+
+===== PAGINA 53 =====
+
+t-SNE — MNIST
+
+Dataset MNIST
+
+Resultado de aplicar t-SNE al dataset de
+números de MNIST
+
+===== PAGINA 54 =====
+
+PCA vs t-SNE — Comparación
+
