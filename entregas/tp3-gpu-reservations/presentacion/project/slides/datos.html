@@ -1,0 +1,30 @@
+<section id="datos" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:Inter, Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#1F5FAE">Datos</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">Dos hallazgos de los datos definieron el diseño</h2>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:20px;background:#FDFCF9;padding:32px 40px;border:1px solid #DEDBD2;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.2;color:#1B2430">Columnas con leakage</h3>
+<p style="font-size:28px;line-height:1.35;color:#4A5568">execution_status es el objetivo con otro nombre, y execution_status_date cae 90 días antes en las canceladas.</p>
+<p style="font-size:28px;line-height:1.35;color:#4A5568">assigned_gpu_type y queue_wait_time se conocen recién al asignar los recursos.</p>
+<p style="font-size:28px;line-height:1.35;font-weight:600;color:#1B2430">Se excluyen las cuatro. Medido una vez: las dos últimas inflarían la AUC en 0,0014.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFCF9;padding:32px 40px;border:1px solid #DEDBD2;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.2;color:#1B2430">Reservas en lote</h3>
+<p style="font-size:28px;line-height:1.35;color:#4A5568">El 41 % de las filas está en 3.499 grupos de filas idénticas. Tasa de cancelación según el tamaño del grupo:</p>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">única</p><div style="width:112px;height:26px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">28 %</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">2</p><div style="width:143px;height:26px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">36 %</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">3 a 5</p><div style="width:151px;height:26px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">38 %</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">6 a 10</p><div style="width:202px;height:26px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">51 %</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">11 a 50</p><div style="width:296px;height:26px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">74 %</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">más de 50</p><div style="width:378px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">95 %</p></div>
+</div>
+<p style="font-size:28px;line-height:1.35;font-weight:600;color:#1B2430">Son reservas reales: se conservan y se controlan con validación agrupada.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">Test: 20 % estratificado (9.569 filas), reservado antes del EDA · notebook, secciones 1 y 2</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">2 / 13</p>
+<aside>Leakage: execution_status es el objetivo con otro nombre; la GPU asignada y la espera en cola se conocen recién al ejecutar. Las sacamos; dejarlas solo sumaba 0,0014 de AUC. Lotes: el 41 % de las filas son copias exactas de otras, y los grupos grandes se cancelan casi siempre. No son errores de carga: se quedan, pero obligan a validar distinto.</aside>
+</section>

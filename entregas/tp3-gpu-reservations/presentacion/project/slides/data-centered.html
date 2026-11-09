@@ -1,0 +1,25 @@
+<section id="data-centered" data-transition="fade" style="background:#EFEDE6;color:#1B2430;font-family:Inter, Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#1F5FAE">Enfoque data-centered</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">Intervenir en la región: le falta información sobre quién reserva</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="width:640px;display:flex;flex-direction:column;gap:16px;background:#FDFCF9;padding:32px;border:1px solid #DEDBD2;border-radius:16px">
+<p style="font-size:28px;font-weight:600;color:#1B2430">Por qué esta cohorte</p>
+<p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Frecuencia:</b> 15.855 reservas, el 41 % de desarrollo.</p>
+<p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Margen:</b> 21,4 % de error, contra 4,6 % en el resto.</p>
+<p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Impacto:</b> cada punto menos de error suma 0,41 puntos de accuracy global.</p>
+<p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Importancia:</b> el error no depende de lotes (21,5 % con validación agrupada).</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px">
+<p style="font-size:28px;font-weight:600;color:#1B2430">Datos a incorporar, por prioridad</p>
+<div style="display:flex;gap:24px"><p style="width:40px;font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.1;color:#1F5FAE">1</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#1B2430">Historial del cliente final</p><p style="font-size:24px;line-height:1.35;color:#4A5568">Con historial, la AUC de las reservas únicas sube de 0,876 a 0,916.</p></div></div>
+<div style="display:flex;gap:24px"><p style="width:40px;font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.1;color:#1F5FAE">2</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#1B2430">Identificador de lote</p><p style="font-size:24px;line-height:1.35;color:#4A5568">Hoy el lote solo se infiere de filas idénticas; la tasa va de 28 % a 95 %.</p></div></div>
+<div style="display:flex;gap:24px"><p style="width:40px;font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.1;color:#1F5FAE">3</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#1B2430">Actividad entre la reserva y la ejecución</p><p style="font-size:24px;line-height:1.35;color:#4A5568">Con modificaciones se cancela el 17,5 %; sin ellas, el 45,3 %. Solo la anterior al momento de predecir.</p></div></div>
+<div style="display:flex;gap:24px"><p style="width:40px;font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.1;color:#1F5FAE">4</p><div style="flex:1;display:flex;flex-direction:column;gap:4px"><p style="font-size:28px;font-weight:600;color:#1B2430">Condiciones comerciales</p><p style="font-size:24px;line-height:1.35;color:#4A5568">La región es 99,96 % no_commitment: falta el detalle del contrato.</p></div></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">Descartado: más filas del mismo tipo, SMOTE, un modelo aparte · notebook, secciones 9 y 10</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">8 / 13</p>
+<aside>Elegimos esta cohorte con los criterios de la clase 11: frecuencia, margen, impacto e importancia. Como el problema es falta de información, proponemos registrar datos nuevos, no conseguir más filas. Primero el historial del cliente: cuando una reserva única lo trae, la AUC sube de 0,876 a 0,916. Después un identificador de lote, la actividad previa a la ejecución con fecha para no meter leakage, y las condiciones comerciales.</aside>
+</section>

@@ -1,0 +1,46 @@
+<section id="curvas" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:Inter, Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#1F5FAE">Curvas de aprendizaje</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">Con el doble de filas, la AUC agrupada sube 0,004: faltan variables, no filas</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="position:relative;width:1040px;height:500px">
+<svg aria-label="AUC de validación del baseline según las filas de entrenamiento: la validación aleatoria pasa de 0,928 a 0,956 y la agrupada de 0,919 a 0,937" width="1040" height="500" viewBox="0 0 1040 500">
+<line x1="90" y1="20" x2="820" y2="20" stroke="#DEDBD2" stroke-width="1.5"/>
+<line x1="90" y1="100" x2="820" y2="100" stroke="#DEDBD2" stroke-width="1.5"/>
+<line x1="90" y1="180" x2="820" y2="180" stroke="#DEDBD2" stroke-width="1.5"/>
+<line x1="90" y1="260" x2="820" y2="260" stroke="#DEDBD2" stroke-width="1.5"/>
+<line x1="90" y1="340" x2="820" y2="340" stroke="#DEDBD2" stroke-width="1.5"/>
+<line x1="90" y1="420" x2="820" y2="420" stroke="#9A968C" stroke-width="2"/>
+<polyline points="163,280 272.5,183.2 455,112.8 637.5,76 820,56" fill="none" stroke="#9A968C" stroke-width="4"/>
+<polyline points="163,351.2 272.5,272 455,232.8 637.5,212.8 820,201.6" fill="none" stroke="#2A78D6" stroke-width="5"/>
+<circle cx="163" cy="280" r="7" fill="#9A968C"/><circle cx="272.5" cy="183.2" r="7" fill="#9A968C"/><circle cx="455" cy="112.8" r="7" fill="#9A968C"/><circle cx="637.5" cy="76" r="7" fill="#9A968C"/><circle cx="820" cy="56" r="7" fill="#9A968C"/>
+<circle cx="163" cy="351.2" r="8" fill="#2A78D6"/><circle cx="272.5" cy="272" r="8" fill="#2A78D6"/><circle cx="455" cy="232.8" r="8" fill="#2A78D6"/><circle cx="637.5" cy="212.8" r="8" fill="#2A78D6"/><circle cx="820" cy="201.6" r="8" fill="#2A78D6"/>
+</svg>
+<p style="position:absolute;left:0px;top:3px;width:76px;font-size:24px;text-align:right;color:#6A6F78">0,96</p>
+<p style="position:absolute;left:0px;top:83px;width:76px;font-size:24px;text-align:right;color:#6A6F78">0,95</p>
+<p style="position:absolute;left:0px;top:163px;width:76px;font-size:24px;text-align:right;color:#6A6F78">0,94</p>
+<p style="position:absolute;left:0px;top:243px;width:76px;font-size:24px;text-align:right;color:#6A6F78">0,93</p>
+<p style="position:absolute;left:0px;top:323px;width:76px;font-size:24px;text-align:right;color:#6A6F78">0,92</p>
+<p style="position:absolute;left:0px;top:403px;width:76px;font-size:24px;text-align:right;color:#6A6F78">0,91</p>
+<p style="position:absolute;left:103px;top:430px;width:120px;font-size:24px;text-align:center;color:#6A6F78">3.062</p>
+<p style="position:absolute;left:212px;top:430px;width:120px;font-size:24px;text-align:center;color:#6A6F78">7.654</p>
+<p style="position:absolute;left:395px;top:430px;width:120px;font-size:24px;text-align:center;color:#6A6F78">15.309</p>
+<p style="position:absolute;left:577px;top:430px;width:120px;font-size:24px;text-align:center;color:#6A6F78">22.964</p>
+<p style="position:absolute;left:760px;top:430px;width:120px;font-size:24px;text-align:center;color:#6A6F78">30.618</p>
+<p style="position:absolute;left:90px;top:466px;width:730px;font-size:24px;text-align:center;color:#6A6F78">filas de entrenamiento por fold</p>
+<p style="position:absolute;left:840px;top:38px;width:200px;font-size:24px;line-height:1.3;color:#4A5568">aleatoria<br>0,956</p>
+<p style="position:absolute;left:840px;top:184px;width:200px;font-size:24px;line-height:1.3;font-weight:600;color:#1F5FAE">agrupada<br>0,937</p>
+<p style="position:absolute;left:520px;top:250px;width:300px;font-size:24px;font-weight:600;color:#1F5FAE">+0,004 al duplicar</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:28px">
+<p style="font-size:28px;line-height:1.35;color:#4A5568"><b>Entrenamiento:</b> AUC cercana a 1 con cualquier cantidad de filas. No falta capacidad.</p>
+<p style="font-size:28px;line-height:1.35;color:#4A5568"><b>Región elegida:</b> la accuracy pasa de 0,784 a 0,786 entre la mitad y el total de las filas.</p>
+<p style="font-size:28px;line-height:1.35;color:#4A5568"><b>La aleatoria sube más</b> porque con más filas hay más copias de las de validación.</p>
+<p style="font-size:28px;line-height:1.35;font-weight:600;color:#1B2430">Diagnóstico: el sistema está limitado por la información de las variables.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">Baseline con fracciones de cada fold de entrenamiento · notebook, secciones 8 y 9.2</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">7 / 13</p>
+<aside>Entrenamos el baseline con fracciones de cada fold. En entrenamiento la AUC es casi 1 siempre: no le falta capacidad. Con reservas nuevas, la validación agrupada sube rápido y después se aplana: duplicar de 15.300 a 30.600 filas sumó 0,004. En la región elegida, la accuracy casi no se mueve. Conclusión: más filas del mismo tipo ayudan poco; hace falta otra información.</aside>
+</section>

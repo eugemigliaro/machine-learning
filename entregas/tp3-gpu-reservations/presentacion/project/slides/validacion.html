@@ -1,0 +1,28 @@
+<section id="validacion" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:Inter, Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#1F5FAE">Validación y métricas</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">Dos validaciones: una imita la competencia y otra mide reservas nuevas</h2>
+</div>
+<div style="display:flex;flex-direction:column;gap:32px">
+<div style="display:flex;gap:32px">
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFCF9;padding:32px 40px;border:1px solid #DEDBD2;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.2;color:#1B2430">Aleatoria · <span style="color:#1F5FAE">principal</span></h3>
+<p style="font-size:28px;line-height:1.35;color:#4A5568">Filas al azar: las copias de un lote pueden quedar en entrenamiento y en validación.</p>
+<p style="font-size:28px;line-height:1.35;color:#4A5568"><b>Estima:</b> filas del mismo conjunto de reservas, el supuesto para el Model Score.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFCF9;padding:32px 40px;border:1px solid #DEDBD2;border-radius:16px">
+<h3 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;line-height:1.2;color:#1B2430">Agrupada · control</h3>
+<p style="font-size:28px;line-height:1.35;color:#4A5568">Cada grupo de filas idénticas queda entero en un solo fold.</p>
+<p style="font-size:28px;line-height:1.35;color:#4A5568"><b>Estima:</b> reservas nunca vistas.</p>
+</div>
+</div>
+<div style="display:flex;gap:32px">
+<div style="flex:1;background:#EFEDE6;padding:32px;border-radius:16px"><p style="font-size:26px;line-height:1.35;color:#4A5568"><b>AUC (principal):</b> ordena por riesgo sin depender del umbral ni favorecer una clase.</p></div>
+<div style="flex:1;background:#EFEDE6;padding:32px;border-radius:16px"><p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Accuracy:</b> la decisión 0/1 del predictor. Decir siempre “no se cancela” da 0,583.</p></div>
+<div style="flex:1;background:#EFEDE6;padding:32px;border-radius:16px"><p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Regla de adopción:</b> mejora en al menos 4 de 5 folds y no empeora la agrupada.</p></div>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">5 folds sobre desarrollo (38.273 filas) · notebook, sección 5</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">3 / 13</p>
+<aside>Con tantas copias, la validación aleatoria premia memorizar: si una copia está en entrenamiento, la otra se acierta gratis. Por eso usamos dos validaciones con los mismos folds. AUC como métrica principal porque mide el orden por riesgo; accuracy porque es la decisión que entrega el predictor. La regla de adopción se fijó antes de ver resultados.</aside>
+</section>

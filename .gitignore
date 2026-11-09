@@ -18,3 +18,7 @@ laboratorio/**/node_modules/
 entregas/**/.venv/
 entregas/**/.ipynb_checkpoints/
 entregas/**/cache/
+
+# Modelos entrenados y paquetes de entrega: se regeneran desde el notebook
+entregas/**/*.joblib
+entregas/**/predictor_*.zip

@@ -1,0 +1,7 @@
+# Versiones exactas con que se entrenó predictor_v1_Grupo_11.joblib (Python 3.14).
+# Requiere Python 3.11 o posterior.
+joblib==1.5.2
+numpy==2.3.5
+pandas==2.3.3
+scikit-learn==1.7.2
+scipy==1.16.3

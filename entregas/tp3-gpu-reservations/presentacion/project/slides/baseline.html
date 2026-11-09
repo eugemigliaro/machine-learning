@@ -1,0 +1,29 @@
+<section id="baseline" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:Inter, Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#1F5FAE">Baseline</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">Random Forest supera a la regresión logística, pero memoriza lotes</h2>
+</div>
+<div style="display:flex;gap:64px">
+<div style="width:920px;display:flex;flex-direction:column;gap:24px">
+<table style="font-size:26px;color:#1B2430">
+<tr><th style="width:46%">Modelo</th><th style="width:18%;text-align:right">AUC aleatoria</th><th style="width:18%;text-align:right">AUC agrupada</th><th style="width:18%;text-align:right">Accuracy aleatoria</th></tr>
+<tr><td>Trivial: “nunca se cancela”</td><td style="text-align:right">0,500</td><td style="text-align:right">0,500</td><td style="text-align:right">0,583</td></tr>
+<tr><td>Regresión logística (C = 1)</td><td style="text-align:right">0,913</td><td style="text-align:right">0,908</td><td style="text-align:right">0,829</td></tr>
+<tr style="background:#E3ECF8"><td>Random Forest sin límite de profundidad</td><td style="text-align:right">0,956</td><td style="text-align:right">0,937</td><td style="text-align:right">0,885</td></tr>
+</table>
+<p style="font-size:26px;line-height:1.35;color:#4A5568">Calibración: max_depth en {8, 12, 16, 20, sin límite} y hojas de 1 o 5 filas. El bosque sin límite gana en las dos validaciones.</p>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px">
+<p style="font-size:28px;line-height:1.35;font-weight:600;color:#1B2430">Brecha de AUC entre validación aleatoria y agrupada, según la profundidad</p>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">8</p><div style="width:116px;height:30px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">0,006</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">12</p><div style="width:195px;height:30px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">0,009</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">16</p><div style="width:239px;height:30px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">0,012</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">20</p><div style="width:293px;height:30px;background:#9A968C;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">0,014</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:150px;font-size:24px;color:#4A5568">sin límite</p><div style="width:380px;height:30px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">0,018</p></div>
+<p style="font-size:24px;line-height:1.35;color:#6A6F78">Los árboles profundos aprenden las copias de los lotes.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">Validación cruzada de 5 folds sobre desarrollo · notebook, sección 6</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">4 / 13</p>
+<aside>La regresión logística se queda en 0,913 y casi no se separa de entrenamiento: es sesgo por la forma lineal. Random Forest capta interacciones, como la del tipo de cliente con el compromiso, y llega a 0,956. Con más profundidad crece la brecha entre las dos validaciones porque los árboles memorizan los lotes, pero el bosque sin límite también es el mejor con reservas nuevas. Ese es el baseline: 300 árboles, sin límite, hojas de una fila.</aside>
+</section>

@@ -1,0 +1,22 @@
+{
+  "v": 4,
+  "createdOnFiles": {"v": 1, "at": "2026-11-09T14:43:17Z"},
+  "lists": "css",
+  "title": "TP3 — Cancelación de reservas de GPU (Grupo 11)",
+  "cover": "portada",
+  "order": [
+    "portada", "datos", "validacion", "baseline", "errores-donde", "errores-por-que",
+    "curvas", "data-centered", "optimizacion", "mejoras", "test", "esperado", "conclusiones"
+  ],
+  "sections": {
+    "problema": {"description": "El problema, los hallazgos de los datos y cómo evaluamos.", "start": "portada"},
+    "diagnostico": {"description": "Baseline y diagnóstico: dónde y por qué se equivoca el modelo.", "start": "baseline"},
+    "datos": {"description": "El sistema está limitado por la información: estrategia data-centered y datos a incorporar.", "start": "curvas"},
+    "final": {"description": "Optimización, modelo final, evaluación en test y predictor.", "start": "optimizacion"}
+  },
+  "faces": {
+    "space-grotesk": {"family": "Space Grotesk", "href": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"},
+    "inter": {"family": "Inter", "href": "https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"}
+  },
+  "designSystems": []
+}

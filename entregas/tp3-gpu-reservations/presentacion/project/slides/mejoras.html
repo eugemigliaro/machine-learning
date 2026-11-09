@@ -1,0 +1,32 @@
+<section id="mejoras" data-transition="fade" style="background:#F7F6F2;color:#1B2430;font-family:Inter, Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:16px">
+<p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#1F5FAE">Modelo final</p>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">La mejora se concentra donde el baseline ordenaba peor</h2>
+</div>
+<div style="display:flex;gap:48px">
+<div style="width:1100px;display:flex;flex-direction:column;gap:8px">
+<p style="font-size:24px;color:#4A5568">Cambio de AUC frente al baseline · entre paréntesis, la AUC del baseline</p>
+<div style="display:flex;align-items:center;gap:16px;padding:0px 0px 8px"><div style="width:28px;height:20px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#4A5568">AUC del baseline por debajo de la global</p><div style="width:28px;height:20px;background:#C9C5BB;border-radius:4px"></div><p style="font-size:24px;color:#4A5568">resto</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">independent_client (0,833)</p><div style="width:600px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0140</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">región elegida (0,860)</p><div style="width:321px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0075</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">reservas únicas (0,881)</p><div style="width:321px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0075</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">enterprise_client (0,942)</p><div style="width:210px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0049</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">basic (0,887)</p><div style="width:184px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0043</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">GPU_T4 (0,892)</p><div style="width:154px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0036</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">cloud_marketplace (0,890)</p><div style="width:129px;height:26px;background:#2A78D6;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0030</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;font-weight:600;color:#1B2430">todas las filas (0,956)</p><div style="width:77px;height:26px;background:#6F6C64;border-radius:4px"></div><p style="font-size:24px;font-weight:600;color:#1B2430">+0,0018</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">research_consortium (0,997)</p><div style="width:56px;height:26px;background:#C9C5BB;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0013</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">managed_account (0,995)</p><div style="width:26px;height:26px;background:#C9C5BB;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0006</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">reservas en lote (0,997)</p><div style="width:13px;height:26px;background:#C9C5BB;border-radius:4px"></div><p style="font-size:24px;color:#1B2430">+0,0003</p></div>
+<div style="display:flex;align-items:center;gap:16px"><p style="width:440px;font-size:24px;color:#4A5568">priority (0,983)</p><div style="width:2px;height:26px;background:#C9C5BB"></div><p style="font-size:24px;color:#1B2430">+0,0000</p></div>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:24px">
+<p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Aportó más la combinación</b> con gradient boosting (+0,0011) que max_features (+0,0007).</p>
+<p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Reservas en lote:</b> el error sube de 1,9 % a 2,1 %, porque el modelo memoriza menos.</p>
+<p style="font-size:26px;line-height:1.35;color:#4A5568"><b>Con validación agrupada</b> mejoran todas las cohortes: +0,0042 en total.</p>
+</div>
+</div>
+<p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">Out-of-fold de desarrollo, cohortes de 1.000 filas o más · notebook, sección 12.3</p>
+<p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">10 / 13</p>
+<aside>La consigna pide discutir si la mejora fue global o de subgrupos. Fue específica: se concentra en las cohortes que el baseline ordenaba peor, independent_client, la región elegida, las reservas únicas, basic y GPU_T4. En las fáciles casi no cambia, y en los lotes el error sube un poco porque el modelo memoriza menos. El cambio que más aportó fue la combinación con gradient boosting.</aside>
+</section>
