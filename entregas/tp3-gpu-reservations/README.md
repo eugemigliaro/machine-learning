@@ -4,11 +4,13 @@ Resolución del TP3 de optimización de modelos: predecir si una reserva de infr
 
 ## Fuente
 
-El dataset está registrado como `[D04]` y se lee sin modificar desde:
+El dataset está registrado como `[D04]`. El notebook lo lee como `gpu_resource_reservations.csv`, en su misma carpeta, para que la copia entregada no dependa de la estructura del repositorio. En el repo ese archivo es un enlace simbólico al original, que no se modifica:
 
 ```text
-../../material/catedra/datasets/gpu_resource_reservations.csv
+gpu_resource_reservations.csv -> ../../material/catedra/datasets/gpu_resource_reservations.csv
 ```
+
+Los entregables (notebook, predictor y diapositivas) no citan la wiki, el catálogo de fuentes ni otros archivos del repo: tienen que entenderse solos. Las citas `[P03]`, `[T11, p. N]`, etc. quedan sólo en este README, en `decisiones.md` y en el guion.
 
 ## Entorno
 
