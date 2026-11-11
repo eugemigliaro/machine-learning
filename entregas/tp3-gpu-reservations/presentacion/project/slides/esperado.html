@@ -13,7 +13,7 @@
 <div style="display:flex;flex-direction:column;gap:12px;background:#FDFCF9;padding:32px;border:1px solid #DEDBD2;border-radius:16px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FAE">Reservas nuevas, sin copias en el entrenamiento</p>
 <div style="display:flex;gap:64px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">AUC ≈ 0,94</p><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">BA ≈ 0,86</p></div>
-<p style="font-size:24px;line-height:1.35;color:#4A5568">Estimación: validación agrupada. Sólo con reservas individuales: AUC 0,89 y BA 0,79. El leaderboard del 05/11 (AUC de 0,84 a 0,91) sugiere un punto entre los dos.</p>
+<p style="font-size:24px;line-height:1.35;color:#4A5568">Estimación: validación agrupada. Sólo con reservas individuales: AUC 0,89 y BA 0,79. Riesgo no medido: fechas posteriores a 2017.</p>
 </div>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFCF9;padding:32px;border:1px solid #DEDBD2;border-radius:16px">
@@ -26,5 +26,5 @@
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">Notebook, secciones 12.5 y 12.6 · predictor_v1_Grupo_11.zip</p>
 <p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">12 / 13</p>
-<aside>Lo que se puede esperar depende de cuántas reservas de la evaluación tengan una copia en el CSV. Con el mismo conjunto de reservas: AUC cerca de 0,96 y balanced accuracy cerca de 0,89. Con reservas nuevas: 0,94 y 0,86. Con sólo reservas individuales: 0,89 y 0,79. El leaderboard del 05/11 da AUC de 0,84 a 0,91 a los cuatro grupos evaluados: sugiere que la evaluación tiene menos copias que un split aleatorio. Como la competencia mide balanced accuracy, bajamos el umbral de 0,5 a 0,40, que la mejora en los tres escenarios. El predictor se reentrenó con todas las filas, con la misma receta, y se probó fuera del notebook.</aside>
+<aside>Lo que se puede esperar depende de cuántas reservas de la evaluación tengan una copia en el CSV. Con el mismo conjunto de reservas: AUC cerca de 0,96 y balanced accuracy cerca de 0,89. Con reservas nuevas: 0,94 y 0,86. Con sólo reservas individuales: 0,89 y 0,79. Como la competencia mide balanced accuracy, bajamos el umbral de 0,5 a 0,40, que la mejora en los tres escenarios. El predictor se reentrenó con todas las filas, con la misma receta, y se probó fuera del notebook.</aside>
 </section>

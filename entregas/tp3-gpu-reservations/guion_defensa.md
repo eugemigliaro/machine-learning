@@ -103,7 +103,7 @@ La presentación tiene 13 diapositivas y dura unos 9:45. La consigna da 10 minut
 
 ### 12. Rendimiento esperado y predictor (C, 0:45)
 
-> Lo esperado depende de cuántas reservas de la evaluación tengan una copia en el CSV. Con el mismo conjunto de reservas: AUC cerca de 0,96 y balanced accuracy cerca de 0,89. Con reservas nuevas: 0,94 y 0,86. Con sólo reservas individuales: 0,89 y 0,79. El leaderboard del 05/11, con AUC de 0,84 a 0,91 para los cuatro grupos, sugiere que la evaluación tiene menos copias que un split aleatorio.
+> Lo esperado depende de cuántas reservas de la evaluación tengan una copia en el CSV. Con el mismo conjunto de reservas: AUC cerca de 0,96 y balanced accuracy cerca de 0,89. Con reservas nuevas: 0,94 y 0,86. Con sólo reservas individuales: 0,89 y 0,79.
 >
 > Como la competencia mide balanced accuracy, el umbral del predictor es 0,40 y no 0,5: la mejora en los tres escenarios. El predictor se reentrenó con todas las filas, con la misma receta. La receta vive en el `.py`, verificamos que reproduce el modelo evaluado, y lo probamos fuera del notebook con filas crudas del CSV.
 
