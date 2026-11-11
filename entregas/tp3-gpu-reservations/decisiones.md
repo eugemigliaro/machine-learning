@@ -219,19 +219,28 @@ Cada variante se reporta también con la AUC y el error de la región elegida.
 Decidido el 09/11: se confirma el modelo de la sección 11, se deja fuera XGBoost y se reentrena el predictor con desarrollo y test juntos.
 
 - **Receta única:** la receta del modelo final está en `predictor_v1_Grupo_11.py` (`build_model`, `train`). El notebook comprueba que sus hiperparámetros son los elegidos y que, reentrenada en un fold, reproduce las predicciones evaluadas.
-- **Umbral 0,5:** es el máximo de la accuracy *out-of-fold* en los dos esquemas de validación. La curva es plana entre 0,44 y 0,54, y el mejor umbral de cada fold varía de 0,43 a 0,55.
+- **Umbral 0,40** (reemplaza al 0,5 del 09/11; ver la actualización del 11/11 al final).
 - **Dónde mejoró:**
   - la combinación con gradient boosting aportó más que el ajuste de `max_features` (+0,0011 contra +0,0007 de AUC);
   - la mejora se concentra en las reservas únicas, la región elegida, `independent_client`, `basic` y `GPU_T4`;
   - en las cohortes fáciles casi no cambia, y las reservas en lote empeoran 0,2 puntos de error con validación aleatoria, porque el modelo memoriza menos.
 - **Test, evaluado una sola vez:**
-  - AUC 0,960 (intervalo *bootstrap* del 95 %: 0,957 a 0,963) y accuracy 0,889 (0,882 a 0,895);
-  - frente al baseline, la mejora de AUC se confirma (+0,0013, intervalo de 0,0003 a 0,0023), y la de accuracy no se distingue de cero;
-  - sin gemela en desarrollo: 17,5 % de error y AUC 0,889; con gemela: 0,9 % de error. La región elegida tiene 20,7 % de error.
-- **Rendimiento esperado:** con datos del mismo conjunto de reservas, AUC alrededor de 0,96 y accuracy alrededor de 0,89. Con reservas nuevas, 0,94 y 0,86 (validación agrupada).
+  - con umbral 0,40: AUC 0,960 (intervalo *bootstrap* del 95 %: 0,957 a 0,963), balanced accuracy 0,888 (0,881 a 0,894) y accuracy 0,889;
+  - frente al baseline, con el mismo umbral, la mejora de AUC se confirma (+0,0013, intervalo de 0,0003 a 0,0023), y la de balanced accuracy no se distingue de cero (+0,0012, de −0,002 a +0,005);
+  - sin gemela en desarrollo: AUC 0,889 y balanced accuracy 0,795; con gemela: 1,1 % de error y balanced accuracy 0,988. La región elegida tiene 20,5 % de error.
+- **Rendimiento esperado (balanced accuracy):** 0,89 con datos del mismo conjunto de reservas (AUC 0,96), 0,86 con reservas nuevas (validación agrupada, AUC 0,94) y 0,79 con sólo reservas individuales (AUC 0,89).
 - **Predictor entregado:**
   - el modelo se entrena con las 47.842 filas y se guarda en `predictor_v1_Grupo_11.joblib` (18,1 MB, compresión zlib nivel 3);
   - no se usa xz, que lo bajaría a 9,5 MB, porque algunas instalaciones de Python no traen `lzma` y el archivo no cargaría;
   - `predictor_v1_Grupo_11.zip` (17,8 MB) se genera desde el notebook y lleva el `.py`, el `.joblib`, `requirements_predictor.txt` (como `requirements.txt`) y `README_predictor.md` (como `README.md`);
   - se probó desde la carpeta descomprimida en un proceso nuevo: da las mismas probabilidades con todos los formatos de entrada y por línea de comandos;
   - si el `.joblib` no carga en otra versión de scikit-learn, se regenera con `python predictor_v1_Grupo_11.py entrenar gpu_resource_reservations.csv`.
+
+## Actualización después del leaderboard de la primera ventana (11/11)
+
+La cátedra publicó el leaderboard de la entrega del 04/11 (reporte del 05/11): 4 de 13 grupos evaluados sobre 10.686 reservas, ordenados por **balanced accuracy**. El mejor grupo tiene balanced accuracy 0,815 y AUC 0,907; el resto, de 0,746 a 0,798 y de 0,836 a 0,898. El grupo 12 tuvo un error de ejecución.
+
+- **Métrica del Model Score:** balanced accuracy, no accuracy. La selección de modelos no cambia, porque se hizo por AUC, que no depende del umbral.
+- **Umbral 0,40:** con probabilidades calibradas, el umbral que maximiza la balanced accuracy es la tasa de cancelación del conjunto evaluado (41,7 % en desarrollo, 28,7 % en las reservas únicas). Regla: el menor umbral a menos de 0,001 de la mejor balanced accuracy *out-of-fold* en las dos validaciones (zonas 0,39–0,45 y 0,40–0,44). Frente a 0,5 mejora en los tres escenarios: +0,003 con validación aleatoria, +0,004 con la agrupada y +0,023 en las reservas únicas. En test (sólo para reportar) pasa de 0,882 a 0,888.
+- **Supuesto sobre el conjunto de evaluación:** se mantiene que son reservas del mismo período y origen, así que no hace falta un split temporal. **Inferencia:** las AUC del leaderboard (0,84 a 0,91), muy por debajo de la validación aleatoria (0,96) y de nuestra regresión logística (0,913), sugieren que el conjunto de evaluación tiene menos copias del CSV que un split aleatorio. La estimación más realista pasa a ser la de la validación agrupada o la de las reservas únicas. No se puede descartar que los otros modelos sean más débiles.
+- **Predictor:** sólo cambia `THRESHOLD` en el `.py`; el `.joblib` es idéntico byte a byte al del 09/11. Se regeneró el `.zip` con el `.py` y el README nuevos.

@@ -1,24 +1,24 @@
 <section id="esperado" data-transition="fade" style="background:#EFEDE6;color:#1B2430;font-family:Inter, Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:48px">
 <div style="display:flex;flex-direction:column;gap:16px">
 <p style="font-size:24px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#1F5FAE">Rendimiento esperado y predictor</p>
-<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">Lo esperado: AUC 0,96 con reservas del mismo conjunto y 0,94 con reservas nuevas</h2>
+<h2 style="font-family:'Space Grotesk', Arial, sans-serif;font-size:60px;font-weight:600;line-height:1.1;color:#1B2430">Lo esperado depende de cuántas copias del CSV tenga la evaluación</h2>
 </div>
 <div style="display:flex;gap:48px">
 <div style="width:900px;display:flex;flex-direction:column;gap:24px">
 <div style="display:flex;flex-direction:column;gap:12px;background:#FDFCF9;padding:32px;border:1px solid #DEDBD2;border-radius:16px">
-<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FAE">Mismo conjunto de reservas · supuesto del Model Score</p>
-<div style="display:flex;gap:64px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">AUC ≈ 0,96</p><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">accuracy ≈ 0,89</p></div>
+<p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FAE">Mismo conjunto de reservas, con copias</p>
+<div style="display:flex;gap:64px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">AUC ≈ 0,96</p><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">BA ≈ 0,89</p></div>
 <p style="font-size:24px;line-height:1.35;color:#4A5568">Estimación: test. El predictor entregado vio todas las filas, así que tiene más copias para reconocer.</p>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px;background:#FDFCF9;padding:32px;border:1px solid #DEDBD2;border-radius:16px">
 <p style="font-size:24px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#1F5FAE">Reservas nuevas, sin copias en el entrenamiento</p>
-<div style="display:flex;gap:64px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">AUC ≈ 0,94</p><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">accuracy ≈ 0,86</p></div>
-<p style="font-size:24px;line-height:1.35;color:#4A5568">Estimación: validación agrupada. Riesgo no medido: fechas posteriores a 2017.</p>
+<div style="display:flex;gap:64px"><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">AUC ≈ 0,94</p><p style="font-family:'Space Grotesk', Arial, sans-serif;font-size:40px;font-weight:600;color:#1B2430">BA ≈ 0,86</p></div>
+<p style="font-size:24px;line-height:1.35;color:#4A5568">Estimación: validación agrupada. Sólo con reservas individuales: AUC 0,89 y BA 0,79. El leaderboard del 05/11 (AUC de 0,84 a 0,91) sugiere un punto entre los dos.</p>
 </div>
 </div>
 <div style="flex:1;display:flex;flex-direction:column;gap:16px;background:#FDFCF9;padding:32px;border:1px solid #DEDBD2;border-radius:16px">
 <p style="font-size:28px;font-weight:600;color:#1B2430">Predictor entregado</p>
-<p style="font-size:26px;line-height:1.35;color:#4A5568">predictor_v1_Grupo_11(X) devuelve 0 o 1 por fila, con umbral 0,5.</p>
+<p style="font-size:26px;line-height:1.35;color:#4A5568">predictor_v1_Grupo_11(X) devuelve 0 o 1 por fila, con umbral 0,40: el que maximiza la BA.</p>
 <p style="font-size:26px;line-height:1.35;color:#4A5568">La receta vive en el .py y se verificó contra el modelo evaluado.</p>
 <p style="font-size:26px;line-height:1.35;color:#4A5568">Reentrenado con las 47.842 filas: 18 MB comprimido.</p>
 <p style="font-size:26px;line-height:1.35;color:#4A5568">Probado en un proceso nuevo con filas crudas del CSV y varios formatos de entrada.</p>
@@ -26,5 +26,5 @@
 </div>
 <p style="position:absolute;left:128px;bottom:64px;width:1400px;font-size:24px;color:#6A6F78">Notebook, secciones 12.5 y 12.6 · predictor_v1_Grupo_11.zip</p>
 <p style="position:absolute;right:128px;bottom:64px;width:200px;font-size:24px;text-align:right;color:#6A6F78">12 / 13</p>
-<aside>Lo que se puede esperar depende de cuántas reservas repetidas traiga la evaluación. Si es el mismo conjunto de reservas, como suponemos para la competencia: AUC cerca de 0,96 y accuracy cerca de 0,89. Con reservas realmente nuevas: 0,94 y 0,86. Regla práctica: accuracy de 0,99 en filas con copia y 0,825 en el resto. El predictor se reentrenó con todas las filas, con la misma receta y el mismo umbral, y se probó fuera del notebook.</aside>
+<aside>Lo que se puede esperar depende de cuántas reservas de la evaluación tengan una copia en el CSV. Con el mismo conjunto de reservas: AUC cerca de 0,96 y balanced accuracy cerca de 0,89. Con reservas nuevas: 0,94 y 0,86. Con sólo reservas individuales: 0,89 y 0,79. El leaderboard del 05/11 da AUC de 0,84 a 0,91 a los cuatro grupos evaluados: sugiere que la evaluación tiene menos copias que un split aleatorio. Como la competencia mide balanced accuracy, bajamos el umbral de 0,5 a 0,40, que la mejora en los tres escenarios. El predictor se reentrenó con todas las filas, con la misma receta, y se probó fuera del notebook.</aside>
 </section>

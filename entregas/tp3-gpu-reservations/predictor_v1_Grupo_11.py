@@ -92,8 +92,9 @@ BOOSTING_PARAMS = {
     'l2_regularization': 0.1, 'max_features': 0.5,
     'max_iter': 2000, 'early_stopping': True, 'n_iter_no_change': 30,
 }
-# Umbral sobre la probabilidad de cancelación, elegido con las predicciones out-of-fold.
-THRESHOLD = 0.5
+# Umbral sobre la probabilidad de cancelación. Maximiza la balanced accuracy (la métrica de la
+# competencia) en las predicciones out-of-fold de desarrollo (sección 12.2 del notebook).
+THRESHOLD = 0.40
 
 MODEL_PATH = Path(__file__).resolve().with_name('predictor_v1_Grupo_11.joblib')
 

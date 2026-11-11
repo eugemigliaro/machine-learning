@@ -51,7 +51,7 @@ La presentación tiene 13 diapositivas y dura unos 9:45. La consigna da 10 minut
 
 > Con tantas copias, una validación aleatoria premia memorizar: si una copia está en entrenamiento, la otra se acierta gratis. Por eso usamos dos validaciones con los mismos folds. La aleatoria imita lo que suponemos de la competencia, que son filas del mismo conjunto de reservas. La agrupada mantiene cada lote junto y estima cómo le va al modelo con reservas nuevas.
 >
-> AUC es la métrica principal porque mide el orden por riesgo sin depender del umbral; accuracy, porque es la decisión que entrega el predictor. Antes de optimizar fijamos una regla: un cambio se adopta solo si mejora en al menos 4 de los 5 folds y no empeora con reservas nuevas.
+> AUC es la métrica principal porque mide el orden por riesgo sin depender del umbral; accuracy, para comparar decisiones 0/1 durante el desarrollo. La competencia mide balanced accuracy, y con ella elegimos el umbral final. Antes de optimizar fijamos una regla: un cambio se adopta solo si mejora en al menos 4 de los 5 folds y no empeora con reservas nuevas.
 
 ### 4. Baseline (A, 0:45)
 
@@ -97,15 +97,15 @@ La presentación tiene 13 diapositivas y dura unos 9:45. La consigna da 10 minut
 
 ### 11. Evaluación en test (C, 0:45)
 
-> Entrenamos con todo desarrollo y evaluamos una sola vez en test: AUC 0,960 y accuracy 0,889. Queda algo por encima de la validación cruzada, porque el modelo vio más filas, y dentro del intervalo.
+> Entrenamos con todo desarrollo y evaluamos una sola vez en test, con el umbral 0,40: AUC 0,960 y balanced accuracy 0,888. Queda algo por encima de la validación cruzada, porque el modelo vio más filas, y dentro del intervalo.
 >
-> Frente al baseline, la mejora de AUC se confirma; la de accuracy no se distingue de cero, igual que en desarrollo. Y el diagnóstico se sostiene: sin una fila idéntica en desarrollo, el error es 17,5 %, igual que en las reservas únicas de desarrollo.
+> Frente al baseline, la mejora de AUC se confirma; la de balanced accuracy no se distingue de cero, igual que en desarrollo. Y el diagnóstico se sostiene: sin una fila idéntica en desarrollo, la balanced accuracy es 0,795, igual que en las reservas únicas de desarrollo.
 
 ### 12. Rendimiento esperado y predictor (C, 0:45)
 
-> Lo esperado depende de cuántas reservas repetidas traiga la evaluación. Con el mismo conjunto de reservas, como suponemos para la competencia: AUC cerca de 0,96 y accuracy cerca de 0,89. Con reservas realmente nuevas: 0,94 y 0,86.
+> Lo esperado depende de cuántas reservas de la evaluación tengan una copia en el CSV. Con el mismo conjunto de reservas: AUC cerca de 0,96 y balanced accuracy cerca de 0,89. Con reservas nuevas: 0,94 y 0,86. Con sólo reservas individuales: 0,89 y 0,79. El leaderboard del 05/11, con AUC de 0,84 a 0,91 para los cuatro grupos, sugiere que la evaluación tiene menos copias que un split aleatorio.
 >
-> El predictor se reentrenó con todas las filas, con la misma receta y el mismo umbral. La receta vive en el `.py`, verificamos que reproduce el modelo evaluado, y lo probamos fuera del notebook con filas crudas del CSV.
+> Como la competencia mide balanced accuracy, el umbral del predictor es 0,40 y no 0,5: la mejora en los tres escenarios. El predictor se reentrenó con todas las filas, con la misma receta. La receta vive en el `.py`, verificamos que reproduce el modelo evaluado, y lo probamos fuera del notebook con filas crudas del CSV.
 
 ### 13. Conclusiones (A, 0:30)
 
@@ -124,10 +124,10 @@ Columnas, valores y período coinciden con el dataset público *Hotel Booking De
 Son reservas en lote reales: casi todas son `locked_allocation` o `research_consortium`, y la tasa de cancelación crece con el tamaño del grupo. Eliminarlas cambiaría la distribución que va a ver el predictor. La memorización se controla con la validación agrupada. Hay 79 grupos con etiquetas distintas (531 filas): son error irreducible.
 
 **¿Por qué un split aleatorio y no temporal?**
-No sabemos cómo arma la cátedra el conjunto del Model Score. El período y las columnas sugieren que viene del mismo conjunto de reservas, y un split aleatorio imita mejor esa evaluación. Para reservas nuevas usamos la validación agrupada y las filas de test sin gemela en desarrollo. Las fechas posteriores a 2017 quedan como riesgo no medido.
+No sabemos cómo arma la cátedra el conjunto del Model Score. Suponemos que son otras reservas del mismo período y del mismo origen que el CSV, así que no hay motivo para un split temporal; además, la tasa de cancelación no tiene tendencia en el tiempo. Lo que el leaderboard del 05/11 sugiere es que la evaluación tiene menos copias del CSV que un split aleatorio, así que la estimación más realista es la de la validación agrupada. Para reservas nuevas usamos la validación agrupada y las filas de test sin gemela en desarrollo. Las fechas posteriores a 2017 quedan como riesgo no medido.
 
-**¿Por qué AUC y accuracy y no F1?**
-AUC mide el orden por riesgo sin depender del umbral. [T04, p. 51] Accuracy es la decisión 0/1 que entrega el predictor; con 41,7 % de canceladas no engaña, porque la referencia trivial da 0,583. F1 no cuenta los aciertos en no cancelaciones, y su umbral óptimo es más bajo, lo que empuja a predecir más cancelaciones. El límite de accuracy, que no distingue el tipo de error [T04, p. 26], se cubre analizando falsos positivos y falsos negativos por separado.
+**¿Por qué AUC y accuracy y no F1? ¿Y la balanced accuracy?**
+AUC mide el orden por riesgo sin depender del umbral. [T04, p. 51] Accuracy mide la decisión 0/1; con 41,7 % de canceladas no engaña, porque la referencia trivial da 0,583. F1 no cuenta los aciertos en no cancelaciones, y su umbral óptimo es más bajo, lo que empuja a predecir más cancelaciones. El límite de accuracy, que no distingue el tipo de error [T04, p. 26], se cubre analizando falsos positivos y falsos negativos por separado. Cuando el leaderboard mostró que la competencia mide balanced accuracy, no hizo falta volver a elegir el modelo, porque se eligió por AUC: solo cambió el umbral.
 
 **¿Cómo saben que `assigned_gpu_type` y `queue_wait_time` son leakage si casi no cambian el resultado?**
 Se excluyen por definición: describen la asignación definitiva de recursos, que ocurre después del momento de predecir. [P03, p. 5] Medimos una sola vez cuánto inflaban: +0,0014 de AUC. Excluirlas casi no cuesta rendimiento.
@@ -155,7 +155,7 @@ Además, ni el feature engineering ni otro modelo mejoraron más que milésimas.
 Hay evidencia, no prueba. En las reservas únicas, cuando hay algún dato del cliente la AUC es 0,916, y sin él 0,876. Es una asociación: los clientes con historial pueden ser distintos por otros motivos. Para confirmarlo se mediría con la misma validación cruzada y diferencias pareadas, globalmente y en la región.
 
 **¿Por qué no bajar el umbral para detectar más cancelaciones?**
-Con costos iguales, 0,5 es el óptimo. Si un falso positivo costara el doble que un falso negativo, el umbral subiría a alrededor de 0,62, no bajaría (sección 7.4). Es una decisión operativa que se puede cambiar sin reentrenar. En la región, el mejor umbral (0,48) gana solo 0,2 puntos.
+Lo bajamos a 0,40, pero por la métrica de la competencia: la balanced accuracy pesa más los falsos negativos que la accuracy. En la operación, con costos iguales para cada error, 0,5 es el óptimo. Si un falso positivo costara el doble que un falso negativo, el umbral subiría a alrededor de 0,62, no bajaría (sección 7.4). Es una decisión operativa que se puede cambiar sin reentrenar. En la región, el mejor umbral (0,48) gana solo 0,2 puntos.
 
 **¿Por qué `basic` y `GPU_T4` no son la región problemática, si la consigna las pide?**
 Se analizaron y tienen casi el doble de error que `standard` y `GPU_T1`. Pero el 93 % y el 79 % de sus filas son `cloud_marketplace`, y dentro de esa cohorte la diferencia casi desaparece: `basic` tiene 19,5 % de error y `standard` 18,6 %. Heredan el error por composición: mejorar `cloud_marketplace` las mejora también. [T11, p. 42]
@@ -176,15 +176,15 @@ El modelo de test se entrenó con todo desarrollo (38.273 filas), contra unas 30
 
 **¿La mejora frente al baseline es significativa?**
 - En AUC sí: +0,0013 en test, con un intervalo de 0,0003 a 0,0023, positiva en el 99 % de los remuestreos.
-- En accuracy no se distingue de cero.
+- En balanced accuracy no se distingue de cero: +0,0012, con un intervalo de −0,002 a +0,005.
 
 El bootstrap remuestrea filas y no tiene en cuenta que las filas de un lote están correlacionadas, así que probablemente subestima algo la incertidumbre.
 
 **¿No es trampa reentrenar el predictor con test?**
 No: test se usó una sola vez para evaluar, y nada se eligió con él. Después se reentrena la misma receta con más filas. El rendimiento informado es el del modelo entrenado solo con desarrollo, así que, si cambia algo, es conservador.
 
-**¿Por qué el umbral es 0,5?**
-Es el que maximiza la accuracy *out-of-fold* en las dos validaciones. La curva es plana: entre 0,44 y 0,54 queda a menos de 0,001 del máximo, y el mejor umbral de cada fold varía de 0,43 a 0,55.
+**¿Por qué el umbral es 0,40?**
+La competencia mide balanced accuracy. Con probabilidades calibradas, el umbral que la maximiza es la tasa de cancelación del conjunto evaluado: 41,7 % en el CSV, 29 % en las reservas únicas. Elegimos el menor umbral que queda a menos de 0,001 del máximo en las dos validaciones: 0,40. Frente a 0,5 mejora en los tres escenarios (aleatoria, agrupada y reservas únicas), y test lo confirma.
 
 **¿Qué pasa si el predictor no carga en la máquina de la cátedra?**
 El paquete trae las versiones exactas en `requirements.txt`. Si igual falla, `python predictor_v1_Grupo_11.py entrenar gpu_resource_reservations.csv` regenera el modelo con la misma receta; lo probamos y da las mismas predicciones.
@@ -195,5 +195,5 @@ El paquete trae las versiones exactas en `requirements.txt`. Si igual falla, `py
 ## Antes de la defensa
 
 - [ ] Enviar 24 horas antes `predictor_v1_Grupo_11.zip`, el notebook y la presentación. [P03, p. 1]
-- [ ] Exportar las diapositivas a PDF desde el artifact (el link es privado hasta que se comparta) y guardar el PDF en esta carpeta.
+- [ ] Exportar las diapositivas a PowerPoint (y, si se quiere, a PDF) desde el artifact y guardar el archivo en esta carpeta.
 - [ ] Ensayar con cronómetro: el total tiene que quedar debajo de 10 minutos.

@@ -52,7 +52,7 @@ python predictor_v1_Grupo_11.py entrenar gpu_resource_reservations.csv
 
 ## Modelo
 
-- **Algoritmo:** promedio de las probabilidades de un Random Forest de 100 árboles y un modelo de gradient boosting (`HistGradientBoostingClassifier`), con un umbral de 0,5.
+- **Algoritmo:** promedio de las probabilidades de un Random Forest de 100 árboles y un modelo de gradient boosting (`HistGradientBoostingClassifier`). Predice que la reserva se cancela si esa probabilidad es de 0,40 o más, el umbral que maximiza la balanced accuracy.
 - **Entrenamiento:** las 47.842 filas del CSV.
 - **Columnas que no se usan:**
   - `execution_status` y `execution_status_date` describen el resultado de la reserva;
@@ -61,6 +61,7 @@ python predictor_v1_Grupo_11.py entrenar gpu_resource_reservations.csv
   - `total_processes` y `total_gpu_hours` son sumas de otras columnas.
 
   Pueden venir o no en `X`.
-- **Rendimiento esperado:** estimado en la sección 12 del notebook del grupo:
-  - con reservas del mismo conjunto que el CSV, AUC de alrededor de 0,96 y accuracy de alrededor de 0,89 (en un test reservado del 20 %: 0,960 y 0,889);
-  - con reservas realmente nuevas, sin copias idénticas en el entrenamiento, AUC de alrededor de 0,94 y accuracy de alrededor de 0,86 (validación cruzada agrupada).
+- **Rendimiento esperado:** estimado en la sección 12 del notebook del grupo. Depende de cuántas reservas del conjunto evaluado tengan una copia idéntica en el CSV de entrenamiento:
+  - con reservas del mismo conjunto que el CSV, AUC de alrededor de 0,96 y balanced accuracy de alrededor de 0,89 (en un test reservado del 20 %: 0,960 y 0,888);
+  - con reservas nuevas, sin copias en el entrenamiento, AUC de alrededor de 0,94 y balanced accuracy de alrededor de 0,86 (validación cruzada agrupada);
+  - con reservas individuales, sin copias ni lotes, AUC de alrededor de 0,89 y balanced accuracy de alrededor de 0,79.

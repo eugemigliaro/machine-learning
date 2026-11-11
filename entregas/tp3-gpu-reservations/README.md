@@ -41,11 +41,13 @@ Verificado con Python 3.14.4, scikit-learn 1.7.2, pandas 2.3.3, matplotlib 3.10.
 
 El `.zip` es lo que se envía por mail. El `.joblib` y el `.zip` no se versionan (están en `.gitignore`): pesan 36 MB y se regeneran en cada ejecución del notebook o con `python predictor_v1_Grupo_11.py entrenar <dataset.csv>`. La sección 12.1 verifica que reentrenar reproduce las mismas predicciones.
 
-Para comprobar que un `.zip` es el mismo que el generado el 09/11 (scikit-learn 1.7.2), su SHA-256 es:
+Para comprobar que un `.zip` es el mismo que el generado el 11/11 (scikit-learn 1.7.2, umbral 0,40), su SHA-256 es:
 
 ```
-07629fc333423bc0ec4271a0e44edc7d6b70e7d56e6d432536e1756db9dce0f2  predictor_v1_Grupo_11.zip
+1717ccb1c1d362afe6934f8f30c20b79b135c1aa6b60eb8518657ee8b7ce6f09  predictor_v1_Grupo_11.zip
 ```
+
+El del 09/11, con umbral 0,5, era `07629fc333423bc0ec4271a0e44edc7d6b70e7d56e6d432536e1756db9dce0f2`. El `.joblib` de los dos es idéntico: sólo cambian el `.py` y el README.
 
 Guardá fuera del repositorio una copia del `.zip` exacto que se envíe, porque el `.joblib` depende de las versiones de `requirements_predictor.txt`.
 
