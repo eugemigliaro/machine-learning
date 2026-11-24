@@ -51,7 +51,7 @@ A cuenta el problema y el producto (2:10). B cuenta para quién es, por qué ele
 
 ### 7. Resultados (B, 0:30)
 
-> Lo probamos dos veces. La cátedra lo evaluó con reservas que nunca vimos y quedamos cuartos entre 13 equipos. Y con reservas que el modelo no usó para aprender, detecta 8 de cada 10 cancelaciones, y 7 de cada 10 alertas son cancelaciones reales.
+> Lo probamos dos veces. La cátedra lo evaluó con reservas que no estaban en nuestros datos y quedamos cuartos entre 13 equipos. Y con reservas que el modelo no usó para aprender, detecta 8 de cada 10 cancelaciones, y 7 de cada 10 alertas son cancelaciones reales.
 
 ### 8. Lo que SafeGraphics no hace (B, 0:40)
 
