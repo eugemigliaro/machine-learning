@@ -22,6 +22,19 @@
 
 El material no dice con qué métrica se calcula el Model Score; ver [Dudas y conflictos](../dudas-y-conflictos.md).
 
+### Presentación final de los primeros puestos
+
+Con el leaderboard final, la cátedra anunció que **los 5 primeros quedan exentos del trabajo final** y que, en su lugar, presentan una charla breve el último día de clase. [P05]
+
+- **Duración:** 5 minutos de presentación y 5 de preguntas. [P05]
+- **Horario:** un grupo cada 10 minutos, del TOP 5 al TOP 1. El TOP 5 empieza a las 16:00 y el TOP 1 a las 16:40. A las 17:00 empieza la clase teórica final. [P05]
+- **Fecha:** el anuncio dice "miércoles que viene, 25/10/26". El 25/10/2026 es domingo; el miércoles es el 25/11/2026, que coincide con el último día de clase de [P04]. *Inferencia:* es una errata y la fecha es el 25/11.
+- **Formato:** presentar el modelo **como si fuera un producto**, en formato *pitch* y para un **público no técnico**. [P05]
+- **Contenido pedido:** qué problema resuelve, cómo funciona a grandes rasgos, quién podría usarlo, qué ventajas tiene frente a otras alternativas, y cuáles son sus resultados y limitaciones. [P05]
+- **Objetivo:** practicar cómo comunicar y poner en valor una solución de ML más allá de lo técnico. [P05]
+
+[P04] anunciaba otro criterio (TOP 1 por Model Score y TOP 4 por Competition Score) y una presentación con una parte técnica y otra no técnica. [P05] es posterior y se sigue ese; ver [Dudas y conflictos](../dudas-y-conflictos.md).
+
 ## Dataset
 
 Reservas de infraestructura GPU en un entorno de cómputo distribuido. El objetivo es predecir si una reserva **se cancelará antes de su ejecución** (`canceled_job`). Incluye características temporales de la reserva, recursos solicitados, historial del cliente, duración y complejidad del workload, y aspectos económicos y contractuales. [P03, p. 1] El archivo está en la carpeta Competición del Campus, registrado aquí como D04. [P03, p. 1] [P04]

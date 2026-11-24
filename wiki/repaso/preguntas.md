@@ -158,6 +158,7 @@ Preguntas recuperables por tema. Mantener las respuestas separadas o plegadas cu
 107. ¿Qué split de validación imita mejor la evaluación de la competencia? ¿Qué información te falta para decidirlo? [T11, p. 72] [T11, p. 82] [P04]
 108. ¿Cómo se calcula el Competition Score y qué condiciones dan la eximición del final? [P04] [T12, p. 2]
 109. Si aplicás SMOTE o un stacking en el TP3, ¿en qué punto del pipeline van para no producir leakage? [T11, p. 60] [T12, p. 25]
+132. ¿Qué cinco preguntas tiene que responder el pitch final del TP3 y qué cambia respecto de una defensa técnica? [P05]
 
 ## Clustering
 

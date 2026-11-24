@@ -8,6 +8,7 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 - [Dudas y conflictos](dudas-y-conflictos.md)
 - [Preguntas de repaso](repaso/preguntas.md)
 - [TP2 paso a paso](repaso/tp2-resolucion-paso-a-paso.md): guía de estudio de la resolución para preparar la defensa.
+- [Video del TP3](repaso/video-tp3/README.md): unos 15 minutos con la teoría de las clases 11 y 12, aplicada a nuestra resolución. Se genera con Manim y Piper.
 
 ## Temas
 
@@ -67,6 +68,7 @@ Este es el índice del conocimiento canónico compilado. Agregá una entrada por
 | T12 | Algoritmos avanzados y MLOps | Reglas de la competencia del TP3, gradient boosting, ANN (HNSW, FAISS), bagging, boosting, stacking y blending, MLOps, despliegue, monitoreo y mantenimiento. |
 | P03 | TP3: Optimización de modelos de Machine Learning | Consigna del ciclo 2026: clasificación de cancelaciones de reservas GPU, análisis de errores, enfoque data-centered, optimización y predictor. |
 | P04 | TP3: anuncio de la competencia (Campus) | Anuncio en HTML de la cátedra: entregables, fechas de submission, Competition Score y premios. El texto buscable está en `material/extraido/P04.txt`. |
+| P05 | TP3: anuncio del leaderboard final y presentación pitch (Campus) | Exención del final para los 5 primeros y consigna de la presentación de 5 + 5 minutos en formato pitch, para público no técnico. Texto en Markdown, transcripto del Campus. |
 | D04 | GPU Resource Reservations | Dataset de la competencia del TP3, provisto por la cátedra (`material/catedra/datasets/`). |
 | T14 | Aprendizaje no supervisado | Aplicaciones, clustering particional, K-means (WCSS, inicialización, codo y silhouette), DBSCAN, PCA y t-SNE. |
 
