@@ -13,7 +13,7 @@
 
 ### Datos externos
 
-No se usa el dataset público *Hotel Booking Demand*. **Inferencia:** columnas, valores y período coinciden con ese dataset con los nombres cambiados. Si es el origen, probablemente contiene las filas del test oculto con sus etiquetas, y usarlo invalidaría la competencia. Solo sirve como fuente de hipótesis, que se validan con nuestros datos. El punto 3.4 se responde proponiendo datos que la plataforma podría registrar.
+El predictor se entrena sólo con el CSV de la cátedra. Columnas, valores y período coinciden con el dataset público *Hotel Booking Demand* con los nombres cambiados; la cátedra confirmó en la defensa del 11/11 que ese es el origen. El punto 3.4 se responde proponiendo datos que la plataforma podría registrar.
 
 ### Librerías
 
@@ -244,3 +244,62 @@ La cátedra publicó el leaderboard de la entrega del 04/11 (reporte del 05/11):
 - **Umbral 0,40:** con probabilidades calibradas, el umbral que maximiza la balanced accuracy es la tasa de cancelación del conjunto evaluado (41,7 % en desarrollo, 28,7 % en las reservas únicas). Regla: el menor umbral a menos de 0,001 de la mejor balanced accuracy *out-of-fold* en las dos validaciones (zonas 0,39–0,45 y 0,40–0,44). Frente a 0,5 mejora en los tres escenarios: +0,003 con validación aleatoria, +0,004 con la agrupada y +0,023 en las reservas únicas. En test (sólo para reportar) pasa de 0,882 a 0,888.
 - **Supuesto sobre el conjunto de evaluación:** se mantiene que son reservas del mismo período y origen, así que no hace falta un split temporal. **Inferencia:** las AUC del leaderboard (0,84 a 0,91), muy por debajo de la validación aleatoria (0,96) y de nuestra regresión logística (0,913), sugieren que el conjunto de evaluación tiene menos copias del CSV que un split aleatorio. La estimación más realista pasa a ser la de la validación agrupada o la de las reservas únicas. No se puede descartar que los otros modelos sean más débiles.
 - **Predictor:** sólo cambia `THRESHOLD` en el `.py`; el `.joblib` es idéntico byte a byte al del 09/11. Se regeneró el `.zip` con el `.py` y el README nuevos.
+
+## Predictor del 18/11 (14/11)
+
+### Datos nuevos de la cátedra
+
+- **Leaderboard del 11/11** (imagen del Campus, informada por el estudiante; no está incorporada al repositorio): 9 de 13 grupos, ordenados por balanced accuracy sobre 10.686 reservas, con "modelos y umbrales sin reajustar". La entrada no trae `canceled_job`, `execution_status` ni `execution_status_date`. El grupo 11 quedó octavo, con balanced accuracy 0,805 y AUC 0,896; el primero tiene 0,828 y 0,915.
+- **Anuncio del 11/11** (Campus, pegado por el estudiante el 14/11; no está incorporado):
+  - el predictor corre una vez por semana sobre todas las reservas activas;
+  - las asignaciones de GPU y las modificaciones de recursos ocurren días antes de la ejecución, no en el momento de ejecutarse;
+  - la evaluación no usa separación temporal;
+  - el predictor recibe el lote completo y devuelve 1 o 0 por reserva, en el orden de entrada, con el modelo ya entrenado;
+  - idealmente se envía un único `.py`, o un `.py` y un `.joblib`, sin carpeta.
+- El origen del CSV quedó confirmado en la defensa (ver la wiki de dudas).
+
+### Nombre y formato
+
+- La consigna fija el nombre `predictor_v1_Grupo_X()` [P03, p. 3], así que el archivo y la función siguen llamándose `predictor_v1_Grupo_11`. **Inferencia:** "v1" es parte del nombre pedido, no un número de versión que elija el grupo.
+- La versión nueva está en `entrega_18-11/`, para no pisar el `.py` que importa el notebook. El notebook y la presentación documentan lo defendido el 11/11 y no cambian.
+- Se envían sólo el `.py` y el `.joblib`. El README y el `requirements.txt` del `.zip` anterior pasan al docstring del `.py`.
+
+### Receta final
+
+- **Variables:** las del 11/11 más:
+  - calendario: día de la semana y del año de la ejecución; fecha, mes y día de la semana en que se hizo la reserva;
+  - duración y costo: duración total, proporción de horas pico, costo total, costo por proceso y si hay procesos auxiliares o de fondo;
+  - asignación: `assigned_gpu_type`, `queue_wait_time` y si la GPU asignada difiere de la reservada.
+- **Lotes:** para cada reserva se cuentan las reservas del CSV con la misma fecha de ejecución, anticipación, agente, región, tipo de cliente, canal y compromiso, sin contar sus copias idénticas. También se calcula su tasa de cancelación, suavizada hacia la global como si se sumaran 2 reservas. Al entrenar, cada fila ve su lote sin sus propias copias, igual que una reserva nueva. Las tablas van dentro del `.joblib`.
+- **Modelo:** promedio de cinco `HistGradientBoostingClassifier` con los hiperparámetros del 11/11 y semillas 42, 0, 1, 2 y 3. Cada conjunto de filas idénticas pesa en el entrenamiento lo mismo que una reserva única. Se deja el Random Forest.
+- **Umbral 0,29.** La balanced accuracy se maximiza con un umbral cercano a la tasa de cancelación del conjunto evaluado, que sin copias repetidas ronda el 30 %.
+- **`hours_before_execution` está en días.** Si se mide en días, el 100 % de las canceladas tiene `execution_status_date` en la fecha de reserva o después. Si se midiera en horas, sólo el 4,8 %. Esa columna se usó sólo para esta comprobación, no como variable.
+- **Leakage revisado:** `assigned_gpu_type` y `queue_wait_time` pasan a usarse. Según el anuncio, la asignación de GPU ocurre días antes de la ejecución, así que está disponible en la corrida semanal, y la entrada del leaderboard las incluye. Esto cambia la tabla de leakage del principio sólo para el predictor del 18/11.
+- **Formato del `.joblib`:** un diccionario con los modelos (pipelines de scikit-learn), las tablas de lotes (DataFrames) y el umbral. No hay clases propias, así que carga aunque el `.py` se renombre. Las claves de lote se normalizan antes del hash, para que `9`, `9.0` y `'9'` den el mismo lote.
+
+### Validación agrupada sobre el CSV
+
+- **Esquema:** los mismos `StratifiedGroupKFold(5)` del notebook sobre desarrollo, con un grupo por conjunto de filas idénticas. Las métricas se ponderan con 1 / tamaño del grupo, así cada conjunto de copias cuenta como una reserva.
+- **Calibración:** con el predictor del 11/11 y umbral 0,40 da AUC 0,8965 y balanced accuracy 0,801, frente a 0,896 y 0,805 del leaderboard.
+
+| Paso | Balanced accuracy | Cambio | Folds que mejoran |
+|---|---|---|---|
+| Predictor del 11/11, umbral 0,40 | 0,801 | — | — |
+| Mismo modelo, umbral 0,29 | 0,811 | +0,010 | — |
+| Variables de calendario y costo | 0,816 | +0,005 | 5 de 5 |
+| `assigned_gpu_type`, `queue_wait_time` y GPU cambiada | 0,823 | +0,007 | 5 de 5 |
+| Pesos por conjunto de copias | 0,824 | +0,001 | — |
+
+- Los lotes y el cambio a sólo gradient boosting no se distinguen de la fila anterior en esta validación: de 0,822 a 0,824 con una semilla. El promedio de cinco semillas no se midió con esta validación.
+- En el test reservado del CSV (filas sin gemela en desarrollo, misma ponderación), la receta con las variables nuevas y las columnas de asignación, sin lotes, pasa de AUC 0,889 y balanced accuracy 0,794 a 0,899 y 0,819.
+
+### Prueba del paquete
+
+En una carpeta nueva con sólo el `.py` y el `.joblib`, en un proceso nuevo:
+
+- 10.686 filas crudas sin las tres columnas excluidas, en 2,9 s;
+- devuelve enteros 0/1 y conserva el orden con índice desordenado, reiniciado o permutado;
+- da las mismas probabilidades con arrays de 33 y 34 columnas y con una sola fila;
+- tolera faltantes, una GPU no vista y un agente no visto;
+- el `.joblib` carga sin el `.py`;
+- la línea de comandos funciona.

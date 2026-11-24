@@ -51,6 +51,19 @@ El del 09/11, con umbral 0,5, era `07629fc333423bc0ec4271a0e44edc7d6b70e7d56e6d4
 
 Guardá fuera del repositorio una copia del `.zip` exacto que se envíe, porque el `.joblib` depende de las versiones de `requirements_predictor.txt`.
 
+### Versión del 18/11
+
+`entrega_18-11/predictor_v1_Grupo_11.py` es la versión para la entrega final. Conserva el nombre de archivo y de función que fija la consigna [P03, p. 3], así que vive en su propia carpeta para no pisar el `.py` que importa el notebook. Cambios y mediciones: sección "Predictor del 18/11" de `decisiones.md`.
+
+- Se envían sólo `predictor_v1_Grupo_11.py` y `predictor_v1_Grupo_11.joblib`, sin `.zip`, como pide el anuncio del 11/11. Las versiones y el uso están en el docstring del `.py`.
+- El `.joblib` (11,0 MB) no se versiona. Se regenera con `python predictor_v1_Grupo_11.py entrenar ../gpu_resource_reservations.csv` desde esa carpeta, en un minuto y medio.
+- SHA-256 de los archivos generados el 14/11 con scikit-learn 1.7.2:
+
+```
+372269db9508819bfd93b7bfd965cddcd1540f2017925b4fd401757789bb2dae  predictor_v1_Grupo_11.py
+48001d007298a26f92e7115855042d718a7e064d9210ddcbf4a9819f094917a9  predictor_v1_Grupo_11.joblib
+```
+
 ## Presentación
 
 - **Diapositivas:** [artifact de Slides](https://claude.ai/artifact/RTKkJodPsGvyJakUPFCy26), 13 diapositivas. Se presentan y se exportan a PDF o PowerPoint desde el artifact. El link es privado hasta que se comparte desde el menú del artifact.
@@ -58,10 +71,19 @@ Guardá fuera del repositorio una copia del `.zip` exacto que se envíe, porque 
 - **Cambios:** se editan los archivos y se vuelven a publicar en el mismo artifact. Si alguien edita las diapositivas en la web, hay que bajar esos archivos del artifact a `presentacion/project/` antes de commitear, para que no queden desfasados.
 - **Guion:** `guion_defensa.md` tiene el reparto entre oradores, qué decir en cada diapositiva y las preguntas probables con sus respuestas.
 
+## Pitch final (25/11)
+
+El grupo quedó 4.º en el leaderboard final, así que está exento del trabajo final y presenta un pitch de 5 + 5 minutos a las 16:10. [P05]
+
+- **Diapositivas:** [artifact de Slides](https://claude.ai/artifact/4UABdmLVR9HBmnkftMbjqC), 9 diapositivas. Su fuente está en `pitch/project/` y se publica igual que la de la defensa.
+- **Guion:** `pitch/guion_pitch.md`, para dos oradores, con preguntas probables y el origen de cada número.
+- **Números del modelo:** `pitch/medir_pitch.py` reproduce la validación agrupada del predictor del 18/11 (unos 8 minutos).
+
 ## Entregables y fechas
 
 - Defensa: 11/11/2026. La presentación, el predictor y el código se envían 24 horas antes. [P03, p. 1]
 - Predictor: `predictor_v1_Grupo_11(X)`, enviado por mail. [P03, p. 3] La versión que se envíe antes de la defensa cuenta para el leaderboard del 11/11. Si en la defensa cambia algún supuesto, se puede enviar una nueva versión antes del 18/11 a las 16:00. [P04]
+- Entrega final del predictor: 18/11/2026 antes de las 16:00, con la versión de `entrega_18-11/`. Cuenta para el Model Score, que vale el 90 % del Competition Score. [P04]
 
 ## Estado
 

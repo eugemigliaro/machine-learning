@@ -1,0 +1,19 @@
+{
+  "v": 5,
+  "createdOnFiles": {"v": 1, "at": "2026-11-24T15:00:00Z"},
+  "lists": "css",
+  "format": {"v": 1, "shared": ["project/deck.css"]},
+  "title": "SafeGraphics — pitch del Grupo 11",
+  "cover": "portada",
+  "order": ["portada", "problema", "producto", "senales", "usuarios", "ventajas", "resultados", "limitaciones", "cierre"],
+  "sections": {
+    "problema": {"description": "El problema: reservas de GPU que se cancelan y dejan capacidad sin usar.", "start": "portada"},
+    "producto": {"description": "El producto: cómo funciona, de qué aprende y quién lo usa.", "start": "producto"},
+    "valor": {"description": "Por qué elegirlo: frente a las alternativas, resultados y limitaciones.", "start": "ventajas"}
+  },
+  "faces": {
+    "space-grotesk": {"family": "Space Grotesk", "href": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap"},
+    "inter": {"family": "Inter", "href": "https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"}
+  },
+  "designSystems": []
+}
