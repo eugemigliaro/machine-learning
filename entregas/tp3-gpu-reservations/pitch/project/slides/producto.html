@@ -1,11 +1,15 @@
 <section id="producto" class="alt">
-<h2>Una revisión por semana, una lista de alertas</h2>
-<div class="flow">
-<div class="card stage" style="--i:0"><p class="step">1</p><h3>Toma las reservas activas</h3><p>Todas las que todavía no se ejecutaron, tal como están cargadas en el sistema.</p></div>
-<div class="arrow"><x-shape kind="arrow-right"></x-shape></div>
-<div class="card stage" style="--i:1"><p class="step">2</p><h3>Las compara con el pasado</h3><p>Aprendió de 47.842 reservas cuál terminó cancelada y cuál se ejecutó.</p></div>
-<div class="arrow"><x-shape kind="arrow-right"></x-shape></div>
-<div class="card warn stage" style="--i:2"><p class="step">3</p><h3>Marca las de riesgo</h3><p>Devuelve, para cada reserva, “probable cancelación” o no. Tarda unos segundos.</p></div>
-</div>
-<aside>Orador A. Funciona como una revisión semanal. Toma todas las reservas activas, sin que nadie cargue nada nuevo. Las compara con lo que pasó en casi 48 mil reservas anteriores. Y devuelve una lista: cuáles tienen pinta de cancelarse. No hace falta reentrenarlo cada semana: el modelo ya está entrenado.</aside>
+<h2>Cada lunes, las reservas en riesgo</h2>
+<p>SafeGraphics revisa todas las reservas activas, las compara con 47.842 reservas pasadas y, en segundos, le pone un riesgo a cada una.</p>
+<table class="report stage" style="--i:0">
+<tr><th style="width:24%;">Cliente</th><th style="width:7%;">GPU</th><th style="width:14%;">Reservó con</th><th style="width:10%;">Riesgo</th><th style="width:28%;">Acción sugerida</th><th style="width:17%;">Qué pasó</th></tr>
+<tr class="alert"><td>Marketplace, ya canceló</td><td>T1</td><td>20 días</td><td class="high">Alto</td><td>Ofrecer a lista de espera</td><td class="after">Se canceló</td></tr>
+<tr class="alert"><td>Marketplace</td><td>T1</td><td>54 días</td><td class="high">Alto</td><td>Ofrecer a lista de espera</td><td class="after">Se canceló</td></tr>
+<tr class="alert"><td>Marketplace</td><td>T4</td><td>82 días</td><td class="high">Medio</td><td>Pedir confirmación</td><td class="after">Se usó</td></tr>
+<tr class="alert"><td>Cuenta gestionada</td><td>T1</td><td>151 días</td><td class="high">Medio</td><td>Pedir confirmación</td><td class="after">Se canceló</td></tr>
+<tr><td>Cliente independiente</td><td>T1</td><td>99 días</td><td class="low">Bajo</td><td class="low">Nada</td><td class="after">Se usó</td></tr>
+<tr><td>Cuenta gestionada</td><td>T1</td><td>26 días</td><td class="low">Bajo</td><td class="low">Nada</td><td class="after">Se usó</td></tr>
+</table>
+<p class="note">Seis reservas reales que el modelo no conocía, con lo que pasó después.</p>
+<aside>Orador A. Así se ve. Cada lunes, SafeGraphics toma todas las reservas activas, sin que nadie cargue nada nuevo, y le pone un riesgo a cada una. Estas son seis reservas reales que el modelo no había visto. Las de riesgo alto y medio son alertas, con una acción sugerida. La última columna muestra qué pasó después. La tercera fue una falsa alarma: se marcó y el cliente la usó. Por eso la acción es pedir confirmación, nunca cancelar.</aside>
 </section>
