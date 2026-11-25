@@ -17,12 +17,12 @@ La consigna pide presentar el modelo como un producto, para un público no técn
 | 4. Aprende señales que un operador ya intuye | Cómo funciona | A | 0:35 |
 | 5. Para el equipo que reparte las GPU | Quién lo usa | B | 0:30 |
 | 6. Las mismas cancelaciones, un tercio de las falsas alarmas | Ventajas | B | 0:45 |
-| 7. Una semana típica con SafeGraphics | Resultados | B | 0:35 |
+| 7. Una semana típica con SafeGraphics | Resultados | B | 0:30 |
 | 8. Lo que SafeGraphics no hace | Limitaciones | B | 0:35 |
 | 9. Proponemos un piloto | — | B | 0:20 |
-| **Total** | | | **4:55** |
+| **Total** | | | **4:50** |
 
-A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, por qué elegirlo, qué logra, sus límites y el pedido final (2:45).
+A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, por qué elegirlo, qué logra, sus límites y el pedido final (2:40).
 
 ## Qué decir en cada diapositiva
 
@@ -50,9 +50,9 @@ A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, po
 
 > ¿Por qué no alcanza con una regla? Probamos una regla simple, con el corte de anticipación que mejor funciona: marcar toda reserva hecha con más de tres semanas. Detecta 8 de cada 10 cancelaciones, pero molesta a 6 de cada 10 clientes que sí iban a usar su GPU. SafeGraphics detecta las mismas 8 y molesta a 2. Las otras opciones son peores: no hacer nada no detecta ninguna, y marcar sólo a quien ya canceló antes encuentra menos de 2 de cada 10.
 
-### 7. Una semana típica con SafeGraphics (B, 0:35)
+### 7. Una semana típica con SafeGraphics (B, 0:30)
 
-> ¿Qué significa en una semana típica? De las 176 cancelaciones, unas 115 todavía tienen la GPU apartada después de la primera semana, y SafeGraphics marca unas 97 de ellas. A cambio, genera unas 45 falsas alarmas entre las casi 250 reservas que sí se usan. Y es rápido: revisa más de 10.000 reservas en 3 segundos. Además lo probó alguien de afuera: en la competencia de la cátedra, con reservas que no estaban en nuestros datos, quedamos cuartos entre 13 equipos.
+> ¿Qué significa en una semana típica? De las 176 cancelaciones, unas 115 todavía tienen la GPU apartada después de la primera semana, y SafeGraphics marca unas 97 de ellas. A cambio, genera unas 45 falsas alarmas entre las casi 250 reservas que sí se usan. Y es rápido: revisa más de 10.000 reservas en 3 segundos.
 
 ### 8. Lo que SafeGraphics no hace (B, 0:35)
 
@@ -70,6 +70,7 @@ A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, po
 | ¿Qué significan Alto, Medio y Bajo? | Son cortes sobre la probabilidad que da el modelo: Alto desde 70 %, Medio entre 29 % y 70 %, Bajo debajo de 29 %. Alto y Medio son alertas: el predictor entregado devuelve 1 desde 29 %. |
 | ¿Por qué no marcar menos reservas, para equivocarse menos? | Se puede: es una perilla. Con el corte en 50 % detecta 7 de cada 10 y molesta a 1 de cada 10. Elegimos el punto que equilibra detectar y no molestar, que es lo que mide la competencia (balanced accuracy). |
 | ¿Cómo mejoraron entre la primera entrega y la final? | El leaderboard del 11/11 nos mostró dos cosas: que la competencia mide balanced accuracy y que en la entrada vienen la GPU asignada y la espera en cola, que según la cátedra se conocen días antes de la ejecución. Con eso: (1) bajamos el umbral, porque la balanced accuracy se maximiza cerca de la tasa de cancelación, que sin copias repetidas ronda el 30 %; (2) sumamos esas dos columnas y variables de calendario y costo; (3) agregamos cuántas reservas similares hay en el mismo lote y cuántas se cancelaron; (4) hicimos que cada grupo de copias idénticas pese como una sola reserva. En nuestra validación agrupada la balanced accuracy pasó de 0,801 a 0,824. |
+| ¿Cómo les fue en la competencia? | Quedamos 4.º entre 13 equipos, evaluados por la cátedra con reservas que no estaban en nuestros datos. No está en las diapositivas: el pitch habla del producto. |
 | ¿Qué modelo es? | Cinco modelos de *gradient boosting* (muchos árboles de decisión chicos, cada uno corrigiendo al anterior) promediados. |
 | ¿Cómo se midieron los números? | Validación agrupada en 5 partes sobre el CSV de la cátedra: el modelo nunca ve en el entrenamiento una reserva idéntica a las que se evalúan, y cada grupo de copias idénticas cuenta como una reserva. Balanced accuracy 0,824 y AUC 0,907. Si cada copia cuenta por separado, los números mejoran (detecta 9 de cada 10); en el pitch usamos los más conservadores. |
 | ¿Por qué "1 de cada 3 alertas falla" si en el ejemplo falló una de seis? | Las seis reservas del ejemplo las elegimos para mostrar cada nivel de riesgo y una falsa alarma; no son una muestra al azar. El número real es el de la validación. |
@@ -94,5 +95,4 @@ Todos se reproducen con `medir_pitch.py`.
 | 1 de cada 3 alertas es falsa | Precisión de 0,66 en la misma validación. |
 | ≈97 y ≈45 por semana | Estimación: detección entre las canceladas que siguen activas más de una semana (0,84) por las unas 115 semanales; tasa de falsas alarmas (0,18) por las unas 246 que se ejecutan. |
 | 3 s para más de 10.000 reservas | Prueba del paquete del 18/11: 10.686 filas en 2,9 s (`decisiones.md`). |
-| 4.º de 13 | Leaderboard final, informado por el estudiante; [P05] anuncia que el leaderboard está publicado. |
 | Evolución 0,801 → 0,824 entre la primera entrega y la final | `decisiones.md`, sección "Predictor del 18/11". |
