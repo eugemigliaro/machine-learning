@@ -75,7 +75,7 @@ Guardá fuera del repositorio una copia del `.zip` exacto que se envíe, porque 
 
 El grupo quedó 4.º en el leaderboard final, así que está exento del trabajo final y presenta un pitch de 5 + 5 minutos a las 16:10. [P05]
 
-- **Diapositivas:** [artifact de Slides](https://claude.ai/artifact/4UABdmLVR9HBmnkftMbjqC), 9 diapositivas. Su fuente está en `pitch/project/` y se publica igual que la de la defensa.
+- **Diapositivas:** [artifact de Slides](https://claude.ai/artifact/4UABdmLVR9HBmnkftMbjqC), 8 diapositivas. Su fuente está en `pitch/project/` y se publica igual que la de la defensa.
 - **Guion:** `pitch/guion_pitch.md`, para dos oradores, con preguntas probables y el origen de cada número.
 - **Números:** `pitch/medir_pitch.py` reproduce todos los del pitch: los hechos del CSV y la validación agrupada del predictor del 18/11 (unos 8 minutos).
 

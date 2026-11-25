@@ -4,7 +4,7 @@ Presentación final de los primeros puestos: 5 minutos de pitch y 5 de preguntas
 
 La consigna pide presentar el modelo como un producto, para un público no técnico, y responder cinco preguntas: qué problema resuelve, cómo funciona, quién lo usaría, qué ventajas tiene frente a otras alternativas y cuáles son sus resultados y limitaciones. [P05]
 
-- **Diapositivas:** [artifact de Slides](https://claude.ai/artifact/4UABdmLVR9HBmnkftMbjqC), 9 diapositivas. Fuente versionada en `project/`.
+- **Diapositivas:** [artifact de Slides](https://claude.ai/artifact/4UABdmLVR9HBmnkftMbjqC), 8 diapositivas. Fuente versionada en `project/`.
 - **Nombre del producto:** "SafeGraphics", elegido por el grupo.
 - **Oradores:** dos, A y B.
 - **Hilo:** el problema no es cuántas reservas se cancelan sino cuáles; SafeGraphics responde eso cada lunes, mejor que una regla simple, y se propone probarlo con un piloto.
@@ -18,11 +18,12 @@ La consigna pide presentar el modelo como un producto, para un público no técn
 | 5. Para el equipo que reparte las GPU | Quién lo usa | B | 0:30 |
 | 6. Las mismas cancelaciones, un tercio de las falsas alarmas | Ventajas | B | 0:45 |
 | 7. Una semana típica con SafeGraphics | Resultados | B | 0:30 |
-| 8. Lo que SafeGraphics no hace | Limitaciones | B | 0:35 |
-| 9. Proponemos un piloto | — | B | 0:20 |
-| **Total** | | | **4:50** |
+| 8. Proponemos un piloto | — | B | 0:20 |
+| **Total** | | | **4:15** |
 
-A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, por qué elegirlo, qué logra, sus límites y el pedido final (2:40).
+A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, por qué elegirlo, qué logra y el pedido final (2:05).
+
+Las limitaciones no tienen diapositiva propia. En el pitch aparecen las falsas alarmas (diapositivas 3 y 7) y la acción "pedir confirmación, nunca cancelar" (diapositiva 3). Las cuatro limitaciones están preparadas para las preguntas.
 
 ## Qué decir en cada diapositiva
 
@@ -54,11 +55,7 @@ A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, po
 
 > ¿Qué significa en una semana típica? De las 176 cancelaciones, unas 115 todavía tienen la GPU apartada después de la primera semana, y SafeGraphics marca unas 97 de ellas. A cambio, genera unas 45 falsas alarmas entre las casi 250 reservas que sí se usan. Y es rápido: revisa más de 10.000 reservas en 3 segundos.
 
-### 8. Lo que SafeGraphics no hace (B, 0:35)
-
-> Cuatro límites. Uno: 1 de cada 3 alertas es una falsa alarma, así que es un aviso para revisar, nunca una cancelación automática. Dos: como revisa una vez por semana, no llega a ver lo que se cancela en los primeros días; esas reservas apartan la GPU poco tiempo. Tres: aprendió de reservas de 2015 a 2017; si el negocio cambia, hay que reentrenarlo. Cuatro: donde más falla es con clientes nuevos sin historial; la mejora más grande es registrar más datos de esos clientes.
-
-### 9. Proponemos un piloto (B, 0:20)
+### 8. Proponemos un piloto (B, 0:20)
 
 > Cerramos con una propuesta concreta: un piloto de cuatro semanas. SafeGraphics corre cada lunes en paralelo, sin tocar ninguna reserva, y al final comparamos sus alertas con lo que realmente se canceló. Si cumple, se usa; si no, no se perdió nada. ¿Preguntas?
 
@@ -66,6 +63,7 @@ A cuenta el problema y qué hace el producto (2:10). B cuenta para quién es, po
 
 | Pregunta | Respuesta |
 |---|---|
+| ¿Qué limitaciones tiene? | Cuatro. Uno: 1 de cada 3 alertas es una falsa alarma, así que es un aviso para revisar, nunca una cancelación automática. Dos: como revisa una vez por semana, no llega a ver lo que se cancela en los primeros días; esas reservas apartan la GPU poco tiempo. Tres: aprendió de reservas de 2015 a 2017; si el negocio cambia, hay que reentrenarlo. Cuatro: donde más falla es con clientes nuevos sin historial; la mejora más grande es registrar más datos de esos clientes. |
 | ¿Qué es "detecta 8 de cada 10"? | De las reservas que terminan canceladas, SafeGraphics marca 8 de cada 10. Es el *recall* (sensibilidad). "Molesta a 2 de cada 10" es la tasa de falsos positivos entre las reservas que se usan. |
 | ¿Qué significan Alto, Medio y Bajo? | Son cortes sobre la probabilidad que da el modelo: Alto desde 70 %, Medio entre 29 % y 70 %, Bajo debajo de 29 %. Alto y Medio son alertas: el predictor entregado devuelve 1 desde 29 %. |
 | ¿Por qué no marcar menos reservas, para equivocarse menos? | Se puede: es una perilla. Con el corte en 50 % detecta 7 de cada 10 y molesta a 1 de cada 10. Elegimos el punto que equilibra detectar y no molestar, que es lo que mide la competencia (balanced accuracy). |
